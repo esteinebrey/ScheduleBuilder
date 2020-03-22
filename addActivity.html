@@ -1,0 +1,43 @@
+<!-- TODO: Add grid layout -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<title>Add Activity</title>
+<meta charset="utf-8">
+<link rel="stylesheet" href="schedule_style.css">
+</head>
+
+<body>
+<ul id="navigation_bar">
+  <li><a href="schedule.html">Schedule</a></li>
+  <li><a href="addCourse.html">Add Course</a></li>
+  <li><a href="availableCourses.html">Available Courses</a></li>
+  <li><a href="activities.html">Activities</a></li>
+  <li><a href="addActivity.html">Add Activity</a></li>
+</ul>
+<h1>Add Activity</h1>
+
+<form action= "" method="">
+  <label>Organization 
+    <input name="organization" type="text" size = "50" maxlength="50" required>
+  </label><br>
+  <label>Role 
+    <input name="role" type="text" size = "50" maxlength="50" required>
+  </label><br>
+  <label>Purpose 
+    <input name="purpose" type="text" size = "50" maxlength="50" title="Purpose must be alphanumeric, space, or comma. No leading or trailing whitespace." pattern="^[^ ]+[A-Za-z0-9, ]*[^ ]+$" required>
+  </label><br>
+  <label>Description 
+    <input name="description" type="text" size = "50" maxlength="50" title="Description must be alphanumeric, space, or comma. No leading or trailing whitespace." pattern="^[^ ]+[A-Za-z0-9, ]*[^ ]+$" required>
+  </label><br>
+  <label>Contact
+    <input name = "contact" type="email" size = "50" maxlength="50" required>
+  </label><br>
+  <label>Website
+    <input name = "website" type="url" size = "50" maxlength="50" required>
+  </label><br>
+  <input id="submit-button" type="submit" value = "Submit" />
+  </form>
+</body>
+</html>
