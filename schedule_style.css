@@ -1,0 +1,56 @@
+* {
+	font-family: Arial, sans-serif;
+}
+
+h1 {
+	text-align: center;
+}
+
+#container {
+  display:flex;
+}
+
+#slideshow {
+  width: 17%;
+}
+
+#courses_table {
+  width: 83%;
+}
+
+#navigation_bar {
+	list-style-type:none;
+	margin:0;
+	padding:0;
+	background-color:black;
+	overflow: hidden;
+
+}
+
+li {
+	float:left;
+}	
+
+li a {
+	display:block;
+	color: white;
+	text-decoration:none;
+	font-weight: bold;
+	padding: 14px 16px;
+}
+
+li a:hover {
+	background-color:maroon;
+	color: gold;
+}
+
+table {
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 1.25em;
+  float: left;
+}
+
+table, th, td {
+  border: 1px solid black;
+}

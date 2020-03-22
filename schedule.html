@@ -5,11 +5,21 @@
 <head>
 <title>Schedule</title>
 <meta charset="utf-8">
+<link rel="stylesheet" href="schedule_style.css">
+<script src="schedule_script.js"></script>
 </head>
 
 <body>
+<ul id="navigation_bar">
+  <li><a href="schedule.html">Schedule</a></li>
+  <li><a href="addCourse.html">Add Course</a></li>
+</ul>
 <h1>Schedule</h1>
-<table>
+<select id="semester">
+  <option value="F19">Fall 2019</option>
+</select>
+<div id="container">
+<table id="courses_table">
   <tr>
     <th>Course Number</th>
 	<th>Course Name</th>
@@ -51,5 +61,10 @@
 	<td>Tate 101</td>
   </tr>
 </table>
+<img id="slideshow" src="gopher_mascot.jpeg" alt="gopher mascot">
+<br><br>
+<button onclick="startSlideshow()">Start</button>
+<button onclick="stopSlideshow()">Stop</button>
+</div>
 </body>
 </html>
