@@ -227,14 +227,37 @@ app.get('/getSemesters', function(req, res) {
   }
 });
 
-app.get('/getCoursesBySemester/:id', function(req, res) {
-  console.log("inside");
-  console.log(req.params.id);
+app.get('/getStudentCoursesBySemester/:semesterId', function(req, res) {
   if (req.session && req.session.loggedIn) {
-    con.query("SELECT Courses.CourseName AS name, Courses.DeptCode AS deptCode, Courses.CourseNumber AS courseNumber, \
+    var semesterId = req.params.semesterId;
+    console.log(semesterId);
+      var sql = "SELECT Courses.CourseName AS name, Courses.DeptCode AS deptCode, Courses.CourseNumber AS courseNumber, \
     CourseOfferings.Professor AS prof, Courses.CreditNumber AS credits, CourseOfferings.DaysOfWeek AS days, \
     CourseOfferings.Time AS time, CourseOfferings.Building AS building, CourseOfferings.Room AS room FROM Courses, \
-    CourseOfferings Where CourseOfferings.SemesterID = " + req.params.id + " AND Courses.CourseID = CourseOfferings.CourseID",
+    CourseOfferings, Registrations WHERE CourseOfferings.SemesterID = ? AND Courses.CourseID = CourseOfferings.CourseID \
+    AND Registrations.OfferingID = CourseOfferings.OfferingID AND Registrations.StudentID = ?";
+    con.query(sql, [semesterId, req.session.id],
+      function(err, result, fields) {
+        if (err) throw err;
+        console.log("result");
+        console.log(result);
+        res.send(JSON.stringify(result));
+      });
+  }
+  else {
+    res.redirect("/login");
+  }
+});
+
+app.get('/getCoursesBySemester/:semesterId', function(req, res) {
+  if (req.session && req.session.loggedIn) {
+    var semesterId = req.params.semesterId;
+    console.log(semesterId);
+      var sql = "SELECT Courses.CourseName AS name, Courses.DeptCode AS deptCode, Courses.CourseNumber AS courseNumber, \
+    CourseOfferings.Professor AS prof, Courses.CreditNumber AS credits, CourseOfferings.DaysOfWeek AS days, \
+    CourseOfferings.Time AS time, CourseOfferings.Building AS building, CourseOfferings.Room AS room FROM Courses, \
+    CourseOfferings Where CourseOfferings.SemesterID = ? AND Courses.CourseID = CourseOfferings.CourseID"
+    con.query(sql, [semesterId],
       function(err, result, fields) {
         if (err) throw err;
         console.log("result");

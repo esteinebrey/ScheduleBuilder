@@ -8,6 +8,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="/scripts/navigationBarScript.js"></script>
+  <script src="/scripts/offerings_scripts.js"></script>
 </head>
 
 <body>
@@ -15,7 +16,7 @@
   <h1>View Courses</h1>
 
 
-  <select name="semesters" id="semesterDropdown" onChange="onSelect(this)">
+  <select name="semesters" id="semesterDropdown" onChange="showCorrectTable(this); onSelect(this, false);">
 
   </select>
   <br>
@@ -51,113 +52,25 @@
 <script>
   var isCourseTableShown = false;
 
-  function onSelect(obj) {
-    // console.log(obj.selectedIndex);
-    // var dropdown = $("#semesterDropdown");
-    // console.log(obj.options[obj.selectedIndex]);
-    var semesterSelected = obj.options[obj.selectedIndex].value;
-    if (semesterSelected == -1) {
-      if (!isCourseTableShown) {
-        determineTableShown()
-      }
-    }
-    else {
-      if (isCourseTableShown) {
-        determineTableShown()
-      }
-      removeOfferingsAlreadyShown();
-      retrieveOfferings(semesterSelected);
-    }
-    
-  }
-
-  function removeOfferingsAlreadyShown() {
-    $("#offeringTable tbody tr").remove();
-  }
-
-  function retrieveOfferings(semesterId) {
-    var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-            // Create JSON object
-            var obj = JSON.parse(xhr.responseText);
-            if (obj.length > 0) {
-              // Access the table
-              var table = $("#offeringTable");
-              var i;
-              var offeringInfo;
-              for (i = 0; i < obj.length; i++) {
-                offeringInfo = obj[i];
-                console.log(offeringInfo);
-                // For each contact, create a row and add it to the table
-                createOfferingRow(offeringInfo, table);
-              }
-            }
-
-          }
-        };
-        xhr.open("GET", "/getCoursesBySemester/" + semesterId, true);
-        xhr.send();
-  }
-
-  function createOfferingRow(offeringInfo, table) {
-        // Create the row and make each cell of the row
-        var offeringOutput = "<tr class='offeringRow'>";
-        offeringOutput += "<td>" + offeringInfo.name + "</td>";
-        offeringOutput += "<td>" + offeringInfo.deptCode + " " + offeringInfo.courseNumber + "</td>";
-        offeringOutput += "<td>" + offeringInfo.prof + "</td>";
-        offeringOutput += "<td>" + offeringInfo.credits + "</td>";
-        offeringOutput += "<td>" + offeringInfo.days + "</td>";
-        offeringOutput += "<td>" + offeringInfo.time + "</td>";
-        offeringOutput += "<td>" + offeringInfo.building + " " + offeringInfo.room + "</td>";
-        offeringOutput += "</tr>"
-
-        // Add the row to the table
-        table.append(offeringOutput);
-  }
-
-  function retrieveSemesters() {
-        // Create XMLHttpRequest
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-            // Create JSON object
-            var obj = JSON.parse(xhr.responseText);
-            if (obj.length > 0) {
-              // Access the table
-              var dropdown = $("#semesterDropdown");
-              dropdown.append('<option value="-1" selected>' + "All Courses" + '</option>');
-              var i;
-              var semesterInfo;
-              for (i = 0; i < obj.length; i++) {
-                semesterInfo = obj[i];
-                console.log(semesterInfo);
-                // For each contact, create a row and add it to the table
-                addToSemesterDropdown(semesterInfo, dropdown);
-              }
-            }
-
-          }
-        };
-        xhr.open("GET", "getSemesters", true);
-        xhr.send();
-  }
-
-  function addToSemesterDropdown(semesterInfo, dropdown) {
-    var semesterOutput = "<option value='"+semesterInfo.semesterId +"'>";
-    semesterOutput += semesterInfo.season + " " + semesterInfo.year;
-    semesterOutput += "</option>"
-
-    // Add the row to the table
-    dropdown.append(semesterOutput);
-  }
-
   function determineTableShown() {
     isCourseTableShown = !isCourseTableShown;
     var offeringDisplay = isCourseTableShown ? 'none' : 'table';
     var courseDisplay = isCourseTableShown ? 'table' : 'none';
     $("#offeringTable").css("display", offeringDisplay);
     $("#courseTable").css("display", courseDisplay);
+  }
+
+  function showCorrectTable(obj) {
+    // console.log(obj.selectedIndex);
+    // var dropdown = $("#semesterDropdown");
+    // console.log(obj.options[obj.selectedIndex]);
+    var semesterSelected = obj.options[obj.selectedIndex].value;
+    if (semesterSelected == -1 && !isCourseTableShown) {
+        determineTableShown()
+    }
+    else if (isCourseTableShown) {
+        determineTableShown()
+      }
   }
 
   function retrieveCourses() {

@@ -6,63 +6,40 @@
 <title>Schedule</title>
 <meta charset="utf-8">
 <link rel="stylesheet" href="/css/schedule_style.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="/scripts/schedule_script.js"></script>
 <script src="/scripts/navigationBarScript.js"></script>
+<script src="/scripts/offerings_scripts.js"></script>
 </head>
 
 <body>
 <div id="navBarContainer"></div>
 <h1>Schedule</h1>
-<select id="semester">
-  <option value="F19">Fall 2019</option>
-</select>
+<select name="semesters" id="semesterDropdown" onChange="onSelect(this, true)">
 <div id="container">
-<table id="courses_table">
-  <tr>
-    <th>Course Number</th>
-	<th>Course Name</th>
-	<th>Professor</th>
-	<th>Days</th>
-	<th>Times</th>
-	<th>Location</th>
-  </tr>
-  <tr>
-    <td>CSCI 5521</td>
-	<td>Intro to Machine Learning</td>
-	<td>Zhao</td>
-	<td>MW</td>
-	<td>2:30 - 3:45 PM</td>
-	<td>Akerman 319</td>
-  </tr>
-  <tr>
-    <td>PORT 3001</td>
-	<td>Portuguese for Spanish Speakers</td>
-	<td>Dias</td>
-	<td>TH</td>
-	<td>10:10 - 12:05 PM</td>
-	<td>Kolthoff 132</td>
-  </tr>
-  <tr>
-    <td>CSCI 4707</td>
-	<td>Practice of Database Systems</td>
-	<td>Watters</td>
-	<td>TH</td>
-	<td>1:00 - 2:15 PM</td>
-	<td>Bruininks 220</td>
-  </tr>
-  <tr>
-    <td>CSCI 4061</td>
-	<td>Intro to Operating Systems</td>
-	<td>Chandra</td>
-	<td>TH</td>
-	<td>4:00 - 5:15 PM</td>
-	<td>Tate 101</td>
-  </tr>
-</table>
+	<table class="table smaller-table" id= "offeringTable">
+		<thead>
+		  <tr>
+			<th scope="col">Name</th>
+			  <th scope="col">Code</th>
+			  <th scope="col">Professor</th>
+			  <th scope="col">Credits</th>
+			  <th scope="col">Days</th>
+			  <th scope="col">Time</th>
+			  <th scope="col">Location</th>
+		  </tr>
+		  </thead>
+		  <tbody></tbody>
+	  </table>
 <img id="slideshow" src="gopher_mascot.jpeg" alt="gopher mascot">
 <br><br>
 <button onclick="startSlideshow()">Start</button>
 <button onclick="stopSlideshow()">Stop</button>
 </div>
 </body>
+<script>
+	window.addEventListener("load", retrieveSemesters, false);
+</script>
 </html>
