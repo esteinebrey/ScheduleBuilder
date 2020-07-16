@@ -13,7 +13,67 @@
 <body>
   <div id="navBarContainer"></div>
   <h1>Admin</h1>
+
+  <table class="table" id= "adminTable">
+		<thead>
+		  <tr>
+			<th scope="col">Name</th>
+			  <th scope="col">Login</th>
+			  <th scope="col">Password</th>
+			  <th scope="col">Admin</th>
+		  </tr>
+		  </thead>
+		  <tbody></tbody>
+	</table>
   
 </body>
+<script>
+ // Get the user information
+function retrieveUsers() {
+  // Create XMLHttpRequest
+  console.log("retrieve");
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      // Create JSON object
+      var users = JSON.parse(xhr.responseText);
+      console.log(users);
+      processUserInfo(users);
+    }
+  };
+  xhr.open("GET", "getUsers", true);
+  xhr.send();
+}
 
+function processUserInfo(users) {
+  if (users.length > 0) {
+    // Access the table
+    var table = $("#adminTable");
+    var i;
+    var userInfo;
+    for (i = 0; i < users.length; i++) {
+      userInfo = users[i];
+      // For each user, create a row and add it to the table
+      addToUserTable(userInfo, table);
+    }
+  }
+}
+
+// Used to add users to user table
+function addToUserTable(userInfo, table) {
+    // Create the row and make each cell of the row
+    var isAdministrator = userInfo.isAdmin ===  1 ? 'true' : 'false';
+    var userOutput = "<tr class='offeringRow'>";
+    userOutput += "<td>" + userInfo.name + "</td>";
+    userOutput += "<td>" + userInfo.login + "</td>";
+    userOutput += "<td> </td>";
+    userOutput += "<td>" + isAdministrator + "</td>";
+    userOutput += "</tr>";
+
+    // Add the row to the table
+    table.append(userOutput);
+}
+
+window.addEventListener("load",retrieveUsers, false);
+</script>
 </html>

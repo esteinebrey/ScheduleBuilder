@@ -146,7 +146,6 @@ app.post('/validateLogin', function(req, res) {
   var sql= "SELECT * FROM Users WHERE UserLogin = ? AND UserPassword = ?";
   con.query(sql, [user, hashed_pwd], function(err, result, fields) {
       var obj = JSON.parse(JSON.stringify(result));
-      console.log(obj);
       // Determine if validation successful or not
       if (err) throw err;
       else if (result.length == 0) {
@@ -159,7 +158,7 @@ app.post('/validateLogin', function(req, res) {
         req.session.login = user;
         req.session.loggedIn = true;
         req.session.flag = 1;
-        req.session.id = obj[0].UserID;
+        req.session.userId = obj[0].UserID;
         req.session.name = obj[0].UserName;
         // Check if the user is a student or admin
         if (obj[0].isAdmin == 1) {
@@ -213,6 +212,20 @@ app.get('/getAllCourses', function(req, res) {
   }
 });
 
+// GET users
+app.get('/getUsers', function(req, res) {
+  if (req.session && req.session.loggedIn) {
+    con.query("SELECT UserID AS userId, UserName AS name, UserLogin AS login, isAdmin FROM Users",
+      function(err, result, fields) {
+        if (err) throw err;
+        res.send(JSON.stringify(result));
+      });
+  }
+  else {
+    res.redirect("/login");
+  }
+});
+
 // GET semesters
 app.get('/getSemesters', function(req, res) {
   if (req.session && req.session.loggedIn) {
@@ -227,20 +240,35 @@ app.get('/getSemesters', function(req, res) {
   }
 });
 
+// GET semesters for specific user
+app.get('/getStudentSemesters', function(req, res) {
+  if (req.session && req.session.loggedIn) {
+    var sql = "SELECT DISTINCT Semesters.SemesterID as semesterId, Semesters.Season AS season, Semesters.Year AS year FROM Semesters, \
+    CourseOfferings, Registrations WHERE CourseOfferings.SemesterID = Semesters.SemesterID  \
+    AND Registrations.OfferingID = CourseOfferings.OfferingID AND Registrations.StudentID = ?";
+    con.query(sql, [req.session.userId],
+      function(err, result, fields) {
+        if (err) throw err;
+        res.send(JSON.stringify(result));
+      });
+  }
+  else {
+    res.redirect("/login");
+  }
+});
+
+// GET courses taken by user for specific user
 app.get('/getStudentCoursesBySemester/:semesterId', function(req, res) {
   if (req.session && req.session.loggedIn) {
     var semesterId = req.params.semesterId;
-    console.log(semesterId);
       var sql = "SELECT Courses.CourseName AS name, Courses.DeptCode AS deptCode, Courses.CourseNumber AS courseNumber, \
     CourseOfferings.Professor AS prof, Courses.CreditNumber AS credits, CourseOfferings.DaysOfWeek AS days, \
     CourseOfferings.Time AS time, CourseOfferings.Building AS building, CourseOfferings.Room AS room FROM Courses, \
     CourseOfferings, Registrations WHERE CourseOfferings.SemesterID = ? AND Courses.CourseID = CourseOfferings.CourseID \
     AND Registrations.OfferingID = CourseOfferings.OfferingID AND Registrations.StudentID = ?";
-    con.query(sql, [semesterId, req.session.id],
+    con.query(sql, [semesterId, req.session.userId],
       function(err, result, fields) {
         if (err) throw err;
-        console.log("result");
-        console.log(result);
         res.send(JSON.stringify(result));
       });
   }
@@ -252,7 +280,6 @@ app.get('/getStudentCoursesBySemester/:semesterId', function(req, res) {
 app.get('/getCoursesBySemester/:semesterId', function(req, res) {
   if (req.session && req.session.loggedIn) {
     var semesterId = req.params.semesterId;
-    console.log(semesterId);
       var sql = "SELECT Courses.CourseName AS name, Courses.DeptCode AS deptCode, Courses.CourseNumber AS courseNumber, \
     CourseOfferings.Professor AS prof, Courses.CreditNumber AS credits, CourseOfferings.DaysOfWeek AS days, \
     CourseOfferings.Time AS time, CourseOfferings.Building AS building, CourseOfferings.Room AS room FROM Courses, \
@@ -260,8 +287,6 @@ app.get('/getCoursesBySemester/:semesterId', function(req, res) {
     con.query(sql, [semesterId],
       function(err, result, fields) {
         if (err) throw err;
-        console.log("result");
-        console.log(result);
         res.send(JSON.stringify(result));
       });
   }

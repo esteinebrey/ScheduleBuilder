@@ -5,13 +5,11 @@ function removeOfferingsAlreadyShown() {
 
 // Used to update table when semester from dropdown is changed
 function onSelect(obj, isforSpecificUser) {
-    // console.log(obj.selectedIndex);
-    // var dropdown = $("#semesterDropdown");
-    // console.log(obj.options[obj.selectedIndex]);
     var semesterSelected = obj.options[obj.selectedIndex].value;
     if (semesterSelected !== -1) {
       removeOfferingsAlreadyShown();
       if (isforSpecificUser) {
+        $("option#defaultOption").css("display", "none");
         retrieveOfferingsForSemesterAndUser(semesterSelected);
       }
       else {
@@ -27,6 +25,7 @@ function onSelect(obj, isforSpecificUser) {
       if (this.readyState == 4 && this.status == 200) {
         // Create JSON object
         var obj = JSON.parse(xhr.responseText);
+        console.log(obj);
         getOfferingInfo(obj);
       }
     };
@@ -69,7 +68,6 @@ function onSelect(obj, isforSpecificUser) {
         var offeringInfo;
         for (i = 0; i < obj.length; i++) {
           offeringInfo = obj[i];
-          console.log(offeringInfo);
           // For each contact, create a row and add it to the table
           createOfferingRow(offeringInfo, table);
         }
@@ -87,7 +85,7 @@ function onSelect(obj, isforSpecificUser) {
         offeringOutput += "<td>" + offeringInfo.days + "</td>";
         offeringOutput += "<td>" + offeringInfo.time + "</td>";
         offeringOutput += "<td>" + offeringInfo.building + " " + offeringInfo.room + "</td>";
-        offeringOutput += "</tr>"
+        offeringOutput += "</tr>";
 
         // Add the row to the table
         table.append(offeringOutput);
@@ -100,25 +98,42 @@ function onSelect(obj, isforSpecificUser) {
     xhr.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         // Create JSON object
-        var obj = JSON.parse(xhr.responseText);
-        if (obj.length > 0) {
-          // Access the table
-          var dropdown = $("#semesterDropdown");
-          dropdown.append('<option value="-1" selected>' + "All Courses" + '</option>');
-          var i;
-          var semesterInfo;
-          for (i = 0; i < obj.length; i++) {
-            semesterInfo = obj[i];
-            console.log(semesterInfo);
-            // For each contact, create a row and add it to the table
-            addToSemesterDropdown(semesterInfo, dropdown);
-          }
-        }
-
+        var semesterObj = JSON.parse(xhr.responseText);
+        processSemesterInfo(semesterObj);
       }
     };
     xhr.open("GET", "getSemesters", true);
     xhr.send();
+}
+
+// Used to get semesters to put in dropdown for specific user
+function retrieveSemestersForUser() {
+  // Create XMLHttpRequest
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      // Create JSON object
+      var semesterObj = JSON.parse(xhr.responseText);
+      processSemesterInfo(semesterObj);
+
+    }
+  };
+  xhr.open("GET", "getStudentSemesters", true);
+  xhr.send();
+}
+
+function processSemesterInfo(semesterObj) {
+  if (semesterObj.length > 0) {
+    // Access the table
+    var dropdown = $("#semesterDropdown");
+    var i;
+    var semesterInfo;
+    for (i = 0; i < semesterObj.length; i++) {
+      semesterInfo = semesterObj[i];
+      // For each contact, create a row and add it to the table
+      addToSemesterDropdown(semesterInfo, dropdown);
+    }
+  }
 }
 
 // Used to get the semesters to show in dropdown

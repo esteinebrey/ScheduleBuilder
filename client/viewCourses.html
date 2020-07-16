@@ -60,6 +60,11 @@
     $("#courseTable").css("display", courseDisplay);
   }
 
+  function setUpDropdown() {
+    var dropdown = $("#semesterDropdown");
+    dropdown.append('<option value="-1" selected>' + "All Courses" + '</option>');
+  }
+
   function showCorrectTable(obj) {
     // console.log(obj.selectedIndex);
     // var dropdown = $("#semesterDropdown");
@@ -116,5 +121,6 @@
       window.addEventListener("load", retrieveCourses, false);
       window.addEventListener("load", retrieveSemesters, false);
       window.addEventListener("load", determineTableShown, false);
+      window.addEventListener("load", setUpDropdown, false);
 </script>
 </html>
