@@ -137,6 +137,38 @@ app.get('/login',function(req, res) {
   }
 });
 
+// POST method to edit user
+app.post('/editUser', function(req, res) {
+  var isAdmin = req.body.userType == 'admin' ? 1 : 0;
+  var sql;
+  var args = [req.body.login, req.body.name, isAdmin];
+  if (req.body.password == "") {
+    sql= "UPDATE Users SET UserLogin = ?, UserName = ?, isAdmin = ? WHERE UserID = ?";
+
+  }
+  else {
+    sql= "UPDATE Users SET UserLogin = ?, UserName = ?, isAdmin = ?, UserPassword = ? WHERE UserID = ?";
+    var hashed_pwd = crypto.createHash('sha256').update(req.body.password).digest('base64');
+    args.push(hashed_pwd);
+  }
+  id = parseInt(req.body.userId);
+  args.push(id);
+  con.query(sql, args, function(err, result, fields) {
+      res.redirect("/admin");
+  });
+});
+
+// POST method to add user
+app.post('/addUser', function(req, res) {
+  var isAdmin = req.body.userType == 'admin' ? 1 : 0;
+  var hashed_pwd = crypto.createHash('sha256').update(req.body.password).digest('base64');
+  var sql = "INSERT INTO Users (UserLogin, UserName, UserPassword, isAdmin) VALUES (?, ?, ?, ?)";
+  var args = [req.body.login, req.body.name, hashed_pwd, isAdmin];
+  con.query(sql, args, function(err, result, fields) {
+      res.redirect("/admin");
+  });
+});
+
 // POST method to validate user login
 // Upon successful login, user session is created
 app.post('/validateLogin', function(req, res) {

@@ -4,23 +4,100 @@
 <head>
   <title>Admin</title>
   <meta charset="utf-8">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="/scripts/navigationBarScript.js"></script>
+  <script>
+    $(document).ready(function(){
+      // modal is orginally invisible
+      $("#addEditModal").css("display", "none");
+
+      // function for deleting row
+      $(document).on('click', '.delete', function () {
+        var rowId = $(this).parentsUntil("tbody").last().attr("id");
+        id = rowId.replace('row', '');
+        console.log(id);
+      });
+
+      // function for editing row
+      $(document).on('click', '.edit', function () {
+        var rowId = $(this).parentsUntil("tbody").last().attr("id");
+        id = rowId.replace('row', '');
+        $("#addEditModal").css("display", "block");
+        $("form#addEditForm input#userId").val(id);
+        $("form#addEditForm input#name").val($(`#name${id}`).html());
+        $("form#addEditForm input#login").val($(`#login${id}`).html());
+        if ($(`#isAdmin${id}`).html() == 'true') {
+          $("form#addEditForm select#userType option[value='admin']").attr("selected", true);
+        }
+        else {
+          $("form#addEditForm select#userType option[value='regular']").attr("selected", true);
+        }
+        $("h1#addEditFormTitle").html("Edit User");
+        $("#addEditButton").val("Update User");
+        $("#addEditForm").attr("action", "/editUser");
+        $("form#addEditForm input#password").prop("required", false);
+      });
+
+      // function for adding user
+      $(document).on('click', '#addButton', function () {
+        $("#addEditModal").css("display", "block");
+        $("form#addEditForm input#name").val("");
+        $("form#addEditForm input#login").val("");
+        $("h1#addEditFormTitle").html("Add User");
+        $("#addEditButton").val("Add User");
+        $("#addEditForm").attr("action", "/addUser");
+        $("form#addEditForm input#password").prop("required", true);
+      });
+
+      // cancelling modal makes it invisible
+      $(".addEditCancel").click(function(){
+        $("#addEditModal").css("display", "none");
+      });
+    });
+    </script>
 </head>
 
 <body>
   <div id="navBarContainer"></div>
   <h1>Admin</h1>
-
+  <button id="addButton"><span class="glyphicon glyphicon-plus"></span>Add User</button>
+  <div class="w3-container">
+  <div id="addEditModal" class="w3-modal">
+    <div class="w3-modal-content">
+      <div class="w3-container">
+        <span onclick= "" class="addEditCancel w3-button w3-display-topright">&times;</span>
+        <h1 id="addEditFormTitle">Edit User</h1>
+        <form class="form-group" id="addEditForm" action="/editUser" method="POST">
+          <input class="form-control" type="hidden" id="userId" name="userId">
+          <label for="name">Name:</label><br>
+          <input class="form-control" type="text" id="name" name="name" required><br />
+          <label for="login">Login:</label><br />
+          <input class="form-control" type="text" id="login" name="login" required><br />
+          <label for="password">Password:</label><br>
+          <input class="form-control" type="password" id="password" name="password"><br />
+          <label for="userType">Type Of User:</label>
+          <select id="userType" name="userType">
+            <option value="admin">Admin</option>
+            <option value="regular">Regular</option>
+          </select><br />
+          <input id="addEditButton" class="btn btn-primary" type="submit" value="Update">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+  <div id="addModal modal"></div>
   <table class="table" id= "adminTable">
 		<thead>
 		  <tr>
 			<th scope="col">Name</th>
 			  <th scope="col">Login</th>
 			  <th scope="col">Password</th>
-			  <th scope="col">Admin</th>
+        <th scope="col">Admin</th>
+        <th scope="col">Edit/Delete</th>
 		  </tr>
 		  </thead>
 		  <tbody></tbody>
@@ -63,16 +140,18 @@ function processUserInfo(users) {
 function addToUserTable(userInfo, table) {
     // Create the row and make each cell of the row
     var isAdministrator = userInfo.isAdmin ===  1 ? 'true' : 'false';
-    var userOutput = "<tr class='offeringRow'>";
-    userOutput += "<td>" + userInfo.name + "</td>";
-    userOutput += "<td>" + userInfo.login + "</td>";
-    userOutput += "<td> </td>";
-    userOutput += "<td>" + isAdministrator + "</td>";
+    var userOutput = `<tr class='offeringRow' id='row${userInfo.userId}'>`;
+    userOutput += `<td id='name${userInfo.userId}'>${userInfo.name}</td>`;
+    userOutput += `<td id='login${userInfo.userId}'>${userInfo.login}</td>`;
+    userOutput += `<td id='password${userInfo.userId}'> </td>`;
+    userOutput += `<td id='isAdmin${userInfo.userId}'>${isAdministrator}</td>`;
+    userOutput += "<td> <span class='edit glyphicon glyphicon-pencil'></span> <span class='delete glyphicon glyphicon-trash'></span> </td>";
     userOutput += "</tr>";
 
     // Add the row to the table
     table.append(userOutput);
 }
+
 
 window.addEventListener("load",retrieveUsers, false);
 </script>
