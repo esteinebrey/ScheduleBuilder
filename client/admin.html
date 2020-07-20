@@ -17,8 +17,14 @@
       // function for deleting row
       $(document).on('click', '.delete', function () {
         var rowId = $(this).parentsUntil("tbody").last().attr("id");
-        id = rowId.replace('row', '');
-        console.log(id);
+        userId = rowId.replace('row', '');
+        var request = $.ajax({
+          url: "/deleteUser",
+          type: "POST",
+          data: {id : userId},
+          dataType: "json"
+        });
+        location.reload();
       });
 
       // function for editing row
@@ -89,7 +95,6 @@
     </div>
   </div>
 </div>
-  <div id="addModal modal"></div>
   <table class="table" id= "adminTable">
 		<thead>
 		  <tr>
@@ -108,13 +113,11 @@
  // Get the user information
 function retrieveUsers() {
   // Create XMLHttpRequest
-  console.log("retrieve");
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       // Create JSON object
       var users = JSON.parse(xhr.responseText);
-      console.log(users);
       processUserInfo(users);
     }
   };

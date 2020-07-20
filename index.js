@@ -169,6 +169,16 @@ app.post('/addUser', function(req, res) {
   });
 });
 
+// POST method to delete user
+app.post('/deleteUser', function(req, res) {
+  console.log(req.body);
+  var sql = "DELETE FROM Users WHERE UserID = ?";
+  var args = [req.body.id];
+  con.query(sql, args, function(err, result, fields) {
+    res.sendStatus(200);
+  });
+});
+
 // POST method to validate user login
 // Upon successful login, user session is created
 app.post('/validateLogin', function(req, res) {
@@ -261,7 +271,57 @@ app.get('/getUsers', function(req, res) {
 // GET semesters
 app.get('/getSemesters', function(req, res) {
   if (req.session && req.session.loggedIn) {
-    con.query("SELECT SemesterID as semesterId, Season AS season, Year AS year FROM Semesters",
+    con.query("SELECT SemesterID as semesterId, Season AS season, Year AS year, isRecent FROM Semesters",
+      function(err, result, fields) {
+        if (err) throw err;
+        res.send(JSON.stringify(result));
+      });
+  }
+  else {
+    res.redirect("/login");
+  }
+});
+
+// POST method to add semester
+app.post('/addSemester', function(req, res) {
+  var isRecent = req.body.recentType == 'true' ? 1 : 0;
+  var sql = "INSERT INTO Semesters (Season, Year, isRecent) VALUES (?, ?, ?)";
+  var args = [req.body.season, req.body.year, isRecent];
+  console.log("add");
+  console.log(sql);
+  console.log(args);
+  con.query(sql, args, function(err, result, fields) {
+      res.redirect("/changeCourses");
+  });
+});
+
+// POST method to edit semester
+app.post('/editSemester', function(req, res) {
+  var isRecent = req.body.recentType == 'true' ? 1 : 0;
+  var sql= "UPDATE Semesters SET Season = ?, Year = ?, isRecent = ? WHERE SemesterID = ?";
+  id = parseInt(req.body.semesterId);
+  var args = [req.body.season, req.body.year, isRecent, id];
+  console.log("edit");
+  console.log(sql);
+  console.log(args);
+  con.query(sql, args, function(err, result, fields) {
+      res.redirect("/changeCourses");
+  });
+});
+
+// POST method to delete semester
+app.post('/deleteSemester', function(req, res) {
+  var sql = "DELETE FROM Semesters WHERE SemesterID = ?";
+  var args = [req.body.id];
+  con.query(sql, args, function(err, result, fields) {
+    res.sendStatus(200);
+  });
+});
+
+// Get recent semesters
+app.get('/getRecentSemesters', function(req, res) {
+  if (req.session && req.session.loggedIn) {
+    con.query("SELECT SemesterID as semesterId, Season AS season, Year AS year, isRecent FROM Semesters WHERE isRecent=1",
       function(err, result, fields) {
         if (err) throw err;
         res.send(JSON.stringify(result));
@@ -275,7 +335,7 @@ app.get('/getSemesters', function(req, res) {
 // GET semesters for specific user
 app.get('/getStudentSemesters', function(req, res) {
   if (req.session && req.session.loggedIn) {
-    var sql = "SELECT DISTINCT Semesters.SemesterID as semesterId, Semesters.Season AS season, Semesters.Year AS year FROM Semesters, \
+    var sql = "SELECT DISTINCT Semesters.SemesterID as semesterId, Semesters.Season AS season, Semesters.Year AS year, CourseOfferings.OfferingID as offeringId FROM Semesters, \
     CourseOfferings, Registrations WHERE CourseOfferings.SemesterID = Semesters.SemesterID  \
     AND Registrations.OfferingID = CourseOfferings.OfferingID AND Registrations.StudentID = ?";
     con.query(sql, [req.session.userId],
@@ -314,7 +374,7 @@ app.get('/getCoursesBySemester/:semesterId', function(req, res) {
     var semesterId = req.params.semesterId;
       var sql = "SELECT Courses.CourseName AS name, Courses.DeptCode AS deptCode, Courses.CourseNumber AS courseNumber, \
     CourseOfferings.Professor AS prof, Courses.CreditNumber AS credits, CourseOfferings.DaysOfWeek AS days, \
-    CourseOfferings.Time AS time, CourseOfferings.Building AS building, CourseOfferings.Room AS room FROM Courses, \
+    CourseOfferings.Time AS time, CourseOfferings.Building AS building, CourseOfferings.OfferingID as offeringId, CourseOfferings.Room AS room FROM Courses, \
     CourseOfferings Where CourseOfferings.SemesterID = ? AND Courses.CourseID = CourseOfferings.CourseID"
     con.query(sql, [semesterId],
       function(err, result, fields) {
@@ -325,6 +385,73 @@ app.get('/getCoursesBySemester/:semesterId', function(req, res) {
   else {
     res.redirect("/login");
   }
+});
+
+// POST method to add semester
+app.post('/addCourse', function(req, res) {
+  var sql = "INSERT INTO Courses (DeptCode, CourseNumber, CourseName, CreditNumber, CourseDescription) VALUES (?, ?, ?, ?, ?)";
+  var args = [req.body.deptCode, req.body.number, req.body.name, req.body.credits, req.body.desc];
+  console.log("add course");
+  console.log(sql);
+  console.log(args);
+  con.query(sql, args, function(err, result, fields) {
+      res.redirect("/changeCourses");
+  });
+});
+
+// POST method to edit course
+app.post('/editCourse', function(req, res) {
+  var sql= "UPDATE Courses SET DeptCode = ?, CourseNumber = ?, CourseName = ?, CreditNumber = ?, CourseDescription =? WHERE CourseID = ?";
+  var args = [req.body.deptCode, req.body.number, req.body.name, req.body.credits, req.body.desc, req.body.id];
+  console.log("edit course");
+  console.log(sql);
+  console.log(args);
+  con.query(sql, args, function(err, result, fields) {
+      res.redirect("/changeCourses");
+  });
+});
+
+// POST method to delete course
+app.post('/deleteCourse', function(req, res) {
+  var sql = "DELETE FROM Courses WHERE CourseID = ?";
+  var args = [req.body.id];
+  con.query(sql, args, function(err, result, fields) {
+    res.sendStatus(200);
+  });
+});
+
+// POST method to delete course offering
+app.post('/deleteOffering', function(req, res) {
+  var sql = "DELETE FROM CourseOfferings WHERE OfferingID = ?";
+  var args = [req.body.id];
+  con.query(sql, args, function(err, result, fields) {
+    res.sendStatus(200);
+  });
+});
+
+// POST method to edit offering
+app.post('/editOffering', function(req, res) {
+  var sql= "UPDATE CourseOfferings SET Professor = ?, SemesterID = ?, DaysOfWeek = ?, Time = ?, Building = ?, Room =? WHERE OfferingID = ?";
+  var args = [req.body.prof, req.body.semesters, req.body.days, req.body.time, req.body.building, req.body.room, req.body.id];
+  console.log("edit offering");
+  console.log(sql);
+  console.log(args);
+  con.query(sql, args, function(err, result, fields) {
+      res.redirect("/changeCourses");
+  });
+});
+
+// POST method to add offering
+app.post('/addOffering', function(req, res) {
+  console.log(req.body);
+  var sql= "INSERT INTO CourseOfferings (CourseID, SemesterID, Professor, DaysOfWeek, Time, Building, Room) VALUES (?,?,?,?,?,?,?)";
+  var args = [req.body.id, req.body.semesters, req.body.prof, req.body.days, req.body.time, req.body.building, req.body.room];
+  console.log("add offering");
+  console.log(sql);
+  console.log(args);
+  con.query(sql, args, function(err, result, fields) {
+      res.redirect("/changeCourses");
+  });
 });
 
 // Logout and show Login page
