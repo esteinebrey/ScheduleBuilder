@@ -171,7 +171,6 @@ app.post('/addUser', function(req, res) {
 
 // POST method to delete user
 app.post('/deleteUser', function(req, res) {
-  console.log(req.body);
   var sql = "DELETE FROM Users WHERE UserID = ?";
   var args = [req.body.id];
   con.query(sql, args, function(err, result, fields) {
@@ -287,9 +286,6 @@ app.post('/addSemester', function(req, res) {
   var isRecent = req.body.recentType == 'true' ? 1 : 0;
   var sql = "INSERT INTO Semesters (Season, Year, isRecent) VALUES (?, ?, ?)";
   var args = [req.body.season, req.body.year, isRecent];
-  console.log("add");
-  console.log(sql);
-  console.log(args);
   con.query(sql, args, function(err, result, fields) {
       res.redirect("/changeCourses");
   });
@@ -301,9 +297,6 @@ app.post('/editSemester', function(req, res) {
   var sql= "UPDATE Semesters SET Season = ?, Year = ?, isRecent = ? WHERE SemesterID = ?";
   id = parseInt(req.body.semesterId);
   var args = [req.body.season, req.body.year, isRecent, id];
-  console.log("edit");
-  console.log(sql);
-  console.log(args);
   con.query(sql, args, function(err, result, fields) {
       res.redirect("/changeCourses");
   });
@@ -353,7 +346,7 @@ app.get('/getStudentSemesters', function(req, res) {
 app.get('/getStudentCoursesBySemester/:semesterId', function(req, res) {
   if (req.session && req.session.loggedIn) {
     var semesterId = req.params.semesterId;
-      var sql = "SELECT Courses.CourseName AS name, Courses.DeptCode AS deptCode, Courses.CourseNumber AS courseNumber, \
+      var sql = "SELECT Registrations.RegistrationID as registrationId, Courses.CourseName AS name, Courses.DeptCode AS deptCode, Courses.CourseNumber AS courseNumber, \
     CourseOfferings.Professor AS prof, Courses.CreditNumber AS credits, CourseOfferings.DaysOfWeek AS days, \
     CourseOfferings.Time AS time, CourseOfferings.Building AS building, CourseOfferings.Room AS room FROM Courses, \
     CourseOfferings, Registrations WHERE CourseOfferings.SemesterID = ? AND Courses.CourseID = CourseOfferings.CourseID \
@@ -372,10 +365,10 @@ app.get('/getStudentCoursesBySemester/:semesterId', function(req, res) {
 app.get('/getCoursesBySemester/:semesterId', function(req, res) {
   if (req.session && req.session.loggedIn) {
     var semesterId = req.params.semesterId;
-      var sql = "SELECT Courses.CourseName AS name, Courses.DeptCode AS deptCode, Courses.CourseNumber AS courseNumber, \
+      var sql = "SELECT CourseOfferings.OfferingID as offeringId, Courses.CourseName AS name, Courses.DeptCode AS deptCode, Courses.CourseNumber AS courseNumber, \
     CourseOfferings.Professor AS prof, Courses.CreditNumber AS credits, CourseOfferings.DaysOfWeek AS days, \
     CourseOfferings.Time AS time, CourseOfferings.Building AS building, CourseOfferings.OfferingID as offeringId, CourseOfferings.Room AS room FROM Courses, \
-    CourseOfferings Where CourseOfferings.SemesterID = ? AND Courses.CourseID = CourseOfferings.CourseID"
+    CourseOfferings Where CourseOfferings.SemesterID = ? AND Courses.CourseID = CourseOfferings.CourseID";
     con.query(sql, [semesterId],
       function(err, result, fields) {
         if (err) throw err;
@@ -391,9 +384,6 @@ app.get('/getCoursesBySemester/:semesterId', function(req, res) {
 app.post('/addCourse', function(req, res) {
   var sql = "INSERT INTO Courses (DeptCode, CourseNumber, CourseName, CreditNumber, CourseDescription) VALUES (?, ?, ?, ?, ?)";
   var args = [req.body.deptCode, req.body.number, req.body.name, req.body.credits, req.body.desc];
-  console.log("add course");
-  console.log(sql);
-  console.log(args);
   con.query(sql, args, function(err, result, fields) {
       res.redirect("/changeCourses");
   });
@@ -403,9 +393,6 @@ app.post('/addCourse', function(req, res) {
 app.post('/editCourse', function(req, res) {
   var sql= "UPDATE Courses SET DeptCode = ?, CourseNumber = ?, CourseName = ?, CreditNumber = ?, CourseDescription =? WHERE CourseID = ?";
   var args = [req.body.deptCode, req.body.number, req.body.name, req.body.credits, req.body.desc, req.body.id];
-  console.log("edit course");
-  console.log(sql);
-  console.log(args);
   con.query(sql, args, function(err, result, fields) {
       res.redirect("/changeCourses");
   });
@@ -415,6 +402,24 @@ app.post('/editCourse', function(req, res) {
 app.post('/deleteCourse', function(req, res) {
   var sql = "DELETE FROM Courses WHERE CourseID = ?";
   var args = [req.body.id];
+  con.query(sql, args, function(err, result, fields) {
+    res.sendStatus(200);
+  });
+});
+
+// POST method to delete student's registration
+app.post('/deleteFromSchedule', function(req, res) {
+  var sql = "DELETE FROM Registrations WHERE RegistrationID = ?";
+  var args = [req.body.id];
+  con.query(sql, args, function(err, result, fields) {
+    res.sendStatus(200);
+  });
+});
+
+// POST method to add to student's registration
+app.post('/addToSchedule', function(req, res) {
+  var sql= "INSERT INTO Registrations (StudentID, OfferingID) VALUES (?,?)";
+  var args = [req.session.userId, req.body.id];
   con.query(sql, args, function(err, result, fields) {
     res.sendStatus(200);
   });
@@ -433,9 +438,6 @@ app.post('/deleteOffering', function(req, res) {
 app.post('/editOffering', function(req, res) {
   var sql= "UPDATE CourseOfferings SET Professor = ?, SemesterID = ?, DaysOfWeek = ?, Time = ?, Building = ?, Room =? WHERE OfferingID = ?";
   var args = [req.body.prof, req.body.semesters, req.body.days, req.body.time, req.body.building, req.body.room, req.body.id];
-  console.log("edit offering");
-  console.log(sql);
-  console.log(args);
   con.query(sql, args, function(err, result, fields) {
       res.redirect("/changeCourses");
   });
@@ -443,12 +445,8 @@ app.post('/editOffering', function(req, res) {
 
 // POST method to add offering
 app.post('/addOffering', function(req, res) {
-  console.log(req.body);
   var sql= "INSERT INTO CourseOfferings (CourseID, SemesterID, Professor, DaysOfWeek, Time, Building, Room) VALUES (?,?,?,?,?,?,?)";
   var args = [req.body.id, req.body.semesters, req.body.prof, req.body.days, req.body.time, req.body.building, req.body.room];
-  console.log("add offering");
-  console.log(sql);
-  console.log(args);
   con.query(sql, args, function(err, result, fields) {
       res.redirect("/changeCourses");
   });

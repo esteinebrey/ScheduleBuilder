@@ -8,11 +8,155 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="/scripts/navigationBarScript.js"></script>
+  <script src="/scripts/change_semester_scripts.js"></script>
+  <script src="/scripts/offerings_scripts.js"></script>
+  <script src="/scripts/build_schedule_scripts.js"></script>
 </head>
 
 <body>
   <div id="navBarContainer"></div>
   <h1>Build Schedule</h1>
+
+  <select name="semesters" id="semesterDropdown" onChange="onSelect(this);">
+
+  </select> <br>
   
+  <p>Currently Registered</p>
+  <table class="table" id= "offeringTable">
+		<thead>
+		  <tr>
+			<th scope="col">Name</th>
+			  <th scope="col">Code</th>
+			  <th scope="col">Professor</th>
+			  <th scope="col">Credits</th>
+			  <th scope="col">Days</th>
+			  <th scope="col">Time</th>
+        <th scope="col">Location</th>
+        <th scope="col">Delete</th>
+		  </tr>
+		  </thead>
+		  <tbody></tbody>
+    </table>
+
+    <p>Options</p>
+  <table class="table" id= "offeringOptionsTable">
+		<thead>
+		  <tr>
+			<th scope="col">Name</th>
+			  <th scope="col">Code</th>
+			  <th scope="col">Professor</th>
+			  <th scope="col">Credits</th>
+			  <th scope="col">Days</th>
+			  <th scope="col">Time</th>
+        <th scope="col">Location</th>
+        <th scope="col">Delete</th>
+		  </tr>
+		  </thead>
+		  <tbody></tbody>
+    </table>
+
+  <script>
+    function onSelect(obj) {
+      var semesterSelected = obj.options[obj.selectedIndex].value;
+      if (semesterSelected !== -1) {
+        removeOfferingsAlreadyShown();
+        $("option#defaultOption").css("display", "none");
+        retrieveOfferingsForSemesterAndUser(semesterSelected);
+        retrieveOfferingsForSemester(semesterSelected);
+    }
+  }
+
+  function retrieveOfferingsForSemesterAndUser(semesterId) {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        // Create JSON object
+        var obj = JSON.parse(xhr.responseText);
+        getOfferingInfo(obj);
+      }
+    };
+    xhr.open("GET", "/getStudentCoursesBySemester/" + semesterId, true);
+    xhr.send();
+  }
+
+  function getOfferingInfo(obj) {
+    if (obj.length > 0) {
+        // Access the table
+        var table = $("#offeringTable");
+        var i;
+        var offeringInfo;
+        for (i = 0; i < obj.length; i++) {
+          offeringInfo = obj[i];
+          // For each contact, create a row and add it to the table
+          createOfferingRow(offeringInfo, table);
+        }
+      }
+  }
+
+  // Used to get offerings in database to show in table based on semester
+  function retrieveOfferingsForSemester(semesterId) {
+    var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            // Create JSON object
+            var obj = JSON.parse(xhr.responseText);
+            getOfferingInfo1(obj);
+          }
+        };
+        xhr.open("GET", "/getCoursesBySemester/" + semesterId, true);
+        xhr.send();
+  }
+
+  function getOfferingInfo1(obj) {
+    if (obj.length > 0) {
+        // Access the table
+        var table = $("#offeringOptionsTable");
+        var i;
+        var offeringInfo;
+        for (i = 0; i < obj.length; i++) {
+          offeringInfo = obj[i];
+          // For each contact, create a row and add it to the table
+          createOfferingRow1(offeringInfo, table);
+        }
+      }
+  }
+
+  // Used to create row in offerings table
+  function createOfferingRow1(offeringInfo, table) {
+        // Create the row and make each cell of the row
+        var offeringOutput = `<tr class='offeringRow${offeringInfo.offeringId}'>`;
+        offeringOutput += `<td id='name${offeringInfo.offeringId}'>${offeringInfo.name}</td>`;
+        offeringOutput += `<td id='code${offeringInfo.offeringId}'>${offeringInfo.deptCode} ${offeringInfo.courseNumber}</td>`;
+        offeringOutput += `<td id='prof${offeringInfo.offeringId}'>${offeringInfo.prof}</td>`;
+        offeringOutput += `<td id='credits${offeringInfo.offeringId}'>${offeringInfo.credits}</td>`;
+        offeringOutput += `<td id='days${offeringInfo.offeringId}'>${offeringInfo.days}</td>`;
+        offeringOutput += `<td id='time${offeringInfo.offeringId}'>${offeringInfo.time}</td>`;
+        offeringOutput += `<td id='location${offeringInfo.offeringId}'>${offeringInfo.building} ${offeringInfo.room}</td>`;
+        offeringOutput += "<td><span class='addOffering glyphicon glyphicon-plus'></span> </td>";
+        offeringOutput += "</tr>";
+
+        // Add the row to the table
+        table.append(offeringOutput);
+  }
+
+  // Used to create row in offerings table
+  function createOfferingRow(offeringInfo, table) {
+        // Create the row and make each cell of the row
+        var offeringOutput = `<tr class='offeringRow${offeringInfo.registrationId}'>`;
+        offeringOutput += `<td id='name${offeringInfo.registrationId}'>${offeringInfo.name}</td>`;
+        offeringOutput += `<td id='code${offeringInfo.registrationId}'>${offeringInfo.deptCode} ${offeringInfo.courseNumber}</td>`;
+        offeringOutput += `<td id='prof${offeringInfo.registrationId}'>${offeringInfo.prof}</td>`;
+        offeringOutput += `<td id='credits${offeringInfo.registrationId}'>${offeringInfo.credits}</td>`;
+        offeringOutput += `<td id='days${offeringInfo.registrationId}'>${offeringInfo.days}</td>`;
+        offeringOutput += `<td id='time${offeringInfo.registrationId}'>${offeringInfo.time}</td>`;
+        offeringOutput += `<td id='location${offeringInfo.registrationId}'>${offeringInfo.building} ${offeringInfo.room}</td>`;
+        offeringOutput += "<td><span class='deleteOffering glyphicon glyphicon-trash'></span> </td>";
+        offeringOutput += "</tr>";
+
+        // Add the row to the table
+        table.append(offeringOutput);
+  }
+     window.addEventListener("load", retrieveRecentSemesters, false);
+  </script>
 </body>
 </html>
