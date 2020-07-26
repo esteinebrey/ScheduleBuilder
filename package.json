@@ -22,5 +22,9 @@
     "express-session": "^1.17.1",
     "mysql": "^2.18.1",
     "xml2js": "^0.4.23"
+  },
+  "devDependencies": {
+    "install": "0.13.0",
+    "prettier": "2.0.5"
   }
 }
