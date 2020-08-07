@@ -1,71 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <title>View Courses</title>
+    <meta charset="utf-8" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/scripts/navigationBarScript.js"></script>
+    <script src="/scripts/offerings_scripts.js"></script>
+    <script src="/scripts/courses_scripts.js"></script>
+    <link rel="stylesheet" href="/css/scheduleStyle.css" />
+  </head>
 
-<head>
-  <title>View Courses</title>
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="/scripts/navigationBarScript.js"></script>
-  <script src="/scripts/offerings_scripts.js"></script>
-  <script src="/scripts/courses_scripts.js"></script>
-  <link rel="stylesheet" href="/css/scheduleStyle.css">
-</head>
+  <body>
+    <div id="navBarContainer">
+      <ul id="navigation_bar">
+        <li><a id="nav-home" href="/">Home</a></li>
+        <li><a id="nav-schedule" href="/schedule"> Schedule</a></li>
+        <li>
+          <a id="nav-build-schedule" href="/buildSchedule">Build Schedule</a>
+        </li>
+        <li><a id="nav-admin" href="/admin">Admin</a></li>
+        <li><a id="nav-course-view" href="/viewCourses">View Courses</a></li>
+        <li>
+          <a id="nav-change-courses" href="/changeCourses">Change Courses</a>
+        </li>
+        <li>
+          <a href="/logout">
+            <span class="glyphicon glyphicon-log-out"></span
+          ></a>
+        </li>
+      </ul>
+    </div>
+    <h1>View Courses</h1>
 
-<body>
-  <div id="navBarContainer">
-    <ul id="navigation_bar">
-      <li><a id="nav-home" href="/">Home</a></li>
-      <li><a id="nav-schedule" href="/schedule"> Schedule</a></li>
-      <li><a id="nav-build-schedule" href="/buildSchedule">Build Schedule</a></li>
-      <li><a id = "nav-admin" href="/admin">Admin</a></li>
-      <li><a id = "nav-course-view" href="/viewCourses">View Courses</a></li>
-      <li><a id = "nav-change-courses" href="/changeCourses">Change Courses</a></li>
-      <li><a href="/logout">
-          <span class="glyphicon glyphicon-log-out"></span></a></li>
-    </ul>
-  </div>
-  <h1>View Courses</h1>
+    <select
+      name="semesters"
+      id="semesterDropdown"
+      onChange="showCorrectTable(this); onSelect(this, false);"
+    >
+    </select>
+    <br />
 
-
-  <select name="semesters" id="semesterDropdown" onChange="showCorrectTable(this); onSelect(this, false);">
-
-  </select>
-  <br>
-
-  <table class="table" id="courseTable">
-    <thead>
-      <tr>
-        <th scope="col">Name</th>
+    <table class="table" id="courseTable">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
           <th scope="col">Code</th>
           <th scope="col">Credits</th>
           <th scope="col">Description</th>
-      </tr>
+        </tr>
       </thead>
       <tbody></tbody>
-  </table>
+    </table>
 
-  <table class="table" id="offeringTable">
-    <thead>
-      <tr>
-        <th scope="col">Name</th>
+    <table class="table" id="offeringTable">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
           <th scope="col">Code</th>
           <th scope="col">Professor</th>
           <th scope="col">Credits</th>
           <th scope="col">Days</th>
           <th scope="col">Time</th>
           <th scope="col">Location</th>
-      </tr>
+        </tr>
       </thead>
       <tbody></tbody>
-  </table>
-  
-</body>
-<script>
-      window.addEventListener("load", retrieveCourses, false);
-      window.addEventListener("load", retrieveSemesters, false);
-      window.addEventListener("load", determineTableShown, false);
-      window.addEventListener("load", setUpDropdown, false);
-</script>
+    </table>
+  </body>
+  <script>
+    window.addEventListener("load", retrieveCourses, false);
+    window.addEventListener("load", retrieveSemesters, false);
+    window.addEventListener("load", determineTableShown, false);
+    window.addEventListener("load", setUpDropdown, false);
+  </script>
 </html>

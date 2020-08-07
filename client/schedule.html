@@ -1,61 +1,73 @@
 <!-- TODO: Cycle through semesters (using JS), JS slideshow, get available classes and select ones that have openings-->
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <title>Schedule</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="/css/schedule_style.css" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/scripts/scheduleSlideshowScript.js"></script>
+    <script src="/scripts/navigationBarScript.js"></script>
+    <link rel="stylesheet" href="/css/scheduleStyle.css" />
+    <script src="/scripts/offerings_scripts.js"></script>
+  </head>
 
-<head>
-<title>Schedule</title>
-<meta charset="utf-8">
-<link rel="stylesheet" href="/css/schedule_style.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="/scripts/schedule_script.js"></script>
-<script src="/scripts/navigationBarScript.js"></script>
-<link rel="stylesheet" href="/css/scheduleStyle.css">
-<script src="/scripts/offerings_scripts.js"></script>
-</head>
+  <body>
+    <div id="navBarContainer">
+      <ul id="navigation_bar">
+        <li><a id="nav-home" href="/">Home</a></li>
+        <li><a id="nav-schedule" href="/schedule"> Schedule</a></li>
+        <li>
+          <a id="nav-build-schedule" href="/buildSchedule">Build Schedule</a>
+        </li>
+        <li><a id="nav-admin" href="/admin">Admin</a></li>
+        <li><a id="nav-course-view" href="/viewCourses">View Courses</a></li>
+        <li>
+          <a id="nav-change-courses" href="/changeCourses">Change Courses</a>
+        </li>
+        <li>
+          <a href="/logout">
+            <span class="glyphicon glyphicon-log-out"></span
+          ></a>
+        </li>
+      </ul>
+    </div>
+    <h1>Schedule</h1>
+    <select
+      name="semesters"
+      id="semesterDropdown"
+      onChange="onSelect(this, true)"
+    >
+      <option id="defaultOption" disabled selected value>Pick Semester</option>
+    </select>
+    <div id="container">
+      <table class="table smaller-table" id="offeringTable">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Code</th>
+            <th scope="col">Professor</th>
+            <th scope="col">Credits</th>
+            <th scope="col">Days</th>
+            <th scope="col">Time</th>
+            <th scope="col">Location</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
 
-<body>
-<div id="navBarContainer">
-	<ul id="navigation_bar">
-		<li><a id="nav-home" href="/">Home</a></li>
-		<li><a id="nav-schedule" href="/schedule"> Schedule</a></li>
-		<li><a id="nav-build-schedule" href="/buildSchedule">Build Schedule</a></li>
-		<li><a id = "nav-admin" href="/admin">Admin</a></li>
-		<li><a id = "nav-course-view" href="/viewCourses">View Courses</a></li>
-		<li><a id = "nav-change-courses" href="/changeCourses">Change Courses</a></li>
-		<li><a href="/logout">
-			<span class="glyphicon glyphicon-log-out"></span></a></li>
-	  </ul>
-</div>
-<h1>Schedule</h1>
-<select name="semesters" id="semesterDropdown" onChange="onSelect(this, true)">
-	<option id="defaultOption" disabled selected value>Pick Semester</option>
-</select>
-<div id="container">
-	<table class="table smaller-table" id= "offeringTable">
-		<thead>
-		  <tr>
-			<th scope="col">Name</th>
-			  <th scope="col">Code</th>
-			  <th scope="col">Professor</th>
-			  <th scope="col">Credits</th>
-			  <th scope="col">Days</th>
-			  <th scope="col">Time</th>
-			  <th scope="col">Location</th>
-		  </tr>
-		  </thead>
-		  <tbody></tbody>
-	  </table>
-
-	<img id="slideshow" src="gopher_mascot.jpeg" alt="gopher mascot">
-	<br /><br />
-	<button onclick="startSlideshow()">Start</button>
-	<button onclick="stopSlideshow()">Stop</button>
-</div>
-</body>
-<script>
-
-	window.addEventListener("load", retrieveSemestersForUser, false);
-</script>
+      <img id="slideshow" src="gopher_mascot.jpeg" alt="gopher mascot" />
+      <br /><br />
+      <button onclick="startSlideshow()">Start</button>
+      <button onclick="stopSlideshow()">Stop</button>
+    </div>
+  </body>
+  <script>
+    window.addEventListener("load", retrieveSemestersForUser, false);
+  </script>
 </html>

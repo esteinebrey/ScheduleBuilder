@@ -1,55 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <title>Login</title>
+    <meta charset="utf-8" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
 
-<head>
-  <title>Login</title>
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</head>
+  <body>
+    <h1>Login</h1>
 
-<body>
-  <h1>Login</h1>
-  
- <div class="row">
-     <div class="col-lg-6">
-       <div id="error-message" class="alert alert-danger">
-         <p>Invalid credentials. Please try again!</p>
-       </div>
-     <div id="login_fields">
-     <form class="form-group" action="/validateLogin" method="POST">
-       <label for="username">User:</label><br>
-       <input class="form-control" type="text" id="username" name="username" placeholder="Username" required><br>
-       <label for="password">Password:</label><br>
-       <input class="form-control" type="password" id="password" name="password" placeholder="Password" required><br>
-       <input id="login-button" class="btn btn-primary" type="submit" value="Log in">
-     </form>
-     </div>
-   </div>
-  </div>
-</body>
-<script>
-  function checkStatus() {
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        var obj = JSON.parse(this.responseText);
-        var flag =obj.flag;
-        // Check if there is error so error message should be displayed
-        var error = document.getElementById("error-message");
-        if (flag == 0) {
-          error.style.display = "block";
+    <div class="row">
+      <div class="col-lg-6">
+        <div id="error-message" class="alert alert-danger">
+          <p>Invalid credentials. Please try again!</p>
+        </div>
+        <div id="login_fields">
+          <form class="form-group" action="/validateLogin" method="POST">
+            <label for="username">User:</label><br />
+            <input
+              class="form-control"
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Username"
+              required
+            /><br />
+            <label for="password">Password:</label><br />
+            <input
+              class="form-control"
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Password"
+              required
+            /><br />
+            <input
+              id="login-button"
+              class="btn btn-primary"
+              type="submit"
+              value="Log in"
+            />
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    function checkStatus() {
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          var obj = JSON.parse(this.responseText);
+          var flag = obj.flag;
+          // Check if there is error so error message should be displayed
+          var error = document.getElementById("error-message");
+          if (flag == 0) {
+            error.style.display = "block";
+          } else {
+            error.style.display = "none";
+          }
         }
-        else {
-          error.style.display = "none";
-        }
-      }
-    };
-    xhr.open("GET", "getFlag", true);
-    xhr.send();
-  }
+      };
+      xhr.open("GET", "getFlag", true);
+      xhr.send();
+    }
 
-  window.addEventListener("load", checkStatus, false);
-</script>
+    window.addEventListener("load", checkStatus, false);
+  </script>
 </html>

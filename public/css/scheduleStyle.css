@@ -1,13 +1,13 @@
 * {
-	font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif;
 }
 
 h1 {
-	text-align: center;
+  text-align: center;
 }
 
 #container {
-  display:flex;
+  display: flex;
 }
 
 #slideshow {
@@ -19,29 +19,28 @@ h1 {
 }
 
 #navigation_bar {
-	list-style-type:none;
-	margin:0;
-	padding:0;
-	background-color:black;
-	overflow: hidden;
-
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: black;
+  overflow: hidden;
 }
 
 li {
-	float:left;
-}	
+  float: left;
+}
 
 li a {
-	display:block;
-	color: white;
-	text-decoration:none;
-	font-weight: bold;
-	padding: 14px 16px;
+  display: block;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 14px 16px;
 }
 
 li a:hover {
-	background-color:maroon;
-	color: gold;
+  background-color: maroon;
+  color: gold;
 }
 
 table {
@@ -51,6 +50,8 @@ table {
   float: left;
 }
 
-table, th, td {
+table,
+th,
+td {
   border: 1px solid black;
 }

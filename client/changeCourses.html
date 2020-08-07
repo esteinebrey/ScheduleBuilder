@@ -1,196 +1,320 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <title>Change Courses</title>
+    <meta charset="utf-8" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/scheduleStyle.css" />
+    <script src="/scripts/navigationBarScript.js"></script>
+    <script src="/scripts/change_semester_scripts.js"></script>
+    <script src="/scripts/change_course_offering_scripts.js"></script>
+  </head>
 
-<head>
-  <title>Change Courses</title>
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="/css/scheduleStyle.css">
-  <script src="/scripts/navigationBarScript.js"></script>
-  <script src="/scripts/change_semester_scripts.js"></script>
-  <script src="/scripts/change_course_offering_scripts.js"></script>
-</head>
+  <body>
+    <div id="navBarContainer">
+      <ul id="navigation_bar">
+        <li><a id="nav-home" href="/">Home</a></li>
+        <li><a id="nav-schedule" href="/schedule"> Schedule</a></li>
+        <li>
+          <a id="nav-build-schedule" href="/buildSchedule">Build Schedule</a>
+        </li>
+        <li><a id="nav-admin" href="/admin">Admin</a></li>
+        <li><a id="nav-course-view" href="/viewCourses">View Courses</a></li>
+        <li>
+          <a id="nav-change-courses" href="/changeCourses">Change Courses</a>
+        </li>
+        <li>
+          <a href="/logout">
+            <span class="glyphicon glyphicon-log-out"></span
+          ></a>
+        </li>
+      </ul>
+    </div>
+    <h1>Change Courses</h1>
 
-<body>
-<div id="navBarContainer">
-  <ul id="navigation_bar">
-    <li><a id="nav-home" href="/">Home</a></li>
-    <li><a id="nav-schedule" href="/schedule"> Schedule</a></li>
-    <li><a id="nav-build-schedule" href="/buildSchedule">Build Schedule</a></li>
-    <li><a id = "nav-admin" href="/admin">Admin</a></li>
-    <li><a id = "nav-course-view" href="/viewCourses">View Courses</a></li>
-    <li><a id = "nav-change-courses" href="/changeCourses">Change Courses</a></li>
-    <li><a href="/logout">
-        <span class="glyphicon glyphicon-log-out"></span></a></li>
-  </ul>
-</div>
-<h1>Change Courses</h1>
-
-<p>Semesters</p> 
-<button id="addSemesterButton"><span class="glyphicon glyphicon-plus"></span>Add Semester</button><br>
-<div class="w3-container">
-  <div id="addEditSemesterModal" class="w3-modal">
-    <div class="w3-modal-content">
-      <div class="w3-container">
-        <span onclick= "" class="addEditSemesterCancel w3-button w3-display-topright">&times;</span>
-        <h1 id="addEditSemesterTitle">Edit Semester</h1>
-        <form class="form-group" id="addEditSemesterForm" action="/editSemester" method="POST">
-          <input class="form-control" type="hidden" id="semesterId" name="semesterId">
-          <label for="season">Season:</label><br>
-          <input class="form-control" type="text" id="season" name="season" required><br />
-          <label for="year">Year:</label><br />
-          <input class="form-control" type="text" id="year" name="year" required><br />
-          <label for="recentType">Recent:</label>
-          <select id="recentType" name="recentType">
-            <option value="true">True</option>
-            <option value="false">False</option>
-          </select><br />
-          <input id="addEditSemesterButton" class="btn btn-primary" type="submit" value="Update Semester">
-        </form>
+    <p>Semesters</p>
+    <button id="addSemesterButton">
+      <span class="glyphicon glyphicon-plus"></span>Add Semester</button
+    ><br />
+    <div class="w3-container">
+      <div id="addEditSemesterModal" class="w3-modal">
+        <div class="w3-modal-content">
+          <div class="w3-container">
+            <span
+              onclick=""
+              class="addEditSemesterCancel w3-button w3-display-topright"
+              >&times;</span
+            >
+            <h1 id="addEditSemesterTitle">Edit Semester</h1>
+            <form
+              class="form-group"
+              id="addEditSemesterForm"
+              action="/editSemester"
+              method="POST"
+            >
+              <input
+                class="form-control"
+                type="hidden"
+                id="semesterId"
+                name="semesterId"
+              />
+              <label for="season">Season:</label><br />
+              <input
+                class="form-control"
+                type="text"
+                id="season"
+                name="season"
+                required
+              /><br />
+              <label for="year">Year:</label><br />
+              <input
+                class="form-control"
+                type="text"
+                id="year"
+                name="year"
+                required
+              /><br />
+              <label for="recentType">Recent:</label>
+              <select id="recentType" name="recentType">
+                <option value="true">True</option>
+                <option value="false">False</option> </select
+              ><br />
+              <input
+                id="addEditSemesterButton"
+                class="btn btn-primary"
+                type="submit"
+                value="Update Semester"
+              />
+            </form>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
-<table class="table" id="semesterTable">
-  <thead>
-    <tr>
-      <th scope="col">Season</th>
-        <th scope="col">Year</th>
-        <th scope="col">isRecent</th>
-        <th scope="col">Edit/Delete</th>
-    </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+    <table class="table" id="semesterTable">
+      <thead>
+        <tr>
+          <th scope="col">Season</th>
+          <th scope="col">Year</th>
+          <th scope="col">isRecent</th>
+          <th scope="col">Edit/Delete</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
 
-<select name="semesters" id="semesterDropdown" onChange="showCorrectTable(this); onSelect(this, false);">
+    <select
+      name="semesters"
+      id="semesterDropdown"
+      onChange="showCorrectTable(this); onSelect(this, false);"
+    >
+    </select>
+    <br />
 
-</select> <br>
-
-<button id="addCourseButton"><span class="glyphicon glyphicon-plus"></span>Add Course</button><br>
-<div class="w3-container">
-  <div id="courseModal" class="w3-modal">
-    <div class="w3-modal-content">
-      <div class="w3-container">
-        <span onclick= "" class="courseCancel w3-button w3-display-topright">&times;</span>
-        <h1 id="courseTitle"></h1>
-        <form class="form-group" id="courseForm" action="" method="POST">
-          <input class="form-control" type="hidden" id="id" name="id">
-          <label for="name">Name:</label><br>
-          <input class="form-control" type="text" id="name" name="name" required><br />
-          <label for="deptCode">Department Code:</label><br />
-          <input class="form-control" type="text" id="deptCode" name="deptCode" required><br />
-          <label for="number">Number:</label><br>
-          <input class="form-control" type="text" id="number" name="number" required><br />
-          <label for="credits">Credits:</label><br>
-          <input class="form-control" type="text" id="credits" name="credits" required><br />
-          <label for="desc">Description:</label><br />
-          <input class="form-control" type="text" id="desc" name="desc" required><br />
-          <input id="courseButton" class="btn btn-primary" type="submit" value="">
-        </form>
+    <button id="addCourseButton">
+      <span class="glyphicon glyphicon-plus"></span>Add Course</button
+    ><br />
+    <div class="w3-container">
+      <div id="courseModal" class="w3-modal">
+        <div class="w3-modal-content">
+          <div class="w3-container">
+            <span onclick="" class="courseCancel w3-button w3-display-topright"
+              >&times;</span
+            >
+            <h1 id="courseTitle"></h1>
+            <form class="form-group" id="courseForm" action="" method="POST">
+              <input class="form-control" type="hidden" id="id" name="id" />
+              <label for="name">Name:</label><br />
+              <input
+                class="form-control"
+                type="text"
+                id="name"
+                name="name"
+                required
+              /><br />
+              <label for="deptCode">Department Code:</label><br />
+              <input
+                class="form-control"
+                type="text"
+                id="deptCode"
+                name="deptCode"
+                required
+              /><br />
+              <label for="number">Number:</label><br />
+              <input
+                class="form-control"
+                type="text"
+                id="number"
+                name="number"
+                required
+              /><br />
+              <label for="credits">Credits:</label><br />
+              <input
+                class="form-control"
+                type="text"
+                id="credits"
+                name="credits"
+                required
+              /><br />
+              <label for="desc">Description:</label><br />
+              <input
+                class="form-control"
+                type="text"
+                id="desc"
+                name="desc"
+                required
+              /><br />
+              <input
+                id="courseButton"
+                class="btn btn-primary"
+                type="submit"
+                value=""
+              />
+            </form>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
-<div class="w3-container">
-  <div id="offeringModal" class="w3-modal">
-    <div class="w3-modal-content">
-      <div class="w3-container">
-        <span onclick= "" class="offeringCancel w3-button w3-display-topright">&times;</span>
-        <h1 id="offeringTitle"></h1>
-        <form class="form-group" id="offeringForm" action="" method="POST">
-          <input class="form-control" type="hidden" id="id" name="id">
-          <select name="semesters" id="semesterOfferingDropdown">
-
-          </select> <br /> <br />
-          <label for="prof">Professor:</label><br />
-          <input class="form-control" type="text" id="prof" name="prof" required><br />
-          <label for="days">Days:</label><br />
-          <input class="form-control" type="text" id="days" name="days" required><br />
-          <label for="time">Time:</label><br />
-          <input class="form-control" type="text" id="time" name="time" required><br />
-          <label for="building">Building:</label><br />
-          <input class="form-control" type="text" id="building" name="building" required><br />
-          <label for="room">Room:</label><br />
-          <input class="form-control" type="text" id="room" name="room" required><br />
-          <input id="offeringButton" class="btn btn-primary" type="submit" value="">
-        </form>
+    <div class="w3-container">
+      <div id="offeringModal" class="w3-modal">
+        <div class="w3-modal-content">
+          <div class="w3-container">
+            <span
+              onclick=""
+              class="offeringCancel w3-button w3-display-topright"
+              >&times;</span
+            >
+            <h1 id="offeringTitle"></h1>
+            <form class="form-group" id="offeringForm" action="" method="POST">
+              <input class="form-control" type="hidden" id="id" name="id" />
+              <select name="semesters" id="semesterOfferingDropdown"> </select>
+              <br />
+              <br />
+              <label for="prof">Professor:</label><br />
+              <input
+                class="form-control"
+                type="text"
+                id="prof"
+                name="prof"
+                required
+              /><br />
+              <label for="days">Days:</label><br />
+              <input
+                class="form-control"
+                type="text"
+                id="days"
+                name="days"
+                required
+              /><br />
+              <label for="time">Time:</label><br />
+              <input
+                class="form-control"
+                type="text"
+                id="time"
+                name="time"
+                required
+              /><br />
+              <label for="building">Building:</label><br />
+              <input
+                class="form-control"
+                type="text"
+                id="building"
+                name="building"
+                required
+              /><br />
+              <label for="room">Room:</label><br />
+              <input
+                class="form-control"
+                type="text"
+                id="room"
+                name="room"
+                required
+              /><br />
+              <input
+                id="offeringButton"
+                class="btn btn-primary"
+                type="submit"
+                value=""
+              />
+            </form>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
-<table class="table" id="courseTable">
-  <thead>
-    <tr>
-      <th scope="col">Name</th>
-        <th scope="col">Dept Code</th>
-        <th scope="col">Number</th>
-        <th scope="col">Credits</th>
-        <th scope="col">Description</th>
-        <th scope="col">Edit/Delete</th>
-    </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+    <table class="table" id="courseTable">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Dept Code</th>
+          <th scope="col">Number</th>
+          <th scope="col">Credits</th>
+          <th scope="col">Description</th>
+          <th scope="col">Edit/Delete</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
 
-<table class="table" id="offeringTable">
-  <thead>
-    <tr>
-      <th scope="col">Name</th>
-        <th scope="col">Dept Code</th>
-        <th scope="col">Number</th>
-        <th scope="col">Professor</th>
-        <th scope="col">Credits</th>
-        <th scope="col">Days</th>
-        <th scope="col">Time</th>
-        <th scope="col">Building</th>
-        <th scope="col">Room</th>
-        <th scope="col">Edit/Delete</th>
-    </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+    <table class="table" id="offeringTable">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Dept Code</th>
+          <th scope="col">Number</th>
+          <th scope="col">Professor</th>
+          <th scope="col">Credits</th>
+          <th scope="col">Days</th>
+          <th scope="col">Time</th>
+          <th scope="col">Building</th>
+          <th scope="col">Room</th>
+          <th scope="col">Edit/Delete</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </body>
+  <script>
+    var isCourseTableShown = false;
 
-</body>
-<script>
-  var isCourseTableShown = false;
-
-function determineTableShown() {
-  isCourseTableShown = !isCourseTableShown;
-  var offeringDisplay = isCourseTableShown ? 'none' : 'table';
-  var courseDisplay = isCourseTableShown ? 'table' : 'none';
-  $("#offeringTable").css("display", offeringDisplay);
-  $("#courseTable").css("display", courseDisplay);
-}
-
-function setUpDropdown() {
-  var dropdown = $("#semesterDropdown");
-  dropdown.append('<option value="-1" selected>' + "All Courses" + '</option>');
-}
-
-function showCorrectTable(obj) {
-  // console.log(obj.selectedIndex);
-  // var dropdown = $("#semesterDropdown");
-  // console.log(obj.options[obj.selectedIndex]);
-  var semesterSelected = obj.options[obj.selectedIndex].value;
-  if (semesterSelected == -1 && !isCourseTableShown) {
-      determineTableShown()
-  }
-  else if (isCourseTableShown) {
-      determineTableShown()
+    function determineTableShown() {
+      isCourseTableShown = !isCourseTableShown;
+      var offeringDisplay = isCourseTableShown ? "none" : "table";
+      var courseDisplay = isCourseTableShown ? "table" : "none";
+      $("#offeringTable").css("display", offeringDisplay);
+      $("#courseTable").css("display", courseDisplay);
     }
-}
 
-function retrieveCourses() {
+    function setUpDropdown() {
+      var dropdown = $("#semesterDropdown");
+      dropdown.append(
+        '<option value="-1" selected>' + "All Courses" + "</option>"
+      );
+    }
+
+    function showCorrectTable(obj) {
+      // console.log(obj.selectedIndex);
+      // var dropdown = $("#semesterDropdown");
+      // console.log(obj.options[obj.selectedIndex]);
+      var semesterSelected = obj.options[obj.selectedIndex].value;
+      if (semesterSelected == -1 && !isCourseTableShown) {
+        determineTableShown();
+      } else if (isCourseTableShown) {
+        determineTableShown();
+      }
+    }
+
+    function retrieveCourses() {
       // Create XMLHttpRequest
       var xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = function() {
+      xhr.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
           // Create JSON object
           var obj = JSON.parse(xhr.responseText);
@@ -205,12 +329,11 @@ function retrieveCourses() {
               createRow(courseInfo, table);
             }
           }
-
         }
       };
       xhr.open("GET", "getAllCourses", true);
       xhr.send();
-}
+    }
 
     // Add the contact info to the table as a row
     function createRow(courseInfo, table) {
@@ -221,76 +344,75 @@ function retrieveCourses() {
       courseOutput += `<td id='number${courseInfo.courseId}'>${courseInfo.courseNumber}</td>`;
       courseOutput += `<td id='credits${courseInfo.courseId}'>${courseInfo.credits}</td>`;
       courseOutput += `<td id='desc${courseInfo.courseId}'>${courseInfo.description}</td>`;
-      courseOutput += "<td><span class='addOffering glyphicon glyphicon-plus'></span><span class='editCourse glyphicon glyphicon-pencil'></span> <span class='deleteCourse glyphicon glyphicon-trash'></span> </td>";
-      courseOutput += "</tr>"
+      courseOutput +=
+        "<td><span class='addOffering glyphicon glyphicon-plus'></span><span class='editCourse glyphicon glyphicon-pencil'></span> <span class='deleteCourse glyphicon glyphicon-trash'></span> </td>";
+      courseOutput += "</tr>";
 
       // Add the row to the table
       table.append(courseOutput);
     }
 
     function removeOfferingsAlreadyShown() {
-  $("#offeringTable tbody tr").remove();
-}
-
-// Used to update table when semester from dropdown is changed
-function onSelect(obj, isforSpecificUser) {
-    var semesterSelected = obj.options[obj.selectedIndex].value;
-    if (semesterSelected !== -1) {
-      removeOfferingsAlreadyShown();
-      if (isforSpecificUser) {
-        $("option#defaultOption").css("display", "none");
-        retrieveOfferingsForSemesterAndUser(semesterSelected);
-      }
-      else {
-        retrieveOfferingsForSemester(semesterSelected);
-      }
-      
+      $("#offeringTable tbody tr").remove();
     }
-  }
 
-  function retrieveOfferingsForSemesterAndUser(semesterId) {
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        // Create JSON object
-        var obj = JSON.parse(xhr.responseText);
-        console.log(obj);
-        getOfferingInfo(obj);
+    // Used to update table when semester from dropdown is changed
+    function onSelect(obj, isforSpecificUser) {
+      var semesterSelected = obj.options[obj.selectedIndex].value;
+      if (semesterSelected !== -1) {
+        removeOfferingsAlreadyShown();
+        if (isforSpecificUser) {
+          $("option#defaultOption").css("display", "none");
+          retrieveOfferingsForSemesterAndUser(semesterSelected);
+        } else {
+          retrieveOfferingsForSemester(semesterSelected);
+        }
       }
-    };
-    xhr.open("GET", "/getStudentCoursesBySemester/" + semesterId, true);
-    xhr.send();
-  }
+    }
 
-  function retrieveOfferingsForSemester(semesterId) {
-    var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-            // Create JSON object
-            var obj = JSON.parse(xhr.responseText);
-            getOfferingInfo(obj);
-          }
-        };
-        xhr.open("GET", "/getCoursesBySemester/" + semesterId, true);
-        xhr.send();
-  }
+    function retrieveOfferingsForSemesterAndUser(semesterId) {
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          // Create JSON object
+          var obj = JSON.parse(xhr.responseText);
+          console.log(obj);
+          getOfferingInfo(obj);
+        }
+      };
+      xhr.open("GET", "/getStudentCoursesBySemester/" + semesterId, true);
+      xhr.send();
+    }
 
-  // Used to get offerings in database to show in table based on semester
-  function retrieveOfferingsForSemester(semesterId) {
-    var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-            // Create JSON object
-            var obj = JSON.parse(xhr.responseText);
-            getOfferingInfo(obj);
-          }
-        };
-        xhr.open("GET", "/getCoursesBySemester/" + semesterId, true);
-        xhr.send();
-  }
+    function retrieveOfferingsForSemester(semesterId) {
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          // Create JSON object
+          var obj = JSON.parse(xhr.responseText);
+          getOfferingInfo(obj);
+        }
+      };
+      xhr.open("GET", "/getCoursesBySemester/" + semesterId, true);
+      xhr.send();
+    }
 
-  function getOfferingInfo(obj) {
-    if (obj.length > 0) {
+    // Used to get offerings in database to show in table based on semester
+    function retrieveOfferingsForSemester(semesterId) {
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          // Create JSON object
+          var obj = JSON.parse(xhr.responseText);
+          getOfferingInfo(obj);
+        }
+      };
+      xhr.open("GET", "/getCoursesBySemester/" + semesterId, true);
+      xhr.send();
+    }
+
+    function getOfferingInfo(obj) {
+      if (obj.length > 0) {
         // Access the table
         var table = $("#offeringTable");
         var i;
@@ -301,34 +423,33 @@ function onSelect(obj, isforSpecificUser) {
           createOfferingRow(offeringInfo, table);
         }
       }
-  }
+    }
 
-  // Used to create row in offerings table
-  function createOfferingRow(offeringInfo, table) {
-        // Create the row and make each cell of the row
-        var offeringOutput = `<tr id='row${offeringInfo.offeringId}'>`;
-        offeringOutput += `<td id='name${offeringInfo.offeringId}'>${offeringInfo.name}</td>`;
-        offeringOutput += `<td id='code${offeringInfo.offeringId}'>${offeringInfo.deptCode}</td>`;
-        offeringOutput += `<td id='code${offeringInfo.offeringId}'>${offeringInfo.courseNumber}</td>`;
-        offeringOutput += `<td id='prof${offeringInfo.offeringId}'>${offeringInfo.prof}</td>`;
-        offeringOutput += `<td id='credits${offeringInfo.offeringId}'>${offeringInfo.credits}</td>`;
-        offeringOutput += `<td id='days${offeringInfo.offeringId}'>${offeringInfo.days}</td>`;
-        offeringOutput += `<td id='time${offeringInfo.offeringId}'>${offeringInfo.time}</td>`;
-        offeringOutput += `<td id='building${offeringInfo.offeringId}'>${offeringInfo.building}</td>`;
-        offeringOutput += `<td id='room${offeringInfo.offeringId}'>${offeringInfo.room}</td>`;
-        offeringOutput += "<td> <span class='editOffering glyphicon glyphicon-pencil'></span> <span class='deleteOffering glyphicon glyphicon-trash'></span> </td>";
-        offeringOutput += "</tr>";
+    // Used to create row in offerings table
+    function createOfferingRow(offeringInfo, table) {
+      // Create the row and make each cell of the row
+      var offeringOutput = `<tr id='row${offeringInfo.offeringId}'>`;
+      offeringOutput += `<td id='name${offeringInfo.offeringId}'>${offeringInfo.name}</td>`;
+      offeringOutput += `<td id='code${offeringInfo.offeringId}'>${offeringInfo.deptCode}</td>`;
+      offeringOutput += `<td id='code${offeringInfo.offeringId}'>${offeringInfo.courseNumber}</td>`;
+      offeringOutput += `<td id='prof${offeringInfo.offeringId}'>${offeringInfo.prof}</td>`;
+      offeringOutput += `<td id='credits${offeringInfo.offeringId}'>${offeringInfo.credits}</td>`;
+      offeringOutput += `<td id='days${offeringInfo.offeringId}'>${offeringInfo.days}</td>`;
+      offeringOutput += `<td id='time${offeringInfo.offeringId}'>${offeringInfo.time}</td>`;
+      offeringOutput += `<td id='building${offeringInfo.offeringId}'>${offeringInfo.building}</td>`;
+      offeringOutput += `<td id='room${offeringInfo.offeringId}'>${offeringInfo.room}</td>`;
+      offeringOutput +=
+        "<td> <span class='editOffering glyphicon glyphicon-pencil'></span> <span class='deleteOffering glyphicon glyphicon-trash'></span> </td>";
+      offeringOutput += "</tr>";
 
-        // Add the row to the table
-        table.append(offeringOutput);
-  }
+      // Add the row to the table
+      table.append(offeringOutput);
+    }
 
-
-
-  window.addEventListener("load", retrieveCourses, false);
-  window.addEventListener("load", retrieveRecentSemesters, false);
-  window.addEventListener("load", retrieveSemesters, false);
-  window.addEventListener("load", determineTableShown, false);
-  window.addEventListener("load", setUpDropdown, false);
-</script>
+    window.addEventListener("load", retrieveCourses, false);
+    window.addEventListener("load", retrieveRecentSemesters, false);
+    window.addEventListener("load", retrieveSemesters, false);
+    window.addEventListener("load", determineTableShown, false);
+    window.addEventListener("load", setUpDropdown, false);
+  </script>
 </html>

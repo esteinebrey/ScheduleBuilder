@@ -1,87 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <title>Build Schedule</title>
+    <meta charset="utf-8" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="/css/scheduleStyle.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/scripts/navigationBarScript.js"></script>
+    <script src="/scripts/semester_dropdown_scripts.js"></script>
+    <script src="/scripts/build_schedule_scripts.js"></script>
+    <script src="/scripts/offering_table_scripts.js"></script>
+  </head>
 
-<head>
-  <title>Build Schedule</title>
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/css/scheduleStyle.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="/scripts/navigationBarScript.js"></script>
-  <script src="/scripts/semester_dropdown_scripts.js"></script>
-  <script src="/scripts/build_schedule_scripts.js"></script>
-  <script src="/scripts/offering_table_scripts.js"></script>
-</head>
+  <body>
+    <div id="navBarContainer">
+      <ul id="navigation_bar">
+        <li><a id="nav-home" href="/">Home</a></li>
+        <li><a id="nav-schedule" href="/schedule"> Schedule</a></li>
+        <li>
+          <a id="nav-build-schedule" href="/buildSchedule">Build Schedule</a>
+        </li>
+        <li><a id="nav-admin" href="/admin">Admin</a></li>
+        <li><a id="nav-course-view" href="/viewCourses">View Courses</a></li>
+        <li>
+          <a id="nav-change-courses" href="/changeCourses">Change Courses</a>
+        </li>
+        <li>
+          <a href="/logout">
+            <span class="glyphicon glyphicon-log-out"></span
+          ></a>
+        </li>
+      </ul>
+    </div>
+    <h1>Build Schedule</h1>
 
-<body>
-  <div id="navBarContainer">
-    <ul id="navigation_bar">
-      <li><a id="nav-home" href="/">Home</a></li>
-      <li><a id="nav-schedule" href="/schedule"> Schedule</a></li>
-      <li><a id="nav-build-schedule" href="/buildSchedule">Build Schedule</a></li>
-      <li><a id = "nav-admin" href="/admin">Admin</a></li>
-      <li><a id = "nav-course-view" href="/viewCourses">View Courses</a></li>
-      <li><a id = "nav-change-courses" href="/changeCourses">Change Courses</a></li>
-      <li><a href="/logout">
-          <span class="glyphicon glyphicon-log-out"></span></a></li>
-    </ul>
-  </div>
-  <h1>Build Schedule</h1>
+    <select name="semesters" id="semesterDropdown" onChange="onSelect(this);">
+    </select>
+    <br />
 
-  <select name="semesters" id="semesterDropdown" onChange="onSelect(this);">
-
-  </select> <br>
-  
-  <p>Currently Registered</p>
-  <table class="table" id= "offeringTable">
-		<thead>
-		  <tr>
-			<th scope="col">Name</th>
-			  <th scope="col">Code</th>
-			  <th scope="col">Professor</th>
-			  <th scope="col">Credits</th>
-			  <th scope="col">Days</th>
-			  <th scope="col">Time</th>
-        <th scope="col">Location</th>
-        <th scope="col">Delete</th>
-		  </tr>
-		  </thead>
-		  <tbody></tbody>
+    <p>Currently Registered</p>
+    <table class="table" id="offeringTable">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Code</th>
+          <th scope="col">Professor</th>
+          <th scope="col">Credits</th>
+          <th scope="col">Days</th>
+          <th scope="col">Time</th>
+          <th scope="col">Location</th>
+          <th scope="col">Delete</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
     </table>
 
     <p>Options</p>
-  <table class="table" id= "offeringOptionsTable">
-		<thead>
-		  <tr>
-			<th scope="col">Name</th>
-			  <th scope="col">Code</th>
-			  <th scope="col">Professor</th>
-			  <th scope="col">Credits</th>
-			  <th scope="col">Days</th>
-			  <th scope="col">Time</th>
-        <th scope="col">Location</th>
-        <th scope="col">Add</th>
-		  </tr>
-		  </thead>
-		  <tbody></tbody>
+    <table class="table" id="offeringOptionsTable">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Code</th>
+          <th scope="col">Professor</th>
+          <th scope="col">Credits</th>
+          <th scope="col">Days</th>
+          <th scope="col">Time</th>
+          <th scope="col">Location</th>
+          <th scope="col">Add</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
     </table>
 
-  <script>
-    function onSelect(obj) {
-      var semesterSelected = obj.options[obj.selectedIndex].value;
-      if (semesterSelected !== -1) {
-        removeOfferingsAlreadyShown();
-        $("option#defaultOption").css("display", "none");
-        retrieveOfferingsForSemesterAndUser(semesterSelected);
-        retrieveOfferingsForSemester(semesterSelected);
-    }
-  }
-  function removeOfferingsAlreadyShown() {
-    $("#offeringTable tbody tr").remove();
-  }
+    <script>
+      function onSelect(obj) {
+        var semesterSelected = obj.options[obj.selectedIndex].value;
+        if (semesterSelected !== -1) {
+          removeOfferingsAlreadyShown();
+          $("option#defaultOption").css("display", "none");
+          retrieveOfferingsForSemesterAndUser(semesterSelected);
+          retrieveOfferingsForSemester(semesterSelected);
+        }
+      }
+      function removeOfferingsAlreadyShown() {
+        $("#offeringTable tbody tr").remove();
+      }
 
-    window.addEventListener("load", retrieveRecentSemesters, false);
-  </script>
-</body>
+      window.addEventListener("load", retrieveRecentSemesters, false);
+    </script>
+  </body>
 </html>
