@@ -11,11 +11,23 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="/scripts/schedule_script.js"></script>
 <script src="/scripts/navigationBarScript.js"></script>
+<link rel="stylesheet" href="/css/scheduleStyle.css">
 <script src="/scripts/offerings_scripts.js"></script>
 </head>
 
 <body>
-<div id="navBarContainer"></div>
+<div id="navBarContainer">
+	<ul id="navigation_bar">
+		<li><a id="nav-home" href="/">Home</a></li>
+		<li><a id="nav-schedule" href="/schedule"> Schedule</a></li>
+		<li><a id="nav-build-schedule" href="/buildSchedule">Build Schedule</a></li>
+		<li><a id = "nav-admin" href="/admin">Admin</a></li>
+		<li><a id = "nav-course-view" href="/viewCourses">View Courses</a></li>
+		<li><a id = "nav-change-courses" href="/changeCourses">Change Courses</a></li>
+		<li><a href="/logout">
+			<span class="glyphicon glyphicon-log-out"></span></a></li>
+	  </ul>
+</div>
 <h1>Schedule</h1>
 <select name="semesters" id="semesterDropdown" onChange="onSelect(this, true)">
 	<option id="defaultOption" disabled selected value>Pick Semester</option>

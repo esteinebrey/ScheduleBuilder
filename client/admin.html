@@ -5,6 +5,7 @@
   <title>Admin</title>
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="/css/scheduleStyle.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -67,7 +68,18 @@
 </head>
 
 <body>
-  <div id="navBarContainer"></div>
+  <div id="navBarContainer">
+    <ul id="navigation_bar">
+      <li><a id="nav-home" href="/">Home</a></li>
+      <li><a id="nav-schedule" href="/schedule"> Schedule</a></li>
+      <li><a id="nav-build-schedule" href="/buildSchedule">Build Schedule</a></li>
+      <li><a id = "nav-admin" href="/admin">Admin</a></li>
+      <li><a id = "nav-course-view" href="/viewCourses">View Courses</a></li>
+      <li><a id = "nav-change-courses" href="/changeCourses">Change Courses</a></li>
+      <li><a href="/logout">
+          <span class="glyphicon glyphicon-log-out"></span></a></li>
+    </ul>
+  </div>
   <h1>Admin</h1>
   <button id="addButton"><span class="glyphicon glyphicon-plus"></span>Add User</button>
   <div class="w3-container">
