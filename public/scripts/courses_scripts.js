@@ -10,7 +10,7 @@ function determineTableShown() {
 
 function setUpDropdown() {
   var dropdown = $("#semesterDropdown");
-  dropdown.append('<option value="-1" selected>' + "All Courses" + "</option>");
+  dropdown.append('<option value="-1" selected>' + "All Courses" + "</option>"); // TODO: Change -1
 }
 
 function showCorrectTable(obj) {

@@ -8,13 +8,15 @@ function onSelect(obj, isforSpecificUser) {
   if (semesterSelected !== -1) {
     removeOfferingsAlreadyShown();
     if (isforSpecificUser) {
-      $("option#defaultOption").css("display", "none");
+      $("option#defaultOption").css("display", "none"); // TODO: May need this in other version
       retrieveOfferingsForSemesterAndUser(semesterSelected);
     } else {
       retrieveOfferingsForSemester(semesterSelected);
     }
   }
 }
+
+
 
 function retrieveOfferingsForSemesterAndUser(semesterId) {
   var xhr = new XMLHttpRequest();
@@ -97,23 +99,23 @@ function retrieveSemesters() {
   xhr.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       // Create JSON object
-      var semesterObj = JSON.parse(xhr.responseText);
-      processSemesterInfo(semesterObj);
+      var semesters = JSON.parse(xhr.responseText);
+      processSemesterInfo(semesters);
     }
   };
   xhr.open("GET", "getSemesters", true);
   xhr.send();
 }
 
-// Used to get semesters to put in dropdown for specific user
+// Get semesters to put in dropdown for specific user
 function retrieveSemestersForUser() {
   // Create XMLHttpRequest
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       // Create JSON object
-      var semesterObj = JSON.parse(xhr.responseText);
-      processSemesterInfo(semesterObj);
+      var semesters = JSON.parse(xhr.responseText);
+      processSemesterInfo(semesters);
     }
   };
   xhr.open("GET", "getStudentSemesters", true);

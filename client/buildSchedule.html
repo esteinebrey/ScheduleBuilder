@@ -13,7 +13,8 @@
     <script src="/scripts/navigationBarScript.js"></script>
     <script src="/scripts/semester_dropdown_scripts.js"></script>
     <script src="/scripts/build_schedule_scripts.js"></script>
-    <script src="/scripts/offering_table_scripts.js"></script>
+    <script src="/scripts/offeringTableScripts.js"></script>
+    <script src="/scripts/dropdownScripts.js"></script>
   </head>
 
   <body>
@@ -38,7 +39,7 @@
     </div>
     <h1>Build Schedule</h1>
 
-    <select name="semesters" id="semesterDropdown" onChange="onSelect(this);">
+    <select name="semesters" id="semesterDropdown" onChange="onSelect(this, {isUserOffering: true, isSemesterOffering: true});">
     </select>
     <br />
 
@@ -77,19 +78,6 @@
     </table>
 
     <script>
-      function onSelect(obj) {
-        var semesterSelected = obj.options[obj.selectedIndex].value;
-        if (semesterSelected !== -1) {
-          removeOfferingsAlreadyShown();
-          $("option#defaultOption").css("display", "none");
-          retrieveOfferingsForSemesterAndUser(semesterSelected);
-          retrieveOfferingsForSemester(semesterSelected);
-        }
-      }
-      function removeOfferingsAlreadyShown() {
-        $("#offeringTable tbody tr").remove();
-      }
-
       window.addEventListener("load", retrieveRecentSemesters, false);
     </script>
   </body>
