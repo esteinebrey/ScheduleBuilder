@@ -4,7 +4,7 @@ dbconfig.xml
 # Ignore node_modules folder
 /node_modules
 
-create_accounts_table.js
-create_contacts_table.js
-insert_into_accounts_table.js
+create_users_table.js
+create_other_tables.js
+insert_into_users_table.js
 sql.txt

@@ -67,7 +67,6 @@ function getOfferingInfo(obj) {
     var offeringInfo;
     for (i = 0; i < obj.length; i++) {
       offeringInfo = obj[i];
-      // For each contact, create a row and add it to the table
       createOfferingRow(offeringInfo, table);
     }
   }
@@ -130,7 +129,6 @@ function processSemesterInfo(semesterObj) {
     var semesterInfo;
     for (i = 0; i < semesterObj.length; i++) {
       semesterInfo = semesterObj[i];
-      // For each contact, create a row and add it to the table
       addToSemesterDropdown(semesterInfo, dropdown);
     }
   }
