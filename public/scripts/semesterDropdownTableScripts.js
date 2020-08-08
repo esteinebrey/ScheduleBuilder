@@ -1,5 +1,6 @@
-// This file contains functions to retrieve and show semesters for the semester dropdown
-// and functions used when an option is selected in the dropdown
+// This file contains functions to retrieve and show semesters for the semester dropdown,
+// functions used when an option is selected in the dropdown,
+// and functions used for semester table in Change Courses page
 
 // Find the corresponding offerings to the option selected in the dropdown
 function onSelect(dropdown, offeringType, tables, editOptions) {
@@ -104,4 +105,45 @@ function addToSemesterDropdown(semester, dropdownId) {
 
   // Add the semester to the dropdown
   dropdown.append(semesterOutput);
+}
+
+// Used to get semesters to put in table
+function retrieveSemestersForTable() {
+  // Create XMLHttpRequest
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      // Create JSON object for semesters
+      var semesters = JSON.parse(xhr.responseText);
+      if (semesters.length > 0) {
+        // Access the table
+        var semesterTable = $("#semesterTable");
+        var i;
+        var semester;
+        // Create a row in the semester table for each semester
+        for (i = 0; i < semesters.length; i++) {
+          semester = semesters[i];
+          createSemesterRow(semester, semesterTable);
+        }
+      }
+    }
+  };
+  xhr.open("GET", "getSemesters", true);
+  xhr.send();
+}
+
+// Add semester info to specified table
+function createSemesterRow(semester, table) {
+  // Create semester row
+  var isRecent = semester.isRecent == 0 ? "false" : "true";
+  var semesterOutput = `<tr id='row${semester.semesterId}'>`;
+  semesterOutput += `<td id='season${semester.semesterId}'>${semester.season}</td>`;
+  semesterOutput += `<td id='year${semester.semesterId}'>${semester.year}</td>`;
+  semesterOutput += `<td id='isRecent${semester.semesterId}'>${isRecent}</td>`;
+  semesterOutput +=
+    "<td> <span class='editSemester glyphicon glyphicon-pencil'></span> <span class='deleteSemester glyphicon glyphicon-trash'></span> </td>";
+  semesterOutput += "</tr>";
+
+  // Add the row to the table
+  table.append(semesterOutput);
 }

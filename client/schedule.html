@@ -14,7 +14,7 @@
     <script src="/scripts/scheduleSlideshowScript.js"></script>
     <script src="/scripts/navigationBarScript.js"></script>
     <script src="/scripts/offeringTableScripts.js"></script>
-    <script src="/scripts/semesterDropdownScripts.js"></script>
+    <script src="/scripts/semesterDropdownTableScripts.js"></script>
   </head>
 
   <body>
@@ -73,7 +73,7 @@
         userOfferingTable: "offeringTable"
       };
       var editOptions = {
-        userOffering: { delete: false, add: false, type: "studentSchedule" }
+        userOffering: { delete: false, add: false, edit: false, type: "studentSchedule" }
       };
 
     window.addEventListener("load", retrieveSemestersForUser, false);

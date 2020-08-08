@@ -11,7 +11,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="/scripts/navigationBarScript.js"></script>
     <script src="/scripts/offeringTableScripts.js"></script>
-    <script src="/scripts/semesterDropdownScripts.js"></script>
+    <script src="/scripts/semesterDropdownTableScripts.js"></script>
     <script src="/scripts/courseScripts.js"></script>
     <link rel="stylesheet" href="/css/scheduleStyle.css" />
   </head>
@@ -77,10 +77,12 @@
     var offeringType = { isUserOffering: false, isSemesterOffering: true };
     var tables = { availableOfferingTable: "offeringTable" };
     var editOptions = {
-      semesterOffering: { delete: false, add: false, type: "coursesOffered" }
+      semesterOffering: { delete: false, add: false, edit: false, type: "coursesOffered" }
     };
 
-    window.addEventListener("load", retrieveCourses, false);
+    var courseOptions = { edit: false, delete: false };
+
+    window.addEventListener("load", function() { retrieveCourses(courseOptions) }, false);
     window.addEventListener("load", retrieveSemesters, false);
     window.addEventListener("load", determineTableShown, false);
     window.addEventListener("load", setUpDropdown, false);

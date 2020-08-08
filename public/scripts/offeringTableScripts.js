@@ -57,17 +57,34 @@ function createOfferingRow(offering, table, editOptions) {
       : offering.offeringId;
   var offeringOutput = `<tr class='${editOptions.type}${id}'>`;
   offeringOutput += `<td id='name${id}'>${offering.name}</td>`;
-  offeringOutput += `<td id='code${id}'>${offering.deptCode} ${offering.courseNumber}</td>`;
+  if (editOptions.edit) {
+    offeringOutput += `<td id='code${id}'>${offering.deptCode}</td>`;
+    offeringOutput += `<td id='code${id}'>${offering.courseNumber}</td>`;
+  }
+  else {
+    offeringOutput += `<td id='code${id}'>${offering.deptCode} ${offering.courseNumber}</td>`;
+  }
   offeringOutput += `<td id='prof${id}'>${offering.prof}</td>`;
   offeringOutput += `<td id='credits${id}'>${offering.credits}</td>`;
   offeringOutput += `<td id='days${id}'>${offering.days}</td>`;
   offeringOutput += `<td id='time${id}'>${offering.time}</td>`;
-  offeringOutput += `<td id='location${id}'>${offering.building} ${offering.room}</td>`;
-  if (editOptions.delete) {
+  if (editOptions.edit) {
+    offeringOutput += `<td id='building${id}'>${offering.building}</td>`;
+    offeringOutput += `<td id='room${id}'>${offering.room}</td>`;
+  }
+  else {
+    offeringOutput += `<td id='location${id}'>${offering.building} ${offering.room}</td>`;
+  }
+  
+  if (editOptions.delete && editOptions.edit) {
+    offeringOutput +=
+      "<td> <span class='editOffering glyphicon glyphicon-pencil'></span> <span class='deleteOffering glyphicon glyphicon-trash'></span> </td>";
+  }
+  else if (editOptions.delete) {
     offeringOutput +=
       "<td><span class='deleteOffering glyphicon glyphicon-trash'></span> </td>";
   }
-  if (editOptions.add) {
+  else if (editOptions.add) {
     offeringOutput +=
       "<td><span class='addOffering glyphicon glyphicon-plus'></span> </td>";
   }

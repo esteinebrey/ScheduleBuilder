@@ -6,6 +6,7 @@ $(document).ready(function () {
   // function for deleting offering row
   $(document).on("click", ".deleteOffering", function () {
     var rowId = $(this).parentsUntil("tbody").last().attr("id");
+    console.log(rowId);
     var offeringId = rowId.replace("row", "");
     $.ajax({
       url: "/deleteOffering",
@@ -49,8 +50,8 @@ $(document).ready(function () {
 
   // function for editing offering row
   $(document).on("click", ".editOffering", function () {
-    var rowId = $(this).parentsUntil("tbody").last().attr("id");
-    id = rowId.replace("row", "");
+    var rowId = $(this).parentsUntil("tbody").last().attr("class");
+    id = rowId.replace("coursesOffered", "");
     $("#offeringModal").css("display", "block");
 
     $("form#offeringForm input#id").val(id);

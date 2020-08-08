@@ -13,16 +13,18 @@ function determineTableShown() {
 // Set up the dropdown so that it has an option to get all courses
 function setUpDropdown() {
   var dropdown = $("#semesterDropdown");
-  dropdown.append('<option value="courses" selected>' + "All Courses" + "</option>"); 
+  dropdown.append(
+    '<option value="courses" selected>' + "All Courses" + "</option>"
+  );
 }
 
 // When choose an option in the dropdown, show the corresponding table
 function showCorrectTable(dropdown) {
   var semesterSelected = dropdown.options[dropdown.selectedIndex].value;
   // If select to view courses and course table isn't shown, change the table visibility
-  if (semesterSelected == 'courses' && !isCourseTableShown) {
+  if (semesterSelected == "courses" && !isCourseTableShown) {
     determineTableShown();
-  } 
+  }
   // If the course table is shown but want to show offerings, change the table visibility
   else if (isCourseTableShown) {
     determineTableShown();
@@ -30,7 +32,7 @@ function showCorrectTable(dropdown) {
 }
 
 // Get all the courses to display
-function retrieveCourses() {
+function retrieveCourses(courseOptions) {
   // Create XMLHttpRequest
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
@@ -45,7 +47,7 @@ function retrieveCourses() {
         // Create a row for each course
         for (i = 0; i < courses.length; i++) {
           course = courses[i];
-          createRow(course, table);
+          createRow(course, table, courseOptions);
         }
       }
     }
@@ -55,13 +57,22 @@ function retrieveCourses() {
 }
 
 // Create a row for the specified course and add it to the table
-function createRow(course, table) {
-  var courseOutput = "<tr class='courseRow'>";
-  courseOutput += `<td>${course.name}</td>`;
-  courseOutput +=
-    `<td>${course.deptCode} ${course.courseNumber}</td>`;
-  courseOutput += `<td>${course.credits}</td>`;
-  courseOutput += `<td>${course.description}</td>`;
+function createRow(course, table, courseOptions) {
+  console.log(courseOptions);
+  var courseOutput = `<tr id='row${course.courseId}'>`;
+  courseOutput += `<td id='name${course.courseId}'>${course.name}</td>`;
+  if (courseOptions.edit) {
+    courseOutput += `<td id='deptCode${course.courseId}'>${course.deptCode}</td>`;
+    courseOutput += `<td id='number${course.courseId}'>${course.courseNumber}</td>`;
+  } else {
+    courseOutput += `<td id='code${course.courseId}'>${course.deptCode} ${course.courseNumber}</td>`;
+  }
+  courseOutput += `<td id='credits${course.courseId}'>${course.credits}</td>`;
+  courseOutput += `<td id='desc${course.courseId}'>${course.description}</td>`;
+  if (courseOptions.edit && courseOptions.delete) {
+    courseOutput +=
+      "<td><span class='addOffering glyphicon glyphicon-plus'></span><span class='editCourse glyphicon glyphicon-pencil'></span> <span class='deleteCourse glyphicon glyphicon-trash'></span> </td>";
+  }
   courseOutput += "</tr>";
 
   // Add the row to the table
