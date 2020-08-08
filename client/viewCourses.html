@@ -41,7 +41,7 @@
     <select
       name="semesters"
       id="semesterDropdown"
-      onChange="showCorrectTable(this); onSelect(this, {isUserOffering: false, isSemesterOffering: true});"
+      onChange="showCorrectTable(this); onSelect(this, offeringType, tables, editOptions);"
     >
     </select>
     <br />
@@ -74,6 +74,12 @@
     </table>
   </body>
   <script>
+    var offeringType = { isUserOffering: false, isSemesterOffering: true };
+    var tables = { availableOfferingTable: "offeringTable" };
+    var editOptions = {
+      semesterOffering: { delete: false, add: false, type: "coursesOffered" },
+    };
+
     window.addEventListener("load", retrieveCourses, false);
     window.addEventListener("load", retrieveSemesters, false);
     window.addEventListener("load", determineTableShown, false);

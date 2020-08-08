@@ -1,17 +1,24 @@
 // Find the corresponding offerings to the option selected in the dropdown
-function onSelect(dropdown, options) {
-  
+function onSelect(dropdown, offeringType, tables, editOptions) {
   var semesterSelected = dropdown.options[dropdown.selectedIndex].value;
   if (semesterSelected !== -1) {
     // Get rid of offerings displayed
     removeOfferingsAlreadyShown();
     $("option#defaultOption").css("display", "none"); // TODO - Look at if this is needed
     // Find the offerings to show
-    if (options.isUserOffering) {
-      retrieveOfferingsForSemesterAndUser(semesterSelected);
+    if (offeringType.isUserOffering) {
+      retrieveOfferingsForSemesterAndUser(
+        semesterSelected,
+        tables,
+        editOptions.userOffering
+      );
     }
-    if (options.isSemesterOffering) {
-      retrieveOfferingsForSemester(semesterSelected);
+    if (offeringType.isSemesterOffering) {
+      retrieveOfferingsForSemester(
+        semesterSelected,
+        tables,
+        editOptions.semesterOffering
+      );
     }
   }
 }
@@ -51,6 +58,7 @@ function retrieveSemestersForUser() {
   xhr.send();
 }
 
+// Process semester information retrieved to create dropdown
 function processSemesterInfo(semesters) {
   if (semesters.length > 0) {
     // Access the table

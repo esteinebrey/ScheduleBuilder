@@ -14,7 +14,7 @@
     <script src="/scripts/semester_dropdown_scripts.js"></script>
     <script src="/scripts/build_schedule_scripts.js"></script>
     <script src="/scripts/offeringTableScripts.js"></script>
-    <script src="/scripts/dropdownScripts.js"></script>
+    <script src="/scripts/semesterDropdownScripts.js"></script>
   </head>
 
   <body>
@@ -39,7 +39,11 @@
     </div>
     <h1>Build Schedule</h1>
 
-    <select name="semesters" id="semesterDropdown" onChange="onSelect(this, {isUserOffering: true, isSemesterOffering: true});">
+    <select
+      name="semesters"
+      id="semesterDropdown"
+      onChange="onSelect(this, offeringType, tables, editOptions);"
+    >
     </select>
     <br />
 
@@ -78,6 +82,16 @@
     </table>
 
     <script>
+      var offeringType = { isUserOffering: true, isSemesterOffering: true };
+      var tables = {
+        userOfferingTable: "offeringTable",
+        availableOfferingTable: "offeringOptionsTable",
+      };
+      var editOptions = {
+        semesterOffering: { delete: false, add: true, type: "coursesOffered" },
+        userOffering: { delete: true, add: false, type: "studentSchedule" },
+      };
+
       window.addEventListener("load", retrieveRecentSemesters, false);
     </script>
   </body>
