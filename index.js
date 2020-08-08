@@ -332,7 +332,7 @@ app.get("/getStudentSemesters", function (req, res) {
     var sql =
       "SELECT DISTINCT Semesters.SemesterID as semesterId, Semesters.Season AS season, Semesters.Year AS year, CourseOfferings.OfferingID as offeringId FROM Semesters, \
     CourseOfferings, Registrations WHERE CourseOfferings.SemesterID = Semesters.SemesterID  \
-    AND Registrations.OfferingID = CourseOfferings.OfferingID AND Registrations.StudentID = ?";
+    AND Registrations.OfferingID = CourseOfferings.OfferingID AND Registrations.StudentID = ? GROUP BY semesterId";
     con.query(sql, [req.session.userId], function (err, result, fields) {
       if (err) throw err;
       res.send(JSON.stringify(result));

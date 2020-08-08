@@ -4,7 +4,7 @@
   <head>
     <title>Schedule</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="/css/schedule_style.css" />
+    <link rel="stylesheet" href="/css/scheduleStyle.css" />
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -13,8 +13,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="/scripts/scheduleSlideshowScript.js"></script>
     <script src="/scripts/navigationBarScript.js"></script>
-    <link rel="stylesheet" href="/css/scheduleStyle.css" />
-    <script src="/scripts/offerings_scripts.js"></script>
+    <script src="/scripts/offeringTableScripts.js"></script>
+    <script src="/scripts/semesterDropdownScripts.js"></script>
   </head>
 
   <body>
@@ -41,7 +41,7 @@
     <select
       name="semesters"
       id="semesterDropdown"
-      onChange="onSelect(this, true)"
+      onChange="onSelect(this, offeringType, tables, editOptions)"
     >
       <option id="defaultOption" disabled selected value>Pick Semester</option>
     </select>
@@ -68,6 +68,14 @@
     </div>
   </body>
   <script>
+    var offeringType = { isUserOffering: true, isSemesterOffering: false };
+      var tables = {
+        userOfferingTable: "offeringTable"
+      };
+      var editOptions = {
+        userOffering: { delete: false, add: false, type: "studentSchedule" }
+      };
+
     window.addEventListener("load", retrieveSemestersForUser, false);
   </script>
 </html>
