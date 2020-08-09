@@ -9,7 +9,8 @@ function onSelect(dropdown, offeringType, tables, editOptions) {
     // Get rid of offerings displayed
     removeOfferingsAlreadyShown();
     $("option#defaultOption").css("display", "none"); // TODO - Look at if this is needed
-    // Find the offerings to show
+    // Retrieve the offerings
+    // Get offerings that student is taking
     if (offeringType.isUserOffering) {
       retrieveOfferingsForSemesterAndUser(
         semesterSelected,
@@ -17,6 +18,7 @@ function onSelect(dropdown, offeringType, tables, editOptions) {
         editOptions.userOffering
       );
     }
+    // Get the available offerings
     if (offeringType.isSemesterOffering) {
       retrieveOfferingsForSemester(
         semesterSelected,
@@ -32,15 +34,15 @@ function removeOfferingsAlreadyShown() {
   $("#offeringTable tbody tr").remove();
 }
 
-// Get semesters to display in dropdown at the beginning
+// Get all semesters to display in dropdown at the beginning
 function retrieveSemesters() {
   // Create XMLHttpRequest
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      // Create JSON object
+      // Create JSON object for semesters and process it
       var semesters = JSON.parse(xhr.responseText);
-      var dropdownIds = ['semesterDropdown'];
+      var dropdownIds = ["semesterDropdown"];
       processSemesterInfo(semesters, dropdownIds);
     }
   };
@@ -49,14 +51,15 @@ function retrieveSemesters() {
 }
 
 // Used to get semesters to put in dropdown for specific user
+// Only shows the semesters where a student takes a course
 function retrieveSemestersForUser() {
   // Create XMLHttpRequest
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      // Create JSON object
+      // Create JSON object for semesters and process it
       var semesters = JSON.parse(xhr.responseText);
-      var dropdownIds= ['semesterDropdown'];
+      var dropdownIds = ["semesterDropdown"];
       processSemesterInfo(semesters, dropdownIds);
     }
   };
@@ -64,7 +67,8 @@ function retrieveSemestersForUser() {
   xhr.send();
 }
 
-// Get recent semesters that can be added to or deleted from student's schedule for Build Schedule page
+// Get recent semesters
+// Corresponding courses to these semesters can be added to or deleted from student's schedule for Build Schedule page
 function retrieveRecentSemesters() {
   // Create XMLHttpRequest
   var xhr = new XMLHttpRequest();
@@ -72,7 +76,7 @@ function retrieveRecentSemesters() {
     if (this.readyState == 4 && this.status == 200) {
       // Create semesters object and create dropdown from it
       var semesters = JSON.parse(xhr.responseText);
-      var dropdownIds = ['semesterDropdown', 'semesterOfferingDropdown'];
+      var dropdownIds = ["semesterDropdown", "semesterOfferingDropdown"];
       processSemesterInfo(semesters, dropdownIds);
     }
   };
@@ -80,23 +84,23 @@ function retrieveRecentSemesters() {
   xhr.send();
 }
 
-// Process semester information retrieved to create dropdown
+// Process semester information retrieved for dropdowns corresponding to dropdownIds
 function processSemesterInfo(semesters, dropdownIds) {
   if (semesters.length > 0) {
-    // Go through each semester in semesters    
+    // Go through each semester in semesters
     var i;
     var semester;
     for (i = 0; i < semesters.length; i++) {
       semester = semesters[i];
       // Add semesters to each dropdown in list
-      dropdownIds.forEach(function(dropdownId) {
+      dropdownIds.forEach(function (dropdownId) {
         addToSemesterDropdown(semester, dropdownId);
       });
     }
   }
 }
 
-// Used to get the semesters to show in dropdown
+// Function to get the semesters to show in dropdown
 function addToSemesterDropdown(semester, dropdownId) {
   var dropdown = $(`#${dropdownId}`);
   var semesterOutput = `<option value='${semester.semesterId}'>`;
@@ -107,7 +111,7 @@ function addToSemesterDropdown(semester, dropdownId) {
   dropdown.append(semesterOutput);
 }
 
-// Used to get semesters to put in table
+// Functions to get semesters to put in table for Admin Page
 function retrieveSemestersForTable() {
   // Create XMLHttpRequest
   var xhr = new XMLHttpRequest();

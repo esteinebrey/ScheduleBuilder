@@ -12,66 +12,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="/scripts/navigationBarScript.js"></script>
-    <script>
-      $(document).ready(function () {
-        // modal is orginally invisible
-        $("#addEditModal").css("display", "none");
-
-        // function for deleting row
-        $(document).on("click", ".delete", function () {
-          var rowId = $(this).parentsUntil("tbody").last().attr("id");
-          userId = rowId.replace("row", "");
-          var request = $.ajax({
-            url: "/deleteUser",
-            type: "POST",
-            data: { id: userId },
-            dataType: "json",
-          });
-          location.reload();
-        });
-
-        // function for editing row
-        $(document).on("click", ".edit", function () {
-          var rowId = $(this).parentsUntil("tbody").last().attr("id");
-          id = rowId.replace("row", "");
-          $("#addEditModal").css("display", "block");
-          $("form#addEditForm input#userId").val(id);
-          $("form#addEditForm input#name").val($(`#name${id}`).html());
-          $("form#addEditForm input#login").val($(`#login${id}`).html());
-          if ($(`#isAdmin${id}`).html() == "true") {
-            $("form#addEditForm select#userType option[value='admin']").attr(
-              "selected",
-              true
-            );
-          } else {
-            $("form#addEditForm select#userType option[value='regular']").attr(
-              "selected",
-              true
-            );
-          }
-          $("h1#addEditFormTitle").html("Edit User");
-          $("#addEditButton").val("Update User");
-          $("#addEditForm").attr("action", "/editUser");
-          $("form#addEditForm input#password").prop("required", false);
-        });
-
-        // function for adding user
-        $(document).on("click", "#addButton", function () {
-          $("#addEditModal").css("display", "block");
-          $("form#addEditForm input#name").val("");
-          $("form#addEditForm input#login").val("");
-          $("h1#addEditFormTitle").html("Add User");
-          $("#addEditButton").val("Add User");
-          $("#addEditForm").attr("action", "/addUser");
-          $("form#addEditForm input#password").prop("required", true);
-        });
-
-        // cancelling modal makes it invisible
-        $(".addEditCancel").click(function () {
-          $("#addEditModal").css("display", "none");
-        });
-      });
-    </script>
+    <script src="/scripts/adminScripts.js"></script>
   </head>
 
   <body>
@@ -171,52 +112,6 @@
     </table>
   </body>
   <script>
-    // Get the user information
-    function retrieveUsers() {
-      // Create XMLHttpRequest
-      var xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          // Create JSON object
-          var users = JSON.parse(xhr.responseText);
-          processUserInfo(users);
-        }
-      };
-      xhr.open("GET", "getUsers", true);
-      xhr.send();
-    }
-
-    function processUserInfo(users) {
-      if (users.length > 0) {
-        // Access the table
-        var table = $("#adminTable");
-        var i;
-        var userInfo;
-        for (i = 0; i < users.length; i++) {
-          userInfo = users[i];
-          // For each user, create a row and add it to the table
-          addToUserTable(userInfo, table);
-        }
-      }
-    }
-
-    // Used to add users to user table
-    function addToUserTable(userInfo, table) {
-      // Create the row and make each cell of the row
-      var isAdministrator = userInfo.isAdmin === 1 ? "true" : "false";
-      var userOutput = `<tr class='offeringRow' id='row${userInfo.userId}'>`;
-      userOutput += `<td id='name${userInfo.userId}'>${userInfo.name}</td>`;
-      userOutput += `<td id='login${userInfo.userId}'>${userInfo.login}</td>`;
-      userOutput += `<td id='password${userInfo.userId}'> </td>`;
-      userOutput += `<td id='isAdmin${userInfo.userId}'>${isAdministrator}</td>`;
-      userOutput +=
-        "<td> <span class='edit glyphicon glyphicon-pencil'></span> <span class='delete glyphicon glyphicon-trash'></span> </td>";
-      userOutput += "</tr>";
-
-      // Add the row to the table
-      table.append(userOutput);
-    }
-
     window.addEventListener("load", retrieveUsers, false);
   </script>
 </html>

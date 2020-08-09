@@ -1,22 +1,8 @@
+// File that has functions to display courses, switch between course and offering tables, and
+// allow for courses to be selected in dropdown
+
 // Initially, don't show course table
 var isCourseTableShown = false;
-
-// Used to display the right table for pages that show both offerings and courses
-function determineTableShown() {
-  isCourseTableShown = !isCourseTableShown;
-  var offeringDisplay = isCourseTableShown ? "none" : "table";
-  var courseDisplay = isCourseTableShown ? "table" : "none";
-  $("#offeringTable").css("display", offeringDisplay);
-  $("#courseTable").css("display", courseDisplay);
-}
-
-// Set up the dropdown so that it has an option to get all courses
-function setUpDropdown() {
-  var dropdown = $("#semesterDropdown");
-  dropdown.append(
-    '<option value="courses" selected>' + "All Courses" + "</option>"
-  );
-}
 
 // When choose an option in the dropdown, show the corresponding table
 function showCorrectTable(dropdown) {
@@ -29,6 +15,24 @@ function showCorrectTable(dropdown) {
   else if (isCourseTableShown) {
     determineTableShown();
   }
+}
+
+// Determine if course or offering table should be displayed
+// Used to display the right table for pages that show both offerings and courses
+function determineTableShown() {
+  isCourseTableShown = !isCourseTableShown;
+  var offeringDisplay = isCourseTableShown ? "none" : "table";
+  var courseDisplay = isCourseTableShown ? "table" : "none";
+  $("#offeringTable").css("display", offeringDisplay);
+  $("#courseTable").css("display", courseDisplay);
+}
+
+// Set up the dropdown so that it has an option to show All Courses
+function setUpDropdown() {
+  var dropdown = $("#semesterDropdown");
+  dropdown.append(
+    '<option value="courses" selected>' + "All Courses" + "</option>"
+  );
 }
 
 // Get all the courses to display
@@ -58,7 +62,6 @@ function retrieveCourses(courseOptions) {
 
 // Create a row for the specified course and add it to the table
 function createRow(course, table, courseOptions) {
-  console.log(courseOptions);
   var courseOutput = `<tr id='row${course.courseId}'>`;
   courseOutput += `<td id='name${course.courseId}'>${course.name}</td>`;
   if (courseOptions.edit) {
