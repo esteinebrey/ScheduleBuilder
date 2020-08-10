@@ -2,17 +2,37 @@
 
 // Get courses taken for specific student for specific semester using AJAX
 function retrieveOfferingsForSemesterAndUser(semesterId, tables, editOptions, offeringType) {
+  console.log("student courses");
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       // Create offerings object
       var offerings = JSON.parse(xhr.responseText);
+      console.log(offerings);
       // Add to offerings correct table
       var tableId = tables.userOfferingTable;
       addOfferingsToTable(offerings, tableId, editOptions, offeringType);
     }
   };
   xhr.open("GET", "/getStudentCoursesBySemester/" + semesterId, true);
+  xhr.send();
+}
+
+// Get courses for a specific semester that a specific student has not taken
+function retrieveOfferingsNotForUser(semesterId, tables, editOptions, offeringType) {
+  console.log("not for user");
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      // Create offerings object
+      var offerings = JSON.parse(xhr.responseText);
+      console.log(offerings);
+      // Add to offerings correct table
+      var tableId = tables.availableOfferingTable;
+      addOfferingsToTable(offerings, tableId, editOptions, offeringType);
+    }
+  };
+  xhr.open("GET", "/getNonStudentCoursesBySemester/" + semesterId, true);
   xhr.send();
 }
 
@@ -84,7 +104,7 @@ function createOfferingRow(offering, table, editOptions) {
   }
 
    // Show capacity and sears filled if course is shown as available and not for specific student
-   if (offeringType.isSemesterOffering) {
+   if (offeringType.isSemesterOffering || offeringType.isNotUserOffering) {
     offeringOutput += `<td id='code${id}'>${offering.capacity}</td>`;
     // Can't edit number of seats filled
     if (!editOptions.edit) {

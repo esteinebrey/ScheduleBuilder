@@ -19,6 +19,14 @@ function onSelect(dropdown, offeringType, tables, editOptions) {
         offeringType
       );
     }
+    if (offeringType.isNotUserOffering) {
+      retrieveOfferingsNotForUser(
+        semesterSelected,
+        tables,
+        editOptions.userOffering,
+        offeringType
+      );
+    }
     // Get the available offerings
     if (offeringType.isSemesterOffering) {
       retrieveOfferingsForSemester(

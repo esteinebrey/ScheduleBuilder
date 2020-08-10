@@ -79,6 +79,7 @@ $(document).ready(function () {
     $("form#offeringForm input#time").val($(`#time${id}`).html());
     $("form#offeringForm input#building").val($(`#building${id}`).html());
     $("form#offeringForm input#room").val($(`#room${id}`).html());
+    $("form#offeringForm input#capacity").val($(`#capacity${id}`).html());
   };
 
   // Change title, button, and action so offering modal is for edit
@@ -133,6 +134,7 @@ $(document).ready(function () {
     $("form#offeringForm input#time").val("");
     $("form#offeringForm input#building").val("");
     $("form#offeringForm input#room").val("");
+    $("form#offeringForm input#capacity").val("");
   };
 
   // Change title, button, and action so offering modal is for add

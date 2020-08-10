@@ -379,6 +379,31 @@ app.get("/getStudentCoursesBySemester/:semesterId", function (req, res) {
   }
 });
 
+// GET courses not taken by user for specific semester
+app.get("/getNonStudentCoursesBySemester/:semesterId", function (req, res) {
+  if (req.session && req.session.loggedIn) {
+    var semesterId = req.params.semesterId;
+    var sql =
+    `SELECT DISTINCT Courses.CourseName AS name, CourseOfferings.OfferingID AS offeringId, Courses.DeptCode AS deptCode, Courses.CourseNumber AS courseNumber, 
+    CourseOfferings.Professor AS prof, Courses.CreditNumber AS credits, CourseOfferings.Capacity AS capacity, CourseOfferings.DaysOfWeek AS days, 
+    CourseOfferings.Time AS time, CourseOfferings.Building AS building, CourseOfferings.Room AS room,
+    (SELECT COUNT(*) FROM Registrations AS Reg WHERE Reg.OfferingID = CourseOfferings.OfferingID) as numberFilled
+    FROM Courses, CourseOfferings, Registrations WHERE CourseOfferings.SemesterID = ? AND Courses.CourseID = CourseOfferings.CourseID 
+    AND NOT EXISTS (SELECT * FROM Registrations WHERE Registrations.StudentID = ? AND Registrations.OfferingID = CourseOfferings.OfferingID);`
+
+    con.query(sql, [semesterId, req.session.userId], function (
+      err,
+      result,
+      fields
+    ) {
+      if (err) throw err;
+      res.send(JSON.stringify(result));
+    });
+  } else {
+    res.redirect("/login");
+  }
+});
+
 // GET courses available for a given semester
 app.get("/getCoursesBySemester/:semesterId", function (req, res) {
   if (req.session && req.session.loggedIn) {
@@ -477,7 +502,7 @@ app.post("/deleteOffering", function (req, res) {
 // Use on Change Courses page
 app.post("/editOffering", function (req, res) {
   var sql =
-    "UPDATE CourseOfferings SET Professor = ?, SemesterID = ?, DaysOfWeek = ?, Time = ?, Building = ?, Room =? WHERE OfferingID = ?";
+    "UPDATE CourseOfferings SET Professor = ?, SemesterID = ?, DaysOfWeek = ?, Time = ?, Building = ?, Room = ?, Capacity = ? WHERE OfferingID = ?";
   var args = [
     req.body.prof,
     req.body.semesters,
@@ -485,7 +510,8 @@ app.post("/editOffering", function (req, res) {
     req.body.time,
     req.body.building,
     req.body.room,
-    req.body.id,
+    req.body.capacity,
+    req.body.id
   ];
   con.query(sql, args, function (err, result, fields) {
     res.redirect("/changeCourses");
@@ -496,7 +522,7 @@ app.post("/editOffering", function (req, res) {
 // Used on Change Courses page
 app.post("/addOffering", function (req, res) {
   var sql =
-    "INSERT INTO CourseOfferings (CourseID, SemesterID, Professor, DaysOfWeek, Time, Building, Room) VALUES (?,?,?,?,?,?,?)";
+    "INSERT INTO CourseOfferings (CourseID, SemesterID, Professor, DaysOfWeek, Time, Building, Room, Capacity) VALUES (?,?,?,?,?,?,?,?)";
   var args = [
     req.body.id,
     req.body.semesters,
@@ -505,6 +531,7 @@ app.post("/addOffering", function (req, res) {
     req.body.time,
     req.body.building,
     req.body.room,
+    req.body.capacity
   ];
   con.query(sql, args, function (err, result, fields) {
     res.redirect("/changeCourses");
