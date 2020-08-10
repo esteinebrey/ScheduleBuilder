@@ -1,28 +1,22 @@
-// include the needed modules
+// Include the needed modules and create express application
 var express = require("express");
 
-// create an express application
 var app = express();
 
 var bodyparser = require("body-parser");
-
 var fs = require("fs");
-
 var session = require("express-session");
-
 var crypto = require("crypto");
-
 var mysql = require("mysql");
-
 var xml2js = require("xml2js");
 
 // apply the body-parser middleware to all incoming requests
 app.use(bodyparser());
 
-// used to access css
+// Access files in public folder
 app.use(express.static("public"));
 
-// use express-session
+// Use express-session
 app.use(
   session({
     secret: "robotspacetruck",
@@ -31,11 +25,12 @@ app.use(
   })
 );
 
+// Set up parser to parse xml
 var parser = new xml2js.Parser();
 var dbInfo;
 var con;
 
-// Create the database connection by parsing xml
+// Create the database connection using the parser
 fs.readFile(__dirname + "/dbconfig.xml", function (err, data) {
   if (err) throw err;
   parser.parseString(data, function (err, result) {
@@ -65,15 +60,17 @@ app.get("/", function (req, res) {
 });
 
 // GET method route for the Schedule page
+// Must be logged in and student user
 app.get("/schedule", function (req, res) {
-  if (req.session && req.session.loggedIn) {
+  if (req.session && req.session.loggedIn && !req.session.isAdmin) {
     res.sendFile(__dirname + "/client/schedule.html");
   } else {
     res.redirect("/login");
   }
 });
 
-// GET method route for the Admin page.
+// GET method route for the Admin page
+// Must be logged in and admin user
 app.get("/admin", function (req, res) {
   if (req.session && req.session.loggedIn && req.session.isAdmin) {
     res.sendFile(__dirname + "/client/admin.html");
@@ -82,34 +79,29 @@ app.get("/admin", function (req, res) {
   }
 });
 
-// GET method route for the Change Courses page.
+// GET method route for the Change Courses page
+// Must be logged in and admin user
 app.get("/changeCourses", function (req, res) {
-  if (req.session && req.session.loggedIn) {
+  if (req.session && req.session.loggedIn && req.session.isAdmin) {
     res.sendFile(__dirname + "/client/changeCourses.html");
   } else {
     res.redirect("/login");
   }
 });
 
-// GET method route for the Build Schedule page.
+// GET method route for the Build Schedule page
+// Must be logged in and student user
 app.get("/buildSchedule", function (req, res) {
-  if (req.session && req.session.loggedIn) {
+  if (req.session && req.session.loggedIn && !req.session.isAdmin) {
     res.sendFile(__dirname + "/client/buildSchedule.html");
   } else {
     res.redirect("/login");
   }
 });
 
-// GET method route for the navigation bar
-app.get("/navigationBar", function (req, res) {
-  if (req.session && req.session.loggedIn) {
-    res.sendFile(__dirname + "/client/navigationBar.html");
-  } else {
-    res.redirect("/login");
-  }
-});
-
-// GET method route for the View Courses page.
+// GET method route for the View Courses page
+// Must be logged in
+// Seen by both student and admin users
 app.get("/viewCourses", function (req, res) {
   if (req.session && req.session.loggedIn) {
     res.sendFile(__dirname + "/client/viewCourses.html");
@@ -119,7 +111,8 @@ app.get("/viewCourses", function (req, res) {
 });
 
 // GET method route for the login page.
-// It serves login.html present in client folder
+// If the user isn't signed in, it serves login.html present in client folder
+// Otherwise, it routes the user to the correct page depending if they are admin user or not
 app.get("/login", function (req, res) {
   if (req.session && req.session.loggedIn && req.session.isAdmin) {
     res.redirect("/admin");
@@ -130,11 +123,13 @@ app.get("/login", function (req, res) {
   }
 });
 
-// POST method to edit user
+// POST method to edit user on Admin page
 app.post("/editUser", function (req, res) {
+  // Change type of user from admin or not to 1 or 0
   var isAdmin = req.body.userType == "admin" ? 1 : 0;
   var sql;
   var args = [req.body.login, req.body.name, isAdmin];
+  // Don't change the password if a new one isn't sent (password not required on Edit User modal)
   if (req.body.password == "") {
     sql =
       "UPDATE Users SET UserLogin = ?, UserName = ?, isAdmin = ? WHERE UserID = ?";
@@ -149,18 +144,23 @@ app.post("/editUser", function (req, res) {
   }
   id = parseInt(req.body.userId);
   args.push(id);
+  // Use sql statement found and arguments array
   con.query(sql, args, function (err, result, fields) {
+    // Redirect to show updated page
     res.redirect("/admin");
   });
 });
 
-// POST method to add user
+// POST method to add user on Admin page
 app.post("/addUser", function (req, res) {
+  // Change type of user to 0 or 1
   var isAdmin = req.body.userType == "admin" ? 1 : 0;
+  // Hash the password
   var hashed_pwd = crypto
     .createHash("sha256")
     .update(req.body.password)
     .digest("base64");
+  // Insert information into Users table
   var sql =
     "INSERT INTO Users (UserLogin, UserName, UserPassword, isAdmin) VALUES (?, ?, ?, ?)";
   var args = [req.body.login, req.body.name, hashed_pwd, isAdmin];
@@ -169,8 +169,9 @@ app.post("/addUser", function (req, res) {
   });
 });
 
-// POST method to delete user
+// POST method to delete user on Admin page
 app.post("/deleteUser", function (req, res) {
+  // Delete the user with the specified ID
   var sql = "DELETE FROM Users WHERE UserID = ?";
   var args = [req.body.id];
   con.query(sql, args, function (err, result, fields) {
@@ -181,27 +182,31 @@ app.post("/deleteUser", function (req, res) {
 // POST method to validate user login
 // Upon successful login, user session is created
 app.post("/validateLogin", function (req, res) {
-  var user = req.body.username;
+  // Find username and hashed password
+  var username = req.body.username;
   var pwd = req.body.password;
   var hashed_pwd = crypto.createHash("sha256").update(pwd).digest("base64");
   var sql = "SELECT * FROM Users WHERE UserLogin = ? AND UserPassword = ?";
-  con.query(sql, [user, hashed_pwd], function (err, result, fields) {
-    var obj = JSON.parse(JSON.stringify(result));
+  // Determine if corresponding entry exists in Users table
+  con.query(sql, [username, hashed_pwd], function (err, result, fields) {
+    var user = JSON.parse(JSON.stringify(result));
     // Determine if validation successful or not
     if (err) throw err;
     else if (result.length == 0) {
+      // User still needs to login
       console.log("Validation failed!");
       req.session.flag = 0;
       res.redirect("/login");
     } else {
+      // User has logged in and session variables are set
       console.log("Validation successful!");
-      req.session.login = user;
+      req.session.login = username;
       req.session.loggedIn = true;
       req.session.flag = 1;
-      req.session.userId = obj[0].UserID;
-      req.session.name = obj[0].UserName;
-      // Check if the user is a student or admin
-      if (obj[0].isAdmin == 1) {
+      req.session.userId = user[0].UserID;
+      req.session.name = user[0].UserName;
+      // Check if the user is a student or admin and redirect to appropriate page
+      if (user[0].isAdmin == 1) {
         // Admin user
         req.session.isAdmin = true;
         res.redirect("/admin");
@@ -215,7 +220,7 @@ app.post("/validateLogin", function (req, res) {
 });
 
 // Determine is user is admin
-// Used to determine what navbar displays
+// Used to determine how the navigation bar is displayed
 app.get("/getIsAdmin", function (req, res) {
   if (req.session.isAdmin) {
     res.json({ isAdmin: true });
@@ -225,8 +230,8 @@ app.get("/getIsAdmin", function (req, res) {
 });
 
 // GET method used by login.html to determine if error message should be displayed
-// Sends the value of the session variable flag
-app.get("/getFlag", function (req, res) {
+// Sends the value of the session variable flag to show login status
+app.get("/getLoginStatus", function (req, res) {
   if (req.session.flag == 0 || req.session.flag == 1) {
     res.json({ flag: req.session.flag });
   } else {
@@ -235,7 +240,7 @@ app.get("/getFlag", function (req, res) {
   }
 });
 
-// Get method for all the courses
+// GET method for all the courses in Courses table
 app.get("/getAllCourses", function (req, res) {
   if (req.session && req.session.loggedIn) {
     con.query(
@@ -250,7 +255,7 @@ app.get("/getAllCourses", function (req, res) {
   }
 });
 
-// GET users
+// GET all users from Users table
 app.get("/getUsers", function (req, res) {
   if (req.session && req.session.loggedIn) {
     con.query(
@@ -265,7 +270,7 @@ app.get("/getUsers", function (req, res) {
   }
 });
 
-// GET semesters
+// GET all semesters from Semesters table
 app.get("/getSemesters", function (req, res) {
   if (req.session && req.session.loggedIn) {
     con.query(
@@ -280,8 +285,10 @@ app.get("/getSemesters", function (req, res) {
   }
 });
 
-// POST method to add semester
+// POST method to add semester to Semesters table
+// Used on Change Courses page
 app.post("/addSemester", function (req, res) {
+  // Change the how recent semester is to 1 or 0, not true or false
   var isRecent = req.body.recentType == "true" ? 1 : 0;
   var sql = "INSERT INTO Semesters (Season, Year, isRecent) VALUES (?, ?, ?)";
   var args = [req.body.season, req.body.year, isRecent];
@@ -290,8 +297,10 @@ app.post("/addSemester", function (req, res) {
   });
 });
 
-// POST method to edit semester
+// POST method to edit semester with specified ID
+// Used on Change Courses page
 app.post("/editSemester", function (req, res) {
+  // Change the how recent semester is to 1 or 0, not true or false
   var isRecent = req.body.recentType == "true" ? 1 : 0;
   var sql =
     "UPDATE Semesters SET Season = ?, Year = ?, isRecent = ? WHERE SemesterID = ?";
@@ -302,7 +311,8 @@ app.post("/editSemester", function (req, res) {
   });
 });
 
-// POST method to delete semester
+// POST method to delete semester with specified ID
+// Used on Change Courses page
 app.post("/deleteSemester", function (req, res) {
   var sql = "DELETE FROM Semesters WHERE SemesterID = ?";
   var args = [req.body.id];
@@ -311,7 +321,8 @@ app.post("/deleteSemester", function (req, res) {
   });
 });
 
-// Get recent semesters
+// GET method for recent semesters
+// These are semesters where students can add/delete courses to/from their schedule
 app.get("/getRecentSemesters", function (req, res) {
   if (req.session && req.session.loggedIn) {
     con.query(
@@ -327,6 +338,8 @@ app.get("/getRecentSemesters", function (req, res) {
 });
 
 // GET semesters for specific user
+// Only retrieve semesters where a user takes a course
+// Used by Schedule page
 app.get("/getStudentSemesters", function (req, res) {
   if (req.session && req.session.loggedIn) {
     var sql =
@@ -342,16 +355,17 @@ app.get("/getStudentSemesters", function (req, res) {
   }
 });
 
-// GET courses taken by user for specific user
+// GET courses taken by user for specific semester
 app.get("/getStudentCoursesBySemester/:semesterId", function (req, res) {
   if (req.session && req.session.loggedIn) {
     var semesterId = req.params.semesterId;
     var sql =
-      "SELECT Registrations.RegistrationID as registrationId, Courses.CourseName AS name, Courses.DeptCode AS deptCode, Courses.CourseNumber AS courseNumber, \
-    CourseOfferings.Professor AS prof, Courses.CreditNumber AS credits, CourseOfferings.DaysOfWeek AS days, \
-    CourseOfferings.Time AS time, CourseOfferings.Building AS building, CourseOfferings.Room AS room FROM Courses, \
-    CourseOfferings, Registrations WHERE CourseOfferings.SemesterID = ? AND Courses.CourseID = CourseOfferings.CourseID \
-    AND Registrations.OfferingID = CourseOfferings.OfferingID AND Registrations.StudentID = ?";
+      `SELECT Registrations.RegistrationID as registrationId, Courses.CourseName AS name, Courses.DeptCode AS deptCode, Courses.CourseNumber AS courseNumber, 
+    CourseOfferings.Professor AS prof, Courses.CreditNumber AS credits, CourseOfferings.Capacity AS capacity, CourseOfferings.DaysOfWeek AS days, 
+    CourseOfferings.Time AS time, CourseOfferings.Building AS building, CourseOfferings.Room AS room,
+    (SELECT COUNT(*) FROM Registrations AS Reg WHERE Reg.OfferingID = CourseOfferings.OfferingID) as numberFilled
+    FROM Courses, CourseOfferings, Registrations WHERE CourseOfferings.SemesterID = ? AND Courses.CourseID = CourseOfferings.CourseID 
+    AND Registrations.OfferingID = CourseOfferings.OfferingID AND Registrations.StudentID = ?`;
     con.query(sql, [semesterId, req.session.userId], function (
       err,
       result,
@@ -365,15 +379,17 @@ app.get("/getStudentCoursesBySemester/:semesterId", function (req, res) {
   }
 });
 
+// GET courses available for a given semester
 app.get("/getCoursesBySemester/:semesterId", function (req, res) {
   if (req.session && req.session.loggedIn) {
     var semesterId = req.params.semesterId;
-    var sql =
-      "SELECT CourseOfferings.OfferingID as offeringId, Courses.CourseName AS name, Courses.DeptCode AS deptCode, Courses.CourseNumber AS courseNumber, \
-    CourseOfferings.Professor AS prof, Courses.CreditNumber AS credits, CourseOfferings.DaysOfWeek AS days, \
-    CourseOfferings.Time AS time, CourseOfferings.Building AS building, CourseOfferings.OfferingID as offeringId, CourseOfferings.Room AS room FROM Courses, \
-    CourseOfferings Where CourseOfferings.SemesterID = ? AND Courses.CourseID = CourseOfferings.CourseID";
-    con.query(sql, [semesterId], function (err, result, fields) {
+    var sql = `SELECT CourseOfferings.OfferingID as offeringId, CourseOfferings.Capacity as capacity, 
+    Courses.CourseName AS name, Courses.DeptCode AS deptCode, Courses.CourseNumber AS courseNumber, 
+    CourseOfferings.Professor AS prof, Courses.CreditNumber AS credits, CourseOfferings.DaysOfWeek AS days, 
+    CourseOfferings.Time AS time, CourseOfferings.Building AS building, CourseOfferings.OfferingID as offeringId, CourseOfferings.Room AS room, 
+    (SELECT COUNT(*) FROM Registrations AS Reg WHERE Reg.OfferingID = CourseOfferings.OfferingID) as numberFilled From CourseOfferings, 
+    Courses Where CourseOfferings.SemesterID = ? AND Courses.CourseID = CourseOfferings.CourseID`;
+      con.query(sql, [semesterId], function (err, result, fields) {
       if (err) throw err;
       res.send(JSON.stringify(result));
     });
@@ -382,7 +398,8 @@ app.get("/getCoursesBySemester/:semesterId", function (req, res) {
   }
 });
 
-// POST method to add semester
+// POST method to add course
+// Used on Change Courses page
 app.post("/addCourse", function (req, res) {
   var sql =
     "INSERT INTO Courses (DeptCode, CourseNumber, CourseName, CreditNumber, CourseDescription) VALUES (?, ?, ?, ?, ?)";
@@ -399,6 +416,7 @@ app.post("/addCourse", function (req, res) {
 });
 
 // POST method to edit course
+// Used on Change Courses page
 app.post("/editCourse", function (req, res) {
   var sql =
     "UPDATE Courses SET DeptCode = ?, CourseNumber = ?, CourseName = ?, CreditNumber = ?, CourseDescription =? WHERE CourseID = ?";
@@ -416,6 +434,7 @@ app.post("/editCourse", function (req, res) {
 });
 
 // POST method to delete course
+// Used on Change Courses page
 app.post("/deleteCourse", function (req, res) {
   var sql = "DELETE FROM Courses WHERE CourseID = ?";
   var args = [req.body.id];
@@ -425,6 +444,7 @@ app.post("/deleteCourse", function (req, res) {
 });
 
 // POST method to delete student's registration
+// Used on Build Schedule page
 app.post("/deleteFromSchedule", function (req, res) {
   var sql = "DELETE FROM Registrations WHERE RegistrationID = ?";
   var args = [req.body.id];
@@ -434,6 +454,7 @@ app.post("/deleteFromSchedule", function (req, res) {
 });
 
 // POST method to add to student's registration
+// Used on Build Schedule page
 app.post("/addToSchedule", function (req, res) {
   var sql = "INSERT INTO Registrations (StudentID, OfferingID) VALUES (?,?)";
   var args = [req.session.userId, req.body.id];
@@ -443,6 +464,7 @@ app.post("/addToSchedule", function (req, res) {
 });
 
 // POST method to delete course offering
+// Used on Change Courses page
 app.post("/deleteOffering", function (req, res) {
   var sql = "DELETE FROM CourseOfferings WHERE OfferingID = ?";
   var args = [req.body.id];
@@ -452,6 +474,7 @@ app.post("/deleteOffering", function (req, res) {
 });
 
 // POST method to edit offering
+// Use on Change Courses page
 app.post("/editOffering", function (req, res) {
   var sql =
     "UPDATE CourseOfferings SET Professor = ?, SemesterID = ?, DaysOfWeek = ?, Time = ?, Building = ?, Room =? WHERE OfferingID = ?";
@@ -470,6 +493,7 @@ app.post("/editOffering", function (req, res) {
 });
 
 // POST method to add offering
+// Used on Change Courses page
 app.post("/addOffering", function (req, res) {
   var sql =
     "INSERT INTO CourseOfferings (CourseID, SemesterID, Professor, DaysOfWeek, Time, Building, Room) VALUES (?,?,?,?,?,?,?)";

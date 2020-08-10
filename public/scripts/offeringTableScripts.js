@@ -1,7 +1,7 @@
 // File that contains functions to retrieve offerings and shows offerings in tables
 
 // Get courses taken for specific student for specific semester using AJAX
-function retrieveOfferingsForSemesterAndUser(semesterId, tables, editOptions) {
+function retrieveOfferingsForSemesterAndUser(semesterId, tables, editOptions, offeringType) {
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -9,7 +9,7 @@ function retrieveOfferingsForSemesterAndUser(semesterId, tables, editOptions) {
       var offerings = JSON.parse(xhr.responseText);
       // Add to offerings correct table
       var tableId = tables.userOfferingTable;
-      addOfferingsToTable(offerings, tableId, editOptions);
+      addOfferingsToTable(offerings, tableId, editOptions, offeringType);
     }
   };
   xhr.open("GET", "/getStudentCoursesBySemester/" + semesterId, true);
@@ -17,7 +17,7 @@ function retrieveOfferingsForSemesterAndUser(semesterId, tables, editOptions) {
 }
 
 // Get courses offered for a given semester from database using AJAX
-function retrieveOfferingsForSemester(semesterId, tables, editOptions) {
+function retrieveOfferingsForSemester(semesterId, tables, editOptions, offeringType) {
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -25,7 +25,7 @@ function retrieveOfferingsForSemester(semesterId, tables, editOptions) {
       var offerings = JSON.parse(xhr.responseText);
       // Add offerings to correct table
       var tableId = tables.availableOfferingTable;
-      addOfferingsToTable(offerings, tableId, editOptions);
+      addOfferingsToTable(offerings, tableId, editOptions, offeringType);
     }
   };
   xhr.open("GET", "/getCoursesBySemester/" + semesterId, true);
@@ -33,7 +33,7 @@ function retrieveOfferingsForSemester(semesterId, tables, editOptions) {
 }
 
 // Create a row for each offering in offerings
-function addOfferingsToTable(offerings, tableId, editOptions) {
+function addOfferingsToTable(offerings, tableId, editOptions, offeringType) {
   if (offerings.length > 0) {
     // Access the table
     var table = $(`#${tableId}`);
@@ -43,7 +43,7 @@ function addOfferingsToTable(offerings, tableId, editOptions) {
     for (i = 0; i < offerings.length; i++) {
       offering = offerings[i];
       // Create a row and add it to the table specified
-      createOfferingRow(offering, table, editOptions);
+      createOfferingRow(offering, table, editOptions, offeringType);
     }
   }
 }
@@ -83,6 +83,15 @@ function createOfferingRow(offering, table, editOptions) {
     offeringOutput += `<td id='location${id}'>${offering.building} ${offering.room}</td>`;
   }
 
+   // Show capacity and sears filled if course is shown as available and not for specific student
+   if (offeringType.isSemesterOffering) {
+    offeringOutput += `<td id='code${id}'>${offering.capacity}</td>`;
+    // Can't edit number of seats filled
+    if (!editOptions.edit) {
+      offeringOutput += `<td id='code${id}'>${offering.numberFilled}</td>`;
+    }
+  }
+
   // Show add, edit, and delete icons if they are appropriate
   if (editOptions.delete && editOptions.edit) {
     offeringOutput +=
@@ -90,9 +99,14 @@ function createOfferingRow(offering, table, editOptions) {
   } else if (editOptions.delete) {
     offeringOutput +=
       "<td><span class='deleteOffering glyphicon glyphicon-trash'></span> </td>";
-  } else if (editOptions.add) {
+  } 
+  // Can't add course if already full
+  else if (editOptions.add && !(offeringType.isSemesterOffering && offering.capacity == offering.numberFilled)) {
     offeringOutput +=
       "<td><span class='addOffering glyphicon glyphicon-plus'></span> </td>";
+  }
+  else if (editOptions.add && (offeringType.isSemesterOffering && offering.capacity == offering.numberFilled)) {
+    offeringOutput += "<td></td>";
   }
   offeringOutput += "</tr>";
 

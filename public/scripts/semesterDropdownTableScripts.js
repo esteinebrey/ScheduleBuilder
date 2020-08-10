@@ -8,14 +8,15 @@ function onSelect(dropdown, offeringType, tables, editOptions) {
   if (semesterSelected !== -1) {
     // Get rid of offerings displayed
     removeOfferingsAlreadyShown();
-    $("option#defaultOption").css("display", "none"); // TODO - Look at if this is needed
+    $("option#defaultOption").css("display", "none"); 
     // Retrieve the offerings
     // Get offerings that student is taking
     if (offeringType.isUserOffering) {
       retrieveOfferingsForSemesterAndUser(
         semesterSelected,
         tables,
-        editOptions.userOffering
+        editOptions.userOffering,
+        offeringType
       );
     }
     // Get the available offerings
@@ -23,7 +24,8 @@ function onSelect(dropdown, offeringType, tables, editOptions) {
       retrieveOfferingsForSemester(
         semesterSelected,
         tables,
-        editOptions.semesterOffering
+        editOptions.semesterOffering,
+        offeringType
       );
     }
   }
