@@ -105,10 +105,10 @@ function createOfferingRow(offering, table, editOptions) {
 
    // Show capacity and sears filled if course is shown as available and not for specific student
    if (offeringType.isSemesterOffering || offeringType.isNotUserOffering) {
-    offeringOutput += `<td id='code${id}'>${offering.capacity}</td>`;
+    offeringOutput += `<td id='capacity${id}'>${offering.capacity}</td>`;
     // Can't edit number of seats filled
     if (!editOptions.edit) {
-      offeringOutput += `<td id='code${id}'>${offering.numberFilled}</td>`;
+      offeringOutput += `<td id='numberFilled${id}'>${offering.numberFilled}</td>`;
     }
   }
 
