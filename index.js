@@ -172,11 +172,13 @@ app.post("/addUser", function (req, res) {
 // POST method to delete user on Admin page
 app.post("/deleteUser", function (req, res) {
   // Delete the user with the specified ID
-  var sql = "DELETE FROM Users WHERE UserID = ?";
-  var args = [req.body.id];
-  con.query(sql, args, function (err, result, fields) {
-    res.sendStatus(200);
-  });
+  if (req.session.userId != req.body.id) {
+    var sql = "DELETE FROM Users WHERE UserID = ?";
+    var args = [req.body.id];
+    con.query(sql, args, function (err, result, fields) {
+      res.sendStatus(200);
+    });
+  }
 });
 
 // POST method to validate user login
@@ -359,8 +361,7 @@ app.get("/getStudentSemesters", function (req, res) {
 app.get("/getStudentCoursesBySemester/:semesterId", function (req, res) {
   if (req.session && req.session.loggedIn) {
     var semesterId = req.params.semesterId;
-    var sql =
-      `SELECT Registrations.RegistrationID as registrationId, Courses.CourseName AS name, Courses.DeptCode AS deptCode, Courses.CourseNumber AS courseNumber, 
+    var sql = `SELECT Registrations.RegistrationID as registrationId, Courses.CourseName AS name, Courses.DeptCode AS deptCode, Courses.CourseNumber AS courseNumber, 
     CourseOfferings.Professor AS prof, Courses.CreditNumber AS credits, CourseOfferings.Capacity AS capacity, CourseOfferings.DaysOfWeek AS days, 
     CourseOfferings.Time AS time, CourseOfferings.Building AS building, CourseOfferings.Room AS room,
     (SELECT COUNT(*) FROM Registrations AS Reg WHERE Reg.OfferingID = CourseOfferings.OfferingID) as numberFilled
@@ -383,13 +384,12 @@ app.get("/getStudentCoursesBySemester/:semesterId", function (req, res) {
 app.get("/getNonStudentCoursesBySemester/:semesterId", function (req, res) {
   if (req.session && req.session.loggedIn) {
     var semesterId = req.params.semesterId;
-    var sql =
-    `SELECT DISTINCT Courses.CourseName AS name, CourseOfferings.OfferingID AS offeringId, Courses.DeptCode AS deptCode, Courses.CourseNumber AS courseNumber, 
+    var sql = `SELECT DISTINCT Courses.CourseName AS name, CourseOfferings.OfferingID AS offeringId, Courses.DeptCode AS deptCode, Courses.CourseNumber AS courseNumber, 
     CourseOfferings.Professor AS prof, Courses.CreditNumber AS credits, CourseOfferings.Capacity AS capacity, CourseOfferings.DaysOfWeek AS days, 
     CourseOfferings.Time AS time, CourseOfferings.Building AS building, CourseOfferings.Room AS room,
     (SELECT COUNT(*) FROM Registrations AS Reg WHERE Reg.OfferingID = CourseOfferings.OfferingID) as numberFilled
     FROM Courses, CourseOfferings, Registrations WHERE CourseOfferings.SemesterID = ? AND Courses.CourseID = CourseOfferings.CourseID 
-    AND NOT EXISTS (SELECT * FROM Registrations WHERE Registrations.StudentID = ? AND Registrations.OfferingID = CourseOfferings.OfferingID);`
+    AND NOT EXISTS (SELECT * FROM Registrations WHERE Registrations.StudentID = ? AND Registrations.OfferingID = CourseOfferings.OfferingID);`;
 
     con.query(sql, [semesterId, req.session.userId], function (
       err,
@@ -414,7 +414,7 @@ app.get("/getCoursesBySemester/:semesterId", function (req, res) {
     CourseOfferings.Time AS time, CourseOfferings.Building AS building, CourseOfferings.OfferingID as offeringId, CourseOfferings.Room AS room, 
     (SELECT COUNT(*) FROM Registrations AS Reg WHERE Reg.OfferingID = CourseOfferings.OfferingID) as numberFilled From CourseOfferings, 
     Courses Where CourseOfferings.SemesterID = ? AND Courses.CourseID = CourseOfferings.CourseID`;
-      con.query(sql, [semesterId], function (err, result, fields) {
+    con.query(sql, [semesterId], function (err, result, fields) {
       if (err) throw err;
       res.send(JSON.stringify(result));
     });
@@ -511,7 +511,7 @@ app.post("/editOffering", function (req, res) {
     req.body.building,
     req.body.room,
     req.body.capacity,
-    req.body.id
+    req.body.id,
   ];
   con.query(sql, args, function (err, result, fields) {
     res.redirect("/changeCourses");
@@ -531,7 +531,7 @@ app.post("/addOffering", function (req, res) {
     req.body.time,
     req.body.building,
     req.body.room,
-    req.body.capacity
+    req.body.capacity,
   ];
   con.query(sql, args, function (err, result, fields) {
     res.redirect("/changeCourses");
