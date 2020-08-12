@@ -13,6 +13,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="/scripts/navigationBarScript.js"></script>
     <script src="/scripts/adminScripts.js"></script>
+    <link rel="stylesheet" href="/css/scheduleBuilderStyle.css" />
   </head>
 
   <body>
@@ -35,81 +36,106 @@
         </li>
       </ul>
     </div>
-    <h1>Admin</h1>
-    <button id="addButton">
-      <span class="glyphicon glyphicon-plus"></span>Add User
-    </button>
-    <div class="w3-container">
-      <div id="addEditModal" class="w3-modal">
-        <div class="w3-modal-content">
-          <div class="w3-container">
-            <span onclick="" class="addEditCancel w3-button w3-display-topright"
-              >&times;</span
-            >
-            <h1 id="addEditFormTitle">Edit User</h1>
-            <form
-              class="form-group"
-              id="addEditForm"
-              action="/editUser"
-              method="POST"
-            >
-              <input
-                class="form-control"
-                type="hidden"
-                id="userId"
-                name="userId"
-              />
-              <label for="name">Name:</label><br />
-              <input
-                class="form-control"
-                type="text"
-                id="name"
-                name="name"
-                required
-              /><br />
-              <label for="login">Login:</label><br />
-              <input
-                class="form-control"
-                type="text"
-                id="login"
-                name="login"
-                required
-              /><br />
-              <label for="password">Password:</label><br />
-              <input
-                class="form-control"
-                type="password"
-                id="password"
-                name="password"
-              /><br />
-              <label for="userType">Type Of User:</label>
-              <select id="userType" name="userType">
-                <option value="admin">Admin</option>
-                <option value="regular">Regular</option> </select
-              ><br />
-              <input
-                id="addEditButton"
-                class="btn btn-primary"
-                type="submit"
-                value="Update"
-              />
-            </form>
+    <div class="container">
+      <h1>Admin</h1>
+      <button id="addButton">
+        <span class="glyphicon glyphicon-plus"></span>Add User
+      </button>
+      <div class="w3-container">
+        <div id="addEditModal" class="w3-modal">
+          <div class="w3-modal-content">
+            <div class="w3-container">
+              <span
+                onclick=""
+                class="addEditCancel w3-button w3-display-topright"
+                >&times;</span
+              >
+              <h1 id="addEditFormTitle">Edit User</h1>
+              <form
+                class="form-group"
+                id="addEditForm"
+                action="/editUser"
+                method="POST"
+              >
+                <input
+                  class="form-control"
+                  type="hidden"
+                  id="userId"
+                  name="userId"
+                />
+                <div class="form-group">
+                  <label for="name">Name:</label><br />
+                  <input
+                    class="form-control"
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="login">Login:</label><br />
+                  <input
+                    class="form-control"
+                    type="text"
+                    id="login"
+                    name="login"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="password">Password:</label><br />
+                  <input
+                    class="form-control"
+                    type="password"
+                    id="password"
+                    name="password"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <div class="dropdown">
+                    <button
+                      id="userType"
+                      class="btn btn-primary dropdown-toggle"
+                      type="button"
+                      data-toggle="dropdown"
+                    >
+                      Type of User <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdownCenter">
+                      <li class="dropdownAlignment"><a class="dropdown-item" href="#">Admin</a></li>
+                      <div class="dropdown-divider"></div>
+                      <li class="dropdownAlignment"><a class="dropdown-item" href="#">Regular</a></li>
+                    </ul>
+                  </div>
+                </div>
+
+                <input
+                  id="addEditButton"
+                  class="btn btn-primary"
+                  type="submit"
+                  value="Update"
+                />
+              </form>
+            </div>
           </div>
         </div>
       </div>
+      <table class="table table-hover table-condensed" id="adminTable">
+        <thead>
+          <tr>
+            <th scope="col" class="text-center">Name</th>
+            <th scope="col" class="text-center">Login</th>
+            <th scope="col" class="text-center">Password</th>
+            <th scope="col" class="text-center">Admin</th>
+            <th scope="col" class="text-center">Edit/Delete</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
     </div>
-    <table class="table" id="adminTable">
-      <thead>
-        <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Login</th>
-          <th scope="col">Password</th>
-          <th scope="col">Admin</th>
-          <th scope="col">Edit/Delete</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
   </body>
   <script>
     window.addEventListener("load", retrieveUsers, false);
