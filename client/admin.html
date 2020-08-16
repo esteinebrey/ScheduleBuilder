@@ -38,7 +38,13 @@
     </div>
     <div class="container">
       <h1>Admin</h1>
-      <button id="addButton">
+      <div id="deletion-error-message" class="alert alert-danger">
+        <p>Error: Cannot delete current user</p>
+      </div>
+      <div id="username-error-message" class="alert alert-danger">
+        <p>Error: Username must be unique</p>
+      </div>
+      <button id="addButton" class="btn btn-primary">
         <span class="glyphicon glyphicon-plus"></span>Add User
       </button>
       <div class="w3-container">
@@ -94,20 +100,27 @@
                   />
                 </div>
 
+                <input id="userType" name="userType" type="hidden" />
+
                 <div class="form-group">
-                  <div class="dropdown">
+                  <div id="modalTypeDropdown" class="dropdown">
+                    Type of User:
                     <button
                       id="userType"
-                      class="btn btn-primary dropdown-toggle"
+                      class="btn btn-default dropdown-toggle"
                       type="button"
                       data-toggle="dropdown"
                     >
                       Type of User <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu dropdownCenter">
-                      <li class="dropdownAlignment"><a class="dropdown-item" href="#">Admin</a></li>
+                      <li class="dropdownAlignment">
+                        <a class="dropdown-item" href="#">Admin</a>
+                      </li>
                       <div class="dropdown-divider"></div>
-                      <li class="dropdownAlignment"><a class="dropdown-item" href="#">Regular</a></li>
+                      <li class="dropdownAlignment">
+                        <a class="dropdown-item" href="#">Student</a>
+                      </li>
                     </ul>
                   </div>
                 </div>

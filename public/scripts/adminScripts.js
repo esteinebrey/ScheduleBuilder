@@ -3,8 +3,51 @@
 
 // Admin Modal Scripts
 $(document).ready(function () {
-  // Modal is originally invisible
-  $("#addEditModal").css("display", "none");
+  // Modal and error messages are originally invisible
+  $("#addEditModal").css({ display: "none" });
+  $("#deletion-error-message").css({ display: "none" });
+  $("#username-error-message").css({ display: "none" });
+
+  // Use AJAX to submit form in the modal
+  $("#addEditForm").submit(function (e) {
+    // Override the default
+    e.preventDefault();
+    // Get form info
+    var form = $(this);
+    var action = form.attr("action");
+    // Don't show modal anymore
+    $("#addEditModal").css({ display: "none" });
+
+    // Submit form information
+    $.ajax({
+      type: "POST",
+      url: action,
+      data: form.serialize(),
+      success: function (data) {
+        if (data.isLoginTaken) {
+          // Username is already taken error should show
+          $("#deletion-error-message").css({ display: "none" });
+          $("#username-error-message").css({ display: "block" });
+        } else {
+          // It worked, so don't show error messages
+          $("#deletion-error-message").css({ display: "none" });
+          $("#username-error-message").css({ display: "none" });
+        }
+        // Get the entries again
+        $("#adminTable tbody").empty();
+        retrieveUsers();
+      },
+    });
+  });
+
+  // Show the dropdown option clicked for type of user in modal
+  $("#modalTypeDropdown .dropdown-item").on("click", function () {
+    $("#modalTypeDropdown button").html(
+      $(this).text() + ' <span class="caret"></span>'
+    );
+    // Set hidden input for user type so can access on form submit
+    $("input#userType").val($(this).text().toLowerCase());
+  });
 
   // Function for deleting user from Schedule Builder
   $(document).on("click", ".delete", function () {
@@ -16,8 +59,22 @@ $(document).ready(function () {
       type: "POST",
       data: { id: userId },
       dataType: "json",
+    }).done(function (data) {
+      if (data.isDeleted) {
+        // Not deleting current user and deletion worked
+        // No error messages should show
+        $("#deletion-error-message").css({ display: "none" });
+        $("#username-error-message").css({ display: "none" });
+      } else {
+        // Deletion did not work so show deletion error message
+        // Do not show username error message
+        $("#deletion-error-message").css({ display: "block" });
+        $("#username-error-message").css({ display: "none" });
+      }
+      // Get the entries again
+      $("#adminTable tbody").empty();
+      retrieveUsers();
     });
-    location.reload();
   });
 
   // Function for editing user to Schedule Builder
@@ -39,15 +96,15 @@ $(document).ready(function () {
     $("form#addEditForm input#login").val($(`#login${id}`).html());
     // Take 'true' or 'false' to indicate if user is admin and form dropdown on modal
     if ($(`#isAdmin${id}`).html() == "true") {
-      $("form#addEditForm select#userType option[value='admin']").attr(
-        "selected",
-        true
-      );
+      $("#modalTypeDropdown button").html('Admin <span class="caret"></span>');
+      // Set hidden input for user type so can access on form submit
+      $("input#userType").val("admin");
     } else {
-      $("form#addEditForm select#userType option[value='regular']").attr(
-        "selected",
-        true
+      $("#modalTypeDropdown button").html(
+        'Student <span class="caret"></span>'
       );
+      // Set hidden input for user type so can access on form submit
+      $("input#userType").val("student");
     }
   };
 
@@ -55,6 +112,7 @@ $(document).ready(function () {
   showEditModal = () => {
     $("h1#addEditFormTitle").html("Edit User");
     $("#addEditButton").val("Update User");
+
     $("#addEditForm").attr("action", "/editUser");
     $("form#addEditForm input#password").prop("required", false);
   };
@@ -66,6 +124,10 @@ $(document).ready(function () {
     // Pre-populate form with blank values
     $("form#addEditForm input#name").val("");
     $("form#addEditForm input#login").val("");
+    $("form#addEditForm input#password").val("");
+    // Set up dropdown pre-selected option as student
+    $("#modalTypeDropdown button").html('Student <span class="caret"></span>');
+    $("input#userType").val("student");
     // Update the add/edit modal so it is for add
     showAddModal();
   });

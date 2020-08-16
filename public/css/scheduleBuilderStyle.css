@@ -20,3 +20,7 @@
 .dropdownCenter {
     text-align:center;
 }
+
+#modalTypeDropdown {
+    font-weight: bold;
+}

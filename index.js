@@ -125,29 +125,43 @@ app.get("/login", function (req, res) {
 
 // POST method to edit user on Admin page
 app.post("/editUser", function (req, res) {
-  // Change type of user from admin or not to 1 or 0
-  var isAdmin = req.body.userType == "admin" ? 1 : 0;
-  var sql;
-  var args = [req.body.login, req.body.name, isAdmin];
-  // Don't change the password if a new one isn't sent (password not required on Edit User modal)
-  if (req.body.password == "") {
-    sql =
-      "UPDATE Users SET UserLogin = ?, UserName = ?, isAdmin = ? WHERE UserID = ?";
-  } else {
-    sql =
-      "UPDATE Users SET UserLogin = ?, UserName = ?, isAdmin = ?, UserPassword = ? WHERE UserID = ?";
-    var hashed_pwd = crypto
-      .createHash("sha256")
-      .update(req.body.password)
-      .digest("base64");
-    args.push(hashed_pwd);
-  }
-  id = parseInt(req.body.userId);
-  args.push(id);
-  // Use sql statement found and arguments array
-  con.query(sql, args, function (err, result, fields) {
-    // Redirect to show updated page
-    res.redirect("/admin");
+  var loginSql = "SELECT * FROM Users WHERE UserLogin = ? AND UserID <> ?";
+  con.query(loginSql, [req.body.login, parseInt(req.body.userId)], function (
+    err,
+    result,
+    fields
+  ) {
+    if (err) throw error;
+    // Login is already in table
+    if (result.length !== 0) {
+      res.json({ isLoginTaken: true });
+    } else {
+      // Login is not already in table
+      // Change type of user from admin or not to 1 or 0 that is stored in table
+      var isAdmin = req.body.userType == "admin" ? 1 : 0;
+      var sql;
+      var args = [req.body.login, req.body.name, isAdmin];
+      // Don't change the password if a new one isn't sent (password not required on Edit User modal)
+      if (req.body.password == "") {
+        sql =
+          "UPDATE Users SET UserLogin = ?, UserName = ?, isAdmin = ? WHERE UserID = ?";
+      } else {
+        sql =
+          "UPDATE Users SET UserLogin = ?, UserName = ?, isAdmin = ?, UserPassword = ? WHERE UserID = ?";
+        var hashed_pwd = crypto
+          .createHash("sha256")
+          .update(req.body.password)
+          .digest("base64");
+        args.push(hashed_pwd);
+      }
+      id = parseInt(req.body.userId);
+      args.push(id);
+      // Use sql statement found and arguments array
+      con.query(sql, args, function (err, result, fields) {
+        // Send that it worked
+        res.json({ isLoginTaken: false });
+      });
+    }
   });
 });
 
@@ -160,12 +174,25 @@ app.post("/addUser", function (req, res) {
     .createHash("sha256")
     .update(req.body.password)
     .digest("base64");
-  // Insert information into Users table
-  var sql =
-    "INSERT INTO Users (UserLogin, UserName, UserPassword, isAdmin) VALUES (?, ?, ?, ?)";
-  var args = [req.body.login, req.body.name, hashed_pwd, isAdmin];
-  con.query(sql, args, function (err, result, fields) {
-    res.redirect("/admin");
+  // Check if user login already in table
+  // Only one user can have a given user login
+  var loginSql = "SELECT * FROM Users WHERE UserLogin = ?";
+  con.query(loginSql, [req.body.login], function (err, result, fields) {
+    if (err) throw error;
+    // Login is already in table
+    if (result.length !== 0) {
+      res.json({ isLoginTaken: true });
+    } else {
+      // Login is not already in table
+      // Insert information into Users table
+      var sql =
+        "INSERT INTO Users (UserLogin, UserName, UserPassword, isAdmin) VALUES (?, ?, ?, ?)";
+      var args = [req.body.login, req.body.name, hashed_pwd, isAdmin];
+      con.query(sql, args, function (err, result, fields) {
+        if (err) throw err;
+        res.json({ isLoginTaken: false });
+      });
+    }
   });
 });
 
@@ -176,8 +203,12 @@ app.post("/deleteUser", function (req, res) {
     var sql = "DELETE FROM Users WHERE UserID = ?";
     var args = [req.body.id];
     con.query(sql, args, function (err, result, fields) {
-      res.sendStatus(200);
+      res.json({ isDeleted: true });
     });
+  }
+  // Error if trying to delete currently logged in user
+  else {
+    res.json({ isDeleted: false });
   }
 });
 
