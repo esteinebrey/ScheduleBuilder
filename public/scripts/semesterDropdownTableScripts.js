@@ -2,47 +2,20 @@
 // functions used when an option is selected in the dropdown,
 // and functions used for semester table in Change Courses page
 
-// Find the corresponding offerings to the option selected in the dropdown
-function onSelect(dropdown, offeringType, tables, editOptions) {
-  var semesterSelected = dropdown.options[dropdown.selectedIndex].value;
-  if (semesterSelected !== -1) {
-    // Get rid of offerings displayed
-    removeOfferingsAlreadyShown();
-    $("option#defaultOption").css("display", "none"); 
-    // Retrieve the offerings
-    // Get offerings that student is taking
-    if (offeringType.isUserOffering) {
-      retrieveOfferingsForSemesterAndUser(
-        semesterSelected,
-        tables,
-        editOptions.userOffering,
-        offeringType
-      );
-    }
-    if (offeringType.isNotUserOffering) {
-      retrieveOfferingsNotForUser(
-        semesterSelected,
-        tables,
-        editOptions.userOffering,
-        offeringType
-      );
-    }
-    // Get the available offerings
-    if (offeringType.isSemesterOffering) {
-      retrieveOfferingsForSemester(
-        semesterSelected,
-        tables,
-        editOptions.semesterOffering,
-        offeringType
-      );
-    }
-  }
-}
-
-// Function so that offerings previously selected are no longer shown
-function removeOfferingsAlreadyShown() {
-  $("#offeringTable tbody tr").remove();
-}
+$(document).ready(function () {
+  // Show the dropdown option clicked for semester in modal
+  $("#viewCoursesSemesterDropdown").on("click", ".dropdown-item", function (event) {
+    $("div.dropdown button").html(
+      $(this).text() + ' <span class="caret"></span>'
+    );
+    var offeringType = { isUserOffering: false, isSemesterOffering: true };
+    var sections = { availableOfferings: "courses" };
+    var editOptions = {
+      semesterOffering: { delete: false, add: false, edit: false, type: "coursesOffered" }
+    };
+    showCourses($(this), offeringType, sections, editOptions);
+  });
+});
 
 // Get all semesters to display in dropdown at the beginning
 function retrieveSemesters() {
@@ -52,7 +25,7 @@ function retrieveSemesters() {
     if (this.readyState == 4 && this.status == 200) {
       // Create JSON object for semesters and process it
       var semesters = JSON.parse(xhr.responseText);
-      var dropdownIds = ["semesterDropdown"];
+      var dropdownIds = ["semesterDropdown", "viewCoursesSemesterDropdown"];
       processSemesterInfo(semesters, dropdownIds);
     }
   };
@@ -113,9 +86,9 @@ function processSemesterInfo(semesters, dropdownIds) {
 // Function to get the semesters to show in dropdown
 function addToSemesterDropdown(semester, dropdownId) {
   var dropdown = $(`#${dropdownId}`);
-  var semesterOutput = `<option value='${semester.semesterId}'>`;
-  semesterOutput += `${semester.season} ${semester.year}`;
-  semesterOutput += "</option>";
+  var semesterOutput = `<li class="semesterOption dropdownAlignment">`;
+  semesterOutput += `<a id="semester${semester.semesterId}" class="dropdown-item" href="#">${semester.season} ${semester.year}</a>`;
+  semesterOutput += `</li>`;
 
   // Add the semester to the dropdown
   dropdown.append(semesterOutput);

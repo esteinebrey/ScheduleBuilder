@@ -1,5 +1,47 @@
 // File that contains functions to retrieve offerings and shows offerings in tables
 
+// Find the corresponding offerings to the option selected in the dropdown
+function onSelect(dropdown, offeringType, tables, editOptions) {
+  var semesterSelected = dropdown.options[dropdown.selectedIndex].value;
+  if (semesterSelected !== -1) {
+    // Get rid of offerings displayed
+    removeOfferingsAlreadyShown();
+    $("option#defaultOption").css("display", "none"); 
+    // Retrieve the offerings
+    // Get offerings that student is taking
+    if (offeringType.isUserOffering) {
+      retrieveOfferingsForSemesterAndUser(
+        semesterSelected,
+        tables,
+        editOptions.userOffering,
+        offeringType
+      );
+    }
+    if (offeringType.isNotUserOffering) {
+      retrieveOfferingsNotForUser(
+        semesterSelected,
+        tables,
+        editOptions.userOffering,
+        offeringType
+      );
+    }
+    // Get the available offerings
+    if (offeringType.isSemesterOffering) {
+      retrieveOfferingsForSemester(
+        semesterSelected,
+        tables,
+        editOptions.semesterOffering,
+        offeringType
+      );
+    }
+  }
+}
+
+// Function so that offerings previously selected are no longer shown
+function removeOfferingsAlreadyShown() {
+  $("#offeringTable tbody tr").remove();
+}
+
 // Get courses taken for specific student for specific semester using AJAX
 function retrieveOfferingsForSemesterAndUser(semesterId, tables, editOptions, offeringType) {
   console.log("student courses");

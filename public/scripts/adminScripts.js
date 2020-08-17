@@ -94,6 +94,7 @@ $(document).ready(function () {
     $("form#addEditForm input#userId").val(id);
     $("form#addEditForm input#name").val($(`#name${id}`).html());
     $("form#addEditForm input#login").val($(`#login${id}`).html());
+    $("form#addEditForm input#password").val("");
     // Take 'true' or 'false' to indicate if user is admin and form dropdown on modal
     if ($(`#isAdmin${id}`).html() == "true") {
       $("#modalTypeDropdown button").html('Admin <span class="caret"></span>');

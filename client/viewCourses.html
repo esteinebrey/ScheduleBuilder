@@ -10,9 +10,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="/scripts/navigationBarScript.js"></script>
-    <script src="/scripts/offeringTableScripts.js"></script>
     <script src="/scripts/semesterDropdownTableScripts.js"></script>
+    <script src="/scripts/offeringPanelScripts.js"></script>
     <script src="/scripts/courseScripts.js"></script>
+    <link rel="stylesheet" href="/css/scheduleBuilderStyle.css" />
     <link rel="stylesheet" href="/css/scheduleStyle.css" />
   </head>
 
@@ -38,55 +39,35 @@
     </div>
     <h1>View Courses</h1>
 
-    <select
+    <div class="container">
+      <div class="dropdown">
+        <button
+          class="btn btn-default dropdown-toggle"
+          type="button"
+          data-toggle="dropdown"
+        >Choose a Semester <span class="caret"></span>
+        </button>
+        <ul id="viewCoursesSemesterDropdown" class="dropdown-menu dropdownCenter">
+        </ul>
+      </div>
+
+    <!--<select
       name="semesters"
       id="semesterDropdown"
-      onChange="showCorrectTable(this); onSelect(this, offeringType, tables, editOptions);"
+      onChange="showCorrectTable(this); onSelect(this, offeringType, sections, editOptions);"
     >
-    </select>
+    </select>-->
     <br />
 
-    <table class="table" id="courseTable">
-      <thead>
-        <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Code</th>
-          <th scope="col">Credits</th>
-          <th scope="col">Description</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    
+    <div id="courses">
+    </div>
+    </div>
 
-    <table class="table" id="offeringTable">
-      <thead>
-        <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Code</th>
-          <th scope="col">Professor</th>
-          <th scope="col">Credits</th>
-          <th scope="col">Days</th>
-          <th scope="col">Time</th>
-          <th scope="col">Location</th>
-          <th scope="col">Capacity</th>
-          <th scope="col">Seats Filled</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </body>
   <script>
-    var offeringType = { isUserOffering: false, isSemesterOffering: true };
-    var tables = { availableOfferingTable: "offeringTable" };
-    var editOptions = {
-      semesterOffering: { delete: false, add: false, edit: false, type: "coursesOffered" }
-    };
-
+    
     var courseOptions = { edit: false, delete: false };
-
-    window.addEventListener("load", function() { retrieveCourses(courseOptions) }, false);
     window.addEventListener("load", retrieveSemesters, false);
-    window.addEventListener("load", determineTableShown, false);
     window.addEventListener("load", setUpDropdown, false);
   </script>
 </html>

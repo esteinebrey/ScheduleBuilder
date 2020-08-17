@@ -29,9 +29,11 @@ function determineTableShown() {
 
 // Set up the dropdown so that it has an option to show All Courses
 function setUpDropdown() {
-  var dropdown = $("#semesterDropdown");
+  var dropdown = $("#viewCoursesSemesterDropdown");
   dropdown.append(
-    '<option value="courses" selected>' + "All Courses" + "</option>"
+    `<li class="semesterOption dropdownAlignment">
+    <a id="allCourses" class="dropdown-item" href="#">All Courses</a>
+    </li>`
   );
 }
 
