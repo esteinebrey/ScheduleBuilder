@@ -14,6 +14,7 @@ $(document).ready(function () {
       semesterOffering: { delete: false, add: false, edit: false, type: "coursesOffered" }
     };
     showCourses($(this), offeringType, sections, editOptions);
+    $('#filterCourses').val("");
   });
 });
 
