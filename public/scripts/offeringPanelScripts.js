@@ -5,7 +5,7 @@ function showCourses(dropdown, offeringType, sections, editOptions) {
   console.log(dropdown);
   semesterSelectedId = dropdown.attr("id");
   console.log(semesterSelectedId);
-  if (semesterSelectedId !== "courses") {
+  if (semesterSelectedId !== "allCourses") {
     // Get rid of offerings displayed
     removeCoursesAlreadyShown();
 
@@ -17,7 +17,7 @@ function showCourses(dropdown, offeringType, sections, editOptions) {
     if (offeringType.isUserOffering) {
       retrieveOfferingsForSemesterAndUser(
         semesterSelected,
-        tables,
+        sections,
         editOptions.userOffering,
         offeringType
       );
@@ -25,7 +25,7 @@ function showCourses(dropdown, offeringType, sections, editOptions) {
     if (offeringType.isNotUserOffering) {
       retrieveOfferingsNotForUser(
         semesterSelected,
-        tables,
+        sections,
         editOptions.userOffering,
         offeringType
       );
@@ -40,7 +40,8 @@ function showCourses(dropdown, offeringType, sections, editOptions) {
       );
     }
   } else {
-    // retrieve courses
+      console.log("going to retrieve courses");
+    retrieveCourses();
   }
 }
 
@@ -60,20 +61,24 @@ function retrieveOfferingsForSemester(
     if (this.readyState == 4 && this.status == 200) {
       // Create offerings object
       var offerings = JSON.parse(xhr.responseText);
-      // Add offerings to correct table
-      console.log(sections.availableOfferings);
+      // Add offerings to correct section
       var sectionId = sections.availableOfferings;
-      addOfferingsToTable(offerings, sectionId, editOptions, offeringType);
+      addOfferingsToSection(offerings, sectionId, editOptions, offeringType);
     }
   };
   xhr.open("GET", "/getCoursesBySemester/" + semesterId, true);
   xhr.send();
 }
 
-// Create a row for each offering in offerings
-function addOfferingsToTable(offerings, sectionId, editOptions, offeringType) {
+// Create a panel for each offering in offerings
+function addOfferingsToSection(
+  offerings,
+  sectionId,
+  editOptions,
+  offeringType
+) {
   if (offerings.length > 0) {
-    // Access the table
+    // Access the section
     console.log("section id");
     console.log(sectionId);
     var section = $(`#${sectionId}`);
@@ -82,15 +87,15 @@ function addOfferingsToTable(offerings, sectionId, editOptions, offeringType) {
     // Loop through offerings retrieved
     for (i = 0; i < offerings.length; i++) {
       offering = offerings[i];
-      // Create a row and add it to the table specified
+      // Create a panel to represent the offering
       createOfferingPanel(offering, section, editOptions, offeringType);
     }
   }
 }
 
-// Function to create row in offerings table
+// Function to create an offering panel and show it
 function createOfferingPanel(offering, section, editOptions, offeringType) {
-    console.log("create offering panel");
+  console.log("create offering panel");
   // Determine the ID for the offering row
   var id =
     editOptions.type === "studentSchedule"
@@ -103,8 +108,8 @@ function createOfferingPanel(offering, section, editOptions, offeringType) {
     <p>${offering.credits} credits</p>
     <p>${offering.days} ${offering.time}</p>
     <p>${offering.building} ${offering.room}</p>`;
-    offeringOutput += `</div`;
-    offeringOutput += `<div class="panel-footer">`;
+  offeringOutput += `</div`;
+  offeringOutput += `<div class="panel-footer">`;
 
   // Show capacity and seats filled if course is shown as available and not for specific student
   if (offeringType.isSemesterOffering || offeringType.isNotUserOffering) {
@@ -126,11 +131,11 @@ function createOfferingPanel(offering, section, editOptions, offeringType) {
   ) {
     offeringOutput +=
       "<span class='addOffering glyphicon glyphicon-plus'></span>";
-  } 
+  }
   offeringOutput += `</div>`;
   console.log(section);
   console.log(offeringOutput);
 
-  // Add the row to the table
+  // Add the panel to section
   section.append(offeringOutput);
 }

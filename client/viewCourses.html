@@ -12,7 +12,7 @@
     <script src="/scripts/navigationBarScript.js"></script>
     <script src="/scripts/semesterDropdownTableScripts.js"></script>
     <script src="/scripts/offeringPanelScripts.js"></script>
-    <script src="/scripts/courseScripts.js"></script>
+    <script src="/scripts/coursePanelScripts.js"></script>
     <link rel="stylesheet" href="/css/scheduleBuilderStyle.css" />
     <link rel="stylesheet" href="/css/scheduleStyle.css" />
   </head>
@@ -59,14 +59,11 @@
     </select>-->
     <br />
 
-    
     <div id="courses">
     </div>
     </div>
 
   <script>
-    
-    var courseOptions = { edit: false, delete: false };
     window.addEventListener("load", retrieveSemesters, false);
     window.addEventListener("load", setUpDropdown, false);
   </script>
