@@ -45,18 +45,12 @@
           class="btn btn-default dropdown-toggle"
           type="button"
           data-toggle="dropdown"
-        >Choose a Semester <span class="caret"></span>
+        >All Courses <span class="caret"></span>
         </button>
         <ul id="viewCoursesSemesterDropdown" class="dropdown-menu dropdownCenter">
         </ul>
       </div>
 
-    <!--<select
-      name="semesters"
-      id="semesterDropdown"
-      onChange="showCorrectTable(this); onSelect(this, offeringType, sections, editOptions);"
-    >
-    </select>-->
     <br />
 
     <div id="courses">
@@ -65,6 +59,7 @@
 
   <script>
     window.addEventListener("load", retrieveSemesters, false);
+    window.addEventListener("load", retrieveCourses, false);
     window.addEventListener("load", setUpDropdown, false);
   </script>
 </html>

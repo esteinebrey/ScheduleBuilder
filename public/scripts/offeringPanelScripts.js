@@ -1,14 +1,12 @@
 // Offering scripts for pages that use panels instead of tables to display it
 
 function showCourses(dropdown, offeringType, sections, editOptions) {
-  console.log("show courses");
-  console.log(dropdown);
+  // Determine the semester selected
   semesterSelectedId = dropdown.attr("id");
-  console.log(semesterSelectedId);
-  if (semesterSelectedId !== "allCourses") {
-    // Get rid of offerings displayed
-    removeCoursesAlreadyShown();
+  // Get rid of offerings displayed
+  removeCoursesAlreadyShown();
 
+  if (semesterSelectedId !== "allCourses") {
     // Determine which semester is selected
     semesterSelected = semesterSelectedId.replace("semester", "");
 
@@ -40,7 +38,7 @@ function showCourses(dropdown, offeringType, sections, editOptions) {
       );
     }
   } else {
-      console.log("going to retrieve courses");
+    // Retrieve courses if 'All Courses' option selected
     retrieveCourses();
   }
 }
@@ -79,8 +77,6 @@ function addOfferingsToSection(
 ) {
   if (offerings.length > 0) {
     // Access the section
-    console.log("section id");
-    console.log(sectionId);
     var section = $(`#${sectionId}`);
     var i;
     var offering;
@@ -95,25 +91,43 @@ function addOfferingsToSection(
 
 // Function to create an offering panel and show it
 function createOfferingPanel(offering, section, editOptions, offeringType) {
-  console.log("create offering panel");
   // Determine the ID for the offering row
   var id =
     editOptions.type === "studentSchedule"
       ? offering.registrationId
       : offering.offeringId;
+
+  // Determine the color of the panel
+  // Show offering is filled by making it red
+  var bodyColor;
+  var headingColor;
+  if (offering.capacity <= offering.numberFilled) {
+    bodyColor = "bg-danger";
+    headingColor = "panel-heading-red";
+  }
+  // Show offering is almost full by making it yellow
+  else if (offering.capacity - 5 <= offering.numberFilled) {
+    bodyColor = "bg-warning";
+    headingColor = "panel-heading-yellow";
+  }
+  // Show offering has room by making it green
+  else {
+    bodyColor = "bg-success";
+    headingColor = "panel-heading-green";
+  }
+  // Create panel for offering
   var offeringOutput = `<div class='panel panel-default ${editOptions.type}${id}'>`;
-  offeringOutput += `<div class="panel-heading">${offering.deptCode} ${offering.courseNumber}: ${offering.name}</div>`;
-  offeringOutput += `<div class="panel-body">
-    <p>Professor ${offering.prof}</p>
-    <p>${offering.credits} credits</p>
-    <p>${offering.days} ${offering.time}</p>
-    <p>${offering.building} ${offering.room}</p>`;
+  offeringOutput += `<div class="panel-heading ${headingColor}">${offering.deptCode} ${offering.courseNumber}: ${offering.name} (${offering.credits} credits)</div>`;
+  offeringOutput += `<div class="panel-body ${bodyColor}">
+    <p><span class="offeringLabel">Instructor:</span> ${offering.prof}</p>
+    <p><span class="offeringLabel">Meeting Times:</span> ${offering.days} ${offering.time}</p>
+    <p><span class="offeringLabel">Location:</span> ${offering.building} ${offering.room}</p>`;
   offeringOutput += `</div`;
   offeringOutput += `<div class="panel-footer">`;
 
   // Show capacity and seats filled if course is shown as available and not for specific student
   if (offeringType.isSemesterOffering || offeringType.isNotUserOffering) {
-    offeringOutput += `<p>${offering.numberFilled} seat(s) filled out of ${offering.capacity} </p>`;
+    offeringOutput += `<p class="rightAlign">${offering.numberFilled} seat(s) filled out of ${offering.capacity} </p>`;
   }
 
   // Show add and delete icons if they are appropriate
@@ -133,9 +147,6 @@ function createOfferingPanel(offering, section, editOptions, offeringType) {
       "<span class='addOffering glyphicon glyphicon-plus'></span>";
   }
   offeringOutput += `</div>`;
-  console.log(section);
-  console.log(offeringOutput);
-
   // Add the panel to section
   section.append(offeringOutput);
 }

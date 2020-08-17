@@ -44,13 +44,11 @@ function removeOfferingsAlreadyShown() {
 
 // Get courses taken for specific student for specific semester using AJAX
 function retrieveOfferingsForSemesterAndUser(semesterId, tables, editOptions, offeringType) {
-  console.log("student courses");
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       // Create offerings object
       var offerings = JSON.parse(xhr.responseText);
-      console.log(offerings);
       // Add to offerings correct table
       var tableId = tables.userOfferingTable;
       addOfferingsToTable(offerings, tableId, editOptions, offeringType);
@@ -62,13 +60,11 @@ function retrieveOfferingsForSemesterAndUser(semesterId, tables, editOptions, of
 
 // Get courses for a specific semester that a specific student has not taken
 function retrieveOfferingsNotForUser(semesterId, tables, editOptions, offeringType) {
-  console.log("not for user");
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       // Create offerings object
       var offerings = JSON.parse(xhr.responseText);
-      console.log(offerings);
       // Add to offerings correct table
       var tableId = tables.availableOfferingTable;
       addOfferingsToTable(offerings, tableId, editOptions, offeringType);

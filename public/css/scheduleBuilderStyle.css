@@ -24,3 +24,37 @@
 #modalTypeDropdown {
     font-weight: bold;
 }
+
+/* viewCourses.html
+*/
+.panel > .panel-heading-green {
+    background-color: rgba(34, 139, 34, 0.3); /* green */
+    color: black;
+    font-weight: bold;
+}
+
+.panel > .panel-heading-yellow {
+    background-color: rgba(218, 218, 11, 0.3); /* yellow */
+    color: black;
+    font-weight: bold;
+}
+
+.panel > .panel-heading-red {
+    background-color: rgba(138, 7, 7, 0.3); /* red */
+    color: black;
+    font-weight: bold;
+}
+
+.panel > .panel-heading-blue {
+    background-color: rgba(33, 129, 194, 0.3); /* blue */
+    color: black;
+    font-weight: bold;
+}
+
+.offeringLabel {
+    font-weight: bold;
+}
+
+.rightAlign {
+    float: right;
+}

@@ -12,7 +12,6 @@ function setUpDropdown() {
 
 // Get all the courses to display
 function retrieveCourses() {
-  console.log("retrieve courses");
   // Create XMLHttpRequest
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
@@ -38,11 +37,9 @@ function retrieveCourses() {
 
 // Create a panel for the specified course and add it to the section
 function createCoursePanel(course, section) {
-  console.log(course);
-  console.log(section);
   var courseOutput = `<div class='panel panel-default course${course.courseId}'>`;
-  courseOutput += `<div class="panel-heading">${course.deptCode} ${course.courseNumber}: ${course.name}</div>`;
-  courseOutput += `<div class="panel-body"><p>${course.credits} credits</p><p>${course.description}</p></div>`;
+  courseOutput += `<div class="panel-heading panel-heading-blue">${course.deptCode} ${course.courseNumber}: ${course.name}</div>`;
+  courseOutput += `<div class="panel-body bg-info"><p>${course.credits} credits</p><p>${course.description}</p></div>`;
   courseOutput += "</div>";
 
   // Add the row to the table
