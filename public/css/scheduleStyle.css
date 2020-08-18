@@ -18,7 +18,7 @@ h1 {
   width: 83%;
 }
 
-#navigation_bar {
+#navigationBar {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -26,11 +26,13 @@ h1 {
   overflow: hidden;
 }
 
-li {
+/* Used by main navigation bar */
+
+li.mainNavBarItem {
   float: left;
 }
 
-li a {
+li.mainNavBarItem a {
   display: block;
   color: white;
   text-decoration: none;
@@ -38,7 +40,7 @@ li a {
   padding: 14px 16px;
 }
 
-li a:hover {
+li.mainNavBarItem a:hover {
   background-color: maroon;
   color: gold;
 }

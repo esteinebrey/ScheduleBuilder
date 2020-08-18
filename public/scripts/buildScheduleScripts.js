@@ -1,31 +1,89 @@
 // File that contains functions for Build Schedule page to add to and delete from schedule
 
 $(document).ready(function () {
+  // General information for the page
+  var offeringType = {
+    isUserOffering: true,
+    isSemesterOffering: false,
+    isNotUserOffering: true,
+  };
+  var sections = {
+    userOfferings: "registeredCourses",
+    availableOfferings: "possibleCourses",
+  };
+  var editOptions = {
+    semesterOffering: { delete: false, add: true, type: "coursesOffered" },
+    userOffering: { delete: true, add: false, type: "studentSchedule" },
+  };
+  // Hide the content until a semester is chosen
+  $("#buildScheduleContent").hide();
+
   // Function from deleting course from schedule
   $(document).on("click", ".deleteOffering", function () {
     // Get the registration ID for the record that indicates the student is taking the course
-    var rowId = $(this).parentsUntil("tbody").last().attr("class");
-    var registrationId = rowId.replace("offeringRow", "");
+    var registrationClass = $(this)
+      .parentsUntil("div#registeredCourses")
+      .last()
+      .attr("class");
+
+    var registrationId = registrationClass.replace(
+      "panel panel-default studentSchedule",
+      ""
+    );
     $.ajax({
       url: "/deleteFromSchedule",
       type: "POST",
       data: { id: registrationId },
       dataType: "json",
     });
-    location.reload();
+    // Show success message and reload courses
+    $(
+      "div#successMessages"
+    ).append(`<div class="deleteCourseSuccessMessage alert alert-success alert-dismissible">
+    Course successfully deleted!
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>`);
+    showCourses(
+      $("#buildScheduleSemesterDropdown").val(),
+      offeringType,
+      sections,
+      editOptions
+    );
   });
 
   // Function for adding course to student schedule
   $(document).on("click", ".addOffering", function () {
     // Get the offering ID of the course to add to student's schedule
-    var rowId = $(this).parentsUntil("tbody").last().attr("class");
-    var offeringId = rowId.replace("offeringRow", "");
+    var offeringClass = $(this)
+      .parentsUntil("div#possibleCourses")
+      .last()
+      .attr("class");
+    var offeringId = offeringClass.replace(
+      "panel panel-default coursesOffered",
+      ""
+    );
     $.ajax({
       url: "/addToSchedule",
       type: "POST",
       data: { id: offeringId },
       dataType: "json",
     });
-    location.reload();
+    // Show success message and reload courses
+    $(
+      "div#successMessages"
+    ).append(`<div class="addCourseSuccessMessage alert alert-success alert-dismissible">
+    Course successfully added!
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>`);
+    showCourses(
+      $("#buildScheduleSemesterDropdown").val(),
+      offeringType,
+      sections,
+      editOptions
+    );
   });
 });

@@ -13,8 +13,34 @@ $(document).ready(function () {
     var editOptions = {
       semesterOffering: { delete: false, add: false, edit: false, type: "coursesOffered" }
     };
-    showCourses($(this), offeringType, sections, editOptions);
+    showCourses($(this).attr("id"), offeringType, sections, editOptions);
     $('#filterCourses').val("");
+  });
+
+  $("#buildScheduleSemesterDropdown").on("click", ".dropdown-item", function (event) {
+    var buildScheduleSelectedOption = $(this);
+    $("div.dropdown button").html(
+      buildScheduleSelectedOption.text() + ' <span class="caret"></span>'
+    );
+    $("#buildScheduleSemesterDropdown").val(buildScheduleSelectedOption.attr('id'));
+    
+    var offeringType = {
+      isUserOffering: true,
+      isSemesterOffering: false,
+      isNotUserOffering: true,
+    };
+    var sections = {
+      userOfferings: "registeredCourses",
+      availableOfferings: "possibleCourses",
+    };
+    var editOptions = {
+      semesterOffering: { delete: false, add: true, type: "coursesOffered" },
+      userOffering: { delete: true, add: false, type: "studentSchedule" },
+    };
+    // Show the content once semester chosen
+    $("#buildScheduleContent").show();
+    showCourses(buildScheduleSelectedOption.attr("id"), offeringType, sections, editOptions);
+    //$('#filterCourses').val("");
   });
 });
 
@@ -26,7 +52,7 @@ function retrieveSemesters() {
     if (this.readyState == 4 && this.status == 200) {
       // Create JSON object for semesters and process it
       var semesters = JSON.parse(xhr.responseText);
-      var dropdownIds = ["semesterDropdown", "viewCoursesSemesterDropdown"];
+      var dropdownIds = ["viewCoursesSemesterDropdown"];
       processSemesterInfo(semesters, dropdownIds);
     }
   };
@@ -60,7 +86,7 @@ function retrieveRecentSemesters() {
     if (this.readyState == 4 && this.status == 200) {
       // Create semesters object and create dropdown from it
       var semesters = JSON.parse(xhr.responseText);
-      var dropdownIds = ["semesterDropdown", "semesterOfferingDropdown"];
+      var dropdownIds = ["buildScheduleSemesterDropdown"];
       processSemesterInfo(semesters, dropdownIds);
     }
   };

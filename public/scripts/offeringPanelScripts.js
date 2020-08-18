@@ -1,8 +1,6 @@
 // Offering scripts for pages that use panels instead of tables to display it
 
-function showCourses(dropdown, offeringType, sections, editOptions) {
-  // Determine the semester selected
-  semesterSelectedId = dropdown.attr("id");
+function showCourses(semesterSelectedId, offeringType, sections, editOptions) {
   // Get rid of offerings displayed
   removeCoursesAlreadyShown();
 
@@ -20,11 +18,12 @@ function showCourses(dropdown, offeringType, sections, editOptions) {
         offeringType
       );
     }
+    // Get offerings that user isn't taken for Build Schedule page
     if (offeringType.isNotUserOffering) {
       retrieveOfferingsNotForUser(
         semesterSelected,
         sections,
-        editOptions.userOffering,
+        editOptions.semesterOffering,
         offeringType
       );
     }
@@ -45,15 +44,12 @@ function showCourses(dropdown, offeringType, sections, editOptions) {
 
 function removeCoursesAlreadyShown() {
   $("div#courses").empty();
+  $("div#registeredCourses").empty();
+  $("div#possibleCourses").empty();
 }
 
 // Get courses offered for a given semester from database using AJAX
-function retrieveOfferingsForSemester(
-  semesterId,
-  sections,
-  editOptions,
-  offeringType
-) {
+function retrieveOfferingsForSemester(semesterId, sections, editOptions, offeringType) {
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -68,13 +64,40 @@ function retrieveOfferingsForSemester(
   xhr.send();
 }
 
+// Get courses taken for specific student for specific semester using AJAX
+function retrieveOfferingsForSemesterAndUser(semesterId, sections, editOptions, offeringType) {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        // Create offerings object
+        var offerings = JSON.parse(xhr.responseText);
+        // Show offerings in correct section
+        var sectionId = sections.userOfferings;
+        addOfferingsToSection(offerings, sectionId, editOptions, offeringType);
+      }
+    };
+    xhr.open("GET", "/getStudentCoursesBySemester/" + semesterId, true);
+    xhr.send();
+  }
+  
+  // Get courses for a specific semester that a specific student has not taken
+  function retrieveOfferingsNotForUser(semesterId, sections, editOptions, offeringType) {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        // Create offerings object
+        var offerings = JSON.parse(xhr.responseText);
+        // Show offerings in correct section
+        var sectionId = sections.availableOfferings;
+        addOfferingsToSection(offerings, sectionId, editOptions, offeringType);
+      }
+    };
+    xhr.open("GET", "/getNonStudentCoursesBySemester/" + semesterId, true);
+    xhr.send();
+  }
+  
 // Create a panel for each offering in offerings
-function addOfferingsToSection(
-  offerings,
-  sectionId,
-  editOptions,
-  offeringType
-) {
+function addOfferingsToSection(offerings, sectionId, editOptions, offeringType) {
   if (offerings.length > 0) {
     // Access the section
     var section = $(`#${sectionId}`);
@@ -127,13 +150,14 @@ function createOfferingPanel(offering, section, editOptions, offeringType) {
 
   // Show capacity and seats filled if course is shown as available and not for specific student
   if (offeringType.isSemesterOffering || offeringType.isNotUserOffering) {
-    offeringOutput += `<p class="rightAlign">${offering.numberFilled} seat(s) filled out of ${offering.capacity} </p>`;
+    offeringOutput += `<p><span class="offeringLabel">Seats Filled:</span> ${offering.numberFilled}/${offering.capacity} </p>`;
   }
 
   // Show add and delete icons if they are appropriate
   if (editOptions.delete) {
+     
     offeringOutput +=
-      "<span class='deleteOffering glyphicon glyphicon-trash'></span>";
+      "<p class='rightAlign'><span class='deleteOffering glyphicon glyphicon-trash'></span></p>";
   }
   // Can't add course if already full
   else if (
@@ -144,7 +168,7 @@ function createOfferingPanel(offering, section, editOptions, offeringType) {
     )
   ) {
     offeringOutput +=
-      "<span class='addOffering glyphicon glyphicon-plus'></span>";
+      "<p class='rightAlign'><span class='addOffering glyphicon glyphicon-plus'></span></p>";
   }
   offeringOutput += `</div>`;
   // Add the panel to section
