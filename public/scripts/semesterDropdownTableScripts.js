@@ -32,14 +32,14 @@ $(document).ready(function () {
     );
     var offeringType = { isUserOffering: true, isSemesterOffering: false };
     var sections = {
-      userOfferings: "offerings",
+      userOfferings: "schedule",
     };
     var editOptions = {
       userOffering: {
         delete: false,
         add: false,
         edit: false,
-        type: "studentSchedule",
+        type: "schedule",
       },
     };
     showCourses($(this).attr("id"), offeringType, sections, editOptions);

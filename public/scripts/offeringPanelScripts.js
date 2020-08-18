@@ -46,6 +46,7 @@ function removeCoursesAlreadyShown() {
   $("div#courses").empty();
   $("div#registeredCourses").empty();
   $("div#possibleCourses").empty();
+  $("div#schedule").empty();
 }
 
 // Get courses offered for a given semester from database using AJAX
@@ -116,7 +117,7 @@ function addOfferingsToSection(offerings, sectionId, editOptions, offeringType) 
 function createOfferingPanel(offering, section, editOptions, offeringType) {
   // Determine the ID for the offering row
   var id =
-    editOptions.type === "studentSchedule"
+    (editOptions.type === "studentSchedule" || editOptions.type === "schedule")
       ? offering.registrationId
       : offering.offeringId;
 
@@ -124,20 +125,29 @@ function createOfferingPanel(offering, section, editOptions, offeringType) {
   // Show offering is filled by making it red
   var bodyColor;
   var headingColor;
-  if (offering.capacity <= offering.numberFilled) {
-    bodyColor = "bg-danger";
-    headingColor = "panel-heading-red";
-  }
-  // Show offering is almost full by making it yellow
-  else if (offering.capacity - 5 <= offering.numberFilled) {
-    bodyColor = "bg-warning";
-    headingColor = "panel-heading-yellow";
-  }
-  // Show offering has room by making it green
+  // Determine offering color for Schedule page
+  if (editOptions.type === "schedule") {
+    bodyColor = "bg-maroon";
+    headingColor = "panel-heading-gold";
+  } 
+  // Determine offering colors for View Courses and Build Schedule pages
   else {
-    bodyColor = "bg-success";
-    headingColor = "panel-heading-green";
+    if (offering.capacity <= offering.numberFilled) {
+      bodyColor = "bg-danger";
+      headingColor = "panel-heading-red";
+    }
+    // Show offering is almost full by making it yellow
+    else if (offering.capacity - 5 <= offering.numberFilled) {
+      bodyColor = "bg-warning";
+      headingColor = "panel-heading-yellow";
+    }
+    // Show offering has room by making it green
+    else {
+      bodyColor = "bg-success";
+      headingColor = "panel-heading-green";
+    }
   }
+  
   // Create panel for offering
   var offeringOutput = `<div class='panel panel-default ${editOptions.type}${id}'>`;
   offeringOutput += `<div class="panel-heading ${headingColor}">${offering.deptCode} ${offering.courseNumber}: ${offering.name} (${offering.credits} credits)</div>`;
