@@ -10,9 +10,8 @@
     />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="/scripts/scheduleSlideshowScript.js"></script>
     <script src="/scripts/navigationBarScript.js"></script>
-    <script src="/scripts/offeringTableScripts.js"></script>
+    <script src="/scripts/offeringPanelScripts.js"></script>
     <script src="/scripts/semesterDropdownTableScripts.js"></script>
   </head>
 
@@ -37,44 +36,26 @@
       </ul>
     </div>
     <h1>Schedule</h1>
-    <select
-      name="semesters"
-      id="semesterDropdown"
-      onChange="onSelect(this, offeringType, tables, editOptions)"
-    >
-      <option id="defaultOption" disabled selected value>Pick Semester</option>
-    </select>
+    
     <div id="container">
-      <table class="table smaller-table" id="offeringTable">
-        <thead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Code</th>
-            <th scope="col">Professor</th>
-            <th scope="col">Credits</th>
-            <th scope="col">Days</th>
-            <th scope="col">Time</th>
-            <th scope="col">Location</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+      <div class="dropdown">
+        <button
+          class="btn btn-default dropdown-toggle"
+          type="button"
+          data-toggle="dropdown"
+        >
+          Pick a Semester <span class="caret"></span>
+        </button>
+        <ul
+          id="viewScheduleSemesterDropdown"
+          class="dropdown-menu dropdownCenter"
+        ></ul>
+      </div>
 
-      <img id="slideshow" src="gopher_mascot.jpeg" alt="gopher mascot" />
-      <br /><br />
-      <button onclick="startSlideshow()">Start</button>
-      <button onclick="stopSlideshow()">Stop</button>
+      <div id="offerings"></div>
     </div>
   </body>
   <script>
-    var offeringType = { isUserOffering: true, isSemesterOffering: false };
-      var tables = {
-        userOfferingTable: "offeringTable"
-      };
-      var editOptions = {
-        userOffering: { delete: false, add: false, edit: false, type: "studentSchedule" }
-      };
-
     window.addEventListener("load", retrieveSemestersForUser, false);
   </script>
 </html>

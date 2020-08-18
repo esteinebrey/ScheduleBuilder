@@ -3,27 +3,60 @@
 // and functions used for semester table in Change Courses page
 
 $(document).ready(function () {
-  // Show the dropdown option clicked for semester in modal
-  $("#viewCoursesSemesterDropdown").on("click", ".dropdown-item", function (event) {
+  // Show the courses for the dropdown option clicked
+  // Logic for View Courses page dropdown
+  $("#viewCoursesSemesterDropdown").on("click", ".dropdown-item", function (
+    event
+  ) {
     $("div.dropdown button").html(
       $(this).text() + ' <span class="caret"></span>'
     );
     var offeringType = { isUserOffering: false, isSemesterOffering: true };
     var sections = { availableOfferings: "courses" };
     var editOptions = {
-      semesterOffering: { delete: false, add: false, edit: false, type: "coursesOffered" }
+      semesterOffering: {
+        delete: false,
+        add: false,
+        edit: false,
+        type: "coursesOffered",
+      },
     };
     showCourses($(this).attr("id"), offeringType, sections, editOptions);
-    $('#filterCourses').val("");
+    $("#filterCourses").val("");
   });
 
-  $("#buildScheduleSemesterDropdown").on("click", ".dropdown-item", function (event) {
+  // Logic for Schedule page dropdown
+  $("#viewScheduleSemesterDropdown").on("click", ".dropdown-item", function (event) {
+    $("div.dropdown button").html(
+      $(this).text() + ' <span class="caret"></span>'
+    );
+    var offeringType = { isUserOffering: true, isSemesterOffering: false };
+    var sections = {
+      userOfferings: "offerings",
+    };
+    var editOptions = {
+      userOffering: {
+        delete: false,
+        add: false,
+        edit: false,
+        type: "studentSchedule",
+      },
+    };
+    showCourses($(this).attr("id"), offeringType, sections, editOptions);
+  });
+
+  // Logic for Build Schedule page dropdown
+  $("#buildScheduleSemesterDropdown").on("click", ".dropdown-item", function (
+    event
+  ) {
     var buildScheduleSelectedOption = $(this);
     $("div.dropdown button").html(
       buildScheduleSelectedOption.text() + ' <span class="caret"></span>'
     );
-    $("#buildScheduleSemesterDropdown").val(buildScheduleSelectedOption.attr('id'));
-    
+    $("#buildScheduleSemesterDropdown").val(
+      buildScheduleSelectedOption.attr("id")
+    );
+
     var offeringType = {
       isUserOffering: true,
       isSemesterOffering: false,
@@ -39,7 +72,12 @@ $(document).ready(function () {
     };
     // Show the content once semester chosen
     $("#buildScheduleContent").show();
-    showCourses(buildScheduleSelectedOption.attr("id"), offeringType, sections, editOptions);
+    showCourses(
+      buildScheduleSelectedOption.attr("id"),
+      offeringType,
+      sections,
+      editOptions
+    );
     //$('#filterCourses').val("");
   });
 });
@@ -69,7 +107,8 @@ function retrieveSemestersForUser() {
     if (this.readyState == 4 && this.status == 200) {
       // Create JSON object for semesters and process it
       var semesters = JSON.parse(xhr.responseText);
-      var dropdownIds = ["semesterDropdown"];
+      console.log("semesters");
+      var dropdownIds = ["viewScheduleSemesterDropdown"];
       processSemesterInfo(semesters, dropdownIds);
     }
   };
