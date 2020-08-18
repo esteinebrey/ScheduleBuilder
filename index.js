@@ -79,11 +79,11 @@ app.get("/admin", function (req, res) {
   }
 });
 
-// GET method route for the Change Courses page
+// GET method route for the Course Maintenance page
 // Must be logged in and admin user
-app.get("/changeCourses", function (req, res) {
+app.get("/courseMaintenance", function (req, res) {
   if (req.session && req.session.loggedIn && req.session.isAdmin) {
-    res.sendFile(__dirname + "/client/changeCourses.html");
+    res.sendFile(__dirname + "/client/courseMaintenance.html");
   } else {
     res.redirect("/login");
   }
@@ -319,19 +319,19 @@ app.get("/getSemesters", function (req, res) {
 });
 
 // POST method to add semester to Semesters table
-// Used on Change Courses page
+// Used on Course Maintenance page
 app.post("/addSemester", function (req, res) {
   // Change the how recent semester is to 1 or 0, not true or false
   var isRecent = req.body.recentType == "true" ? 1 : 0;
   var sql = "INSERT INTO Semesters (Season, Year, isRecent) VALUES (?, ?, ?)";
   var args = [req.body.season, req.body.year, isRecent];
   con.query(sql, args, function (err, result, fields) {
-    res.redirect("/changeCourses");
+    res.redirect("/courseMaintenance");
   });
 });
 
 // POST method to edit semester with specified ID
-// Used on Change Courses page
+// Used on Course Maintenance page
 app.post("/editSemester", function (req, res) {
   // Change the how recent semester is to 1 or 0, not true or false
   var isRecent = req.body.recentType == "true" ? 1 : 0;
@@ -340,12 +340,12 @@ app.post("/editSemester", function (req, res) {
   id = parseInt(req.body.semesterId);
   var args = [req.body.season, req.body.year, isRecent, id];
   con.query(sql, args, function (err, result, fields) {
-    res.redirect("/changeCourses");
+    res.redirect("/courseMaintenance");
   });
 });
 
 // POST method to delete semester with specified ID
-// Used on Change Courses page
+// Used on Course Maintenance page
 app.post("/deleteSemester", function (req, res) {
   var sql = "DELETE FROM Semesters WHERE SemesterID = ?";
   var args = [req.body.id];
@@ -455,7 +455,7 @@ app.get("/getCoursesBySemester/:semesterId", function (req, res) {
 });
 
 // POST method to add course
-// Used on Change Courses page
+// Used on Course Maintenance page
 app.post("/addCourse", function (req, res) {
   var sql =
     "INSERT INTO Courses (DeptCode, CourseNumber, CourseName, CreditNumber, CourseDescription) VALUES (?, ?, ?, ?, ?)";
@@ -467,12 +467,12 @@ app.post("/addCourse", function (req, res) {
     req.body.desc,
   ];
   con.query(sql, args, function (err, result, fields) {
-    res.redirect("/changeCourses");
+    res.redirect("/courseMaintenance");
   });
 });
 
 // POST method to edit course
-// Used on Change Courses page
+// Used on Course Maintenance page
 app.post("/editCourse", function (req, res) {
   var sql =
     "UPDATE Courses SET DeptCode = ?, CourseNumber = ?, CourseName = ?, CreditNumber = ?, CourseDescription =? WHERE CourseID = ?";
@@ -485,12 +485,12 @@ app.post("/editCourse", function (req, res) {
     req.body.id,
   ];
   con.query(sql, args, function (err, result, fields) {
-    res.redirect("/changeCourses");
+    res.redirect("/courseMaintenance");
   });
 });
 
 // POST method to delete course
-// Used on Change Courses page
+// Used on Course Maintenance page
 app.post("/deleteCourse", function (req, res) {
   var sql = "DELETE FROM Courses WHERE CourseID = ?";
   var args = [req.body.id];
@@ -520,7 +520,7 @@ app.post("/addToSchedule", function (req, res) {
 });
 
 // POST method to delete course offering
-// Used on Change Courses page
+// Used on Course Maintenance page
 app.post("/deleteOffering", function (req, res) {
   var sql = "DELETE FROM CourseOfferings WHERE OfferingID = ?";
   var args = [req.body.id];
@@ -530,7 +530,7 @@ app.post("/deleteOffering", function (req, res) {
 });
 
 // POST method to edit offering
-// Use on Change Courses page
+// Use on Course Maintenance page
 app.post("/editOffering", function (req, res) {
   var sql =
     "UPDATE CourseOfferings SET Professor = ?, SemesterID = ?, DaysOfWeek = ?, Time = ?, Building = ?, Room = ?, Capacity = ? WHERE OfferingID = ?";
@@ -545,12 +545,12 @@ app.post("/editOffering", function (req, res) {
     req.body.id,
   ];
   con.query(sql, args, function (err, result, fields) {
-    res.redirect("/changeCourses");
+    res.redirect("/courseMaintenance");
   });
 });
 
 // POST method to add offering
-// Used on Change Courses page
+// Used on Course Maintenance page
 app.post("/addOffering", function (req, res) {
   var sql =
     "INSERT INTO CourseOfferings (CourseID, SemesterID, Professor, DaysOfWeek, Time, Building, Room, Capacity) VALUES (?,?,?,?,?,?,?,?)";
@@ -565,7 +565,7 @@ app.post("/addOffering", function (req, res) {
     req.body.capacity,
   ];
   con.query(sql, args, function (err, result, fields) {
-    res.redirect("/changeCourses");
+    res.redirect("/courseMaintenance");
   });
 });
 

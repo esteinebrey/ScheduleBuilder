@@ -1,6 +1,6 @@
 // This file contains functions to retrieve and show semesters for the semester dropdown,
 // functions used when an option is selected in the dropdown,
-// and functions used for semester table in Change Courses page
+// and functions used for semester table in Course Maintenance page
 
 $(document).ready(function () {
   // Show the courses for the dropdown option clicked

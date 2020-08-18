@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Change Courses</title>
+    <title>Course Maintenance</title>
     <meta charset="utf-8" />
     <link
       rel="stylesheet"
@@ -30,10 +30,10 @@
           <a id="nav-build-schedule" href="/buildSchedule">Build Schedule</a>
         </li>
         <li class="mainNavBarItem"><a id="nav-admin" href="/admin">Admin</a></li>
-        <li class="mainNavBarItem"><a id="nav-course-view" href="/viewCourses">View Courses</a></li>
         <li class="mainNavBarItem">
-          <a id="nav-change-courses" href="/changeCourses">Change Courses</a>
+          <a id="nav-change-courses" href="/courseMaintenance">Course Maintenance</a>
         </li>
+        <li class="mainNavBarItem"><a id="nav-course-view" href="/viewCourses">View Courses</a></li>
         <li class="mainNavBarItem">
           <a href="/logout">
             <span class="glyphicon glyphicon-log-out"></span
@@ -41,7 +41,33 @@
         </li>
       </ul>
     </div>
-    <h1>Change Courses</h1>
+    <h1>Course Maintenance</h1>
+
+    <div class="container">
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#modifySemesters">Modify Semesters</a></li>
+      <li><a data-toggle="tab" href="#modifyCourses">Modify Courses</a></li>
+    </ul>
+    
+    <div class="tab-content">
+      <div id="modifySemesters" class="tab-pane fade in active">
+        <h3>Semesters</h3>
+      </div>
+      <div id="modifyCourses" class="tab-pane fade">
+        <h3>Courses</h3>
+        <div class="input-group">
+          <span class="input-group-addon"
+            ><span class="glyphicon glyphicon-search"></span
+          ></span>
+          <input
+            class="form-control"
+            type="text"
+            id="filterCourseOptions"
+          />
+        </div>
+        <br />
+      </div>
+    </div>
 
     <p>Semesters</p>
     <button id="addSemesterButton">
@@ -294,6 +320,7 @@
       </thead>
       <tbody></tbody>
     </table>
+    </div>
   </body>
   <script>
     var offeringType = { isUserOffering: false, isSemesterOffering: true };

@@ -1,4 +1,4 @@
-// File that contains functions for semester modal on Change Courses page
+// File that contains functions for semester modal on Course Maintenance page
 
 $(document).ready(function () {
   // Modal is originally invisible
