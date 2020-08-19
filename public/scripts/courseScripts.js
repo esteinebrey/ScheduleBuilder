@@ -24,6 +24,7 @@ function determineTableShown() {
   var courseDisplay = isCourseTableShown ? "table" : "none";
   $("#offeringTable").css("display", offeringDisplay);
   $("#courseTable").css("display", courseDisplay);
+  $("#addCourseButton").css("display", courseDisplay);
 }
 
 // Get all the courses to display

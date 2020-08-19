@@ -57,7 +57,9 @@
         <li>
           <a data-toggle="tab" href="#modifySemesters">Modify Semesters</a>
         </li>
-        <li class="active"><a data-toggle="tab" href="#modifyCourses">Modify Courses</a></li>
+        <li class="active">
+          <a data-toggle="tab" href="#modifyCourses">Modify Courses</a>
+        </li>
       </ul>
 
       <div class="tab-content">
@@ -67,11 +69,16 @@
             <span class="input-group-addon"
               ><span class="glyphicon glyphicon-search"></span
             ></span>
-            <input class="form-control" type="text" id="filterModifySemesterOptions" />
+            <input
+              class="form-control"
+              type="text"
+              id="filterModifySemesterOptions"
+            />
           </div>
           <br />
           <button id="addSemesterButton" class="btn btn-primary addButton">
-            <span class="glyphicon glyphicon-plus"></span>Add Semester</button>
+            <span class="glyphicon glyphicon-plus"></span>Add Semester
+          </button>
           <div class="w3-container">
             <div id="addEditSemesterModal" class="w3-modal">
               <div class="w3-modal-content">
@@ -94,27 +101,55 @@
                       id="semesterId"
                       name="semesterId"
                     />
-                    <label for="season">Season:</label><br />
-                    <input
-                      class="form-control"
-                      type="text"
-                      id="season"
-                      name="season"
-                      required
-                    /><br />
-                    <label for="year">Year:</label><br />
-                    <input
-                      class="form-control"
-                      type="text"
-                      id="year"
-                      name="year"
-                      required
-                    /><br />
-                    <label for="recentType">Recent:</label>
-                    <select id="recentType" name="recentType">
+                    <div class="form-group">
+                      <label for="season">Season:</label><br />
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="season"
+                        name="season"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="year">Year:</label><br />
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="year"
+                        name="year"
+                        required
+                      />
+                    </div>
+
+                    <input id="recentType" name="recentType" value ="false" type="hidden" /> 
+
+                    <div class="form-group">
+                      <div id="modalTypeDropdown" class="dropdown">
+                        <button
+                          id="recentType"
+                          class="btn btn-default dropdown-toggle"
+                          type="button"
+                          data-toggle="dropdown"
+                        >
+                        Semester Set <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdownCenter">
+                          <li class="dropdownAlignment">
+                            <a class="dropdown-item" href="#">Registrations Changes Allowed</a>
+                          </li>
+                          <div class="dropdown-divider"></div>
+                          <li class="dropdownAlignment">
+                            <a class="dropdown-item" href="#">Semester Set</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <!--<select id="recentType" name="recentType">
                       <option value="true">True</option>
                       <option value="false">False</option> </select
-                    ><br />
+                    >-->
                     <input
                       id="addEditSemesterButton"
                       class="btn btn-primary"
@@ -148,7 +183,11 @@
             <span class="input-group-addon"
               ><span class="glyphicon glyphicon-search"></span
             ></span>
-            <input class="form-control" type="text" id="filterModifyCourseOptions" />
+            <input
+              class="form-control"
+              type="text"
+              id="filterModifyCourseOptions"
+            />
           </div>
           <br />
           <div class="dropdown">
@@ -167,7 +206,8 @@
           <br />
 
           <button id="addCourseButton" class="btn btn-primary addButton">
-            <span class="glyphicon glyphicon-plus"></span>Add Course</button>
+            <span class="glyphicon glyphicon-plus"></span>Add Course
+          </button>
           <div class="w3-container">
             <div id="courseModal" class="w3-modal">
               <div class="w3-modal-content">

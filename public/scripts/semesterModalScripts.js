@@ -4,6 +4,27 @@ $(document).ready(function () {
   // Modal is originally invisible
   $("#addEditSemesterModal").css("display", "none");
 
+  // When semester type dropdown is changed in modal, update the display
+  $("#modalTypeDropdown .dropdown-item").on("click", function () {
+    $("#modalTypeDropdown button").html(
+      $(this).text() + ' <span class="caret"></span>'
+    );
+
+    // Set if semester is recent or not in hidden input box
+    var value;
+    if ($(this).text() === "Semester Set") {
+      value = "false";
+    }
+    else {
+      value = "true";
+    }
+    // Set hidden input for type of semester (recent or not) so can access on form submit
+    $("input#recentType").val(value);
+
+    console.log("now");
+    console.log($("input#recentType").val());
+  });
+
   // Function for deleting semester and row in table
   $(document).on("click", ".deleteSemester", function () {
     var rowId = $(this).parentsUntil("tbody").last().attr("id");
