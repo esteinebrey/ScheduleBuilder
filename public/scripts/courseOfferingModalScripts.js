@@ -2,8 +2,10 @@
 
 $(document).ready(function () {
   // Modal is originally invisible
-  $("#courseModal").css("display", "none");
-  $("#offeringModal").css("display", "none");
+  $("#courseModal").css({ display: "none" });
+  $("#offeringModal").css({ display: "none" });
+  // Make error message invisible
+  $("#deletingCourseErrorMessage").css({ display: "none" });
 
   // When semester dropdown is changed in offering modal, update the display
   $("#semesterModalTypeDropdown").on("click", ".dropdown-item", function () {
@@ -12,7 +14,7 @@ $(document).ready(function () {
     );
 
     // Set which semester is affected in hidden input box
-    semesterId = $(this).attr('id').replace("semester", "");
+    semesterId = $(this).attr("id").replace("semester", "");
     $("input#semesters").val(semesterId);
   });
 
@@ -33,13 +35,80 @@ $(document).ready(function () {
   $(document).on("click", ".deleteCourse", function () {
     var rowId = $(this).parentsUntil("tbody").last().attr("id");
     var courseId = rowId.replace("row", "");
-    $.ajax({
+    var request = $.ajax({
       url: "/deleteCourse",
       type: "POST",
       data: { id: courseId },
       dataType: "json",
+    }).done(function (data) {
+      if (!data.isCourseDeleted) {
+        // Not able to delete course
+        //Show error message
+        $("div#courseMessages")
+          .append(`<div class="deletingCourseErrorMessage alert alert-danger alert-dismissible">
+        Error: Course cannot be deleted; it already has offerings corresponding to it
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>`);
+      }
+      // Deletion successful
+      else {
+        // Show success message
+        $("div#courseMessages")
+          .append(`<div class="deletingCourseSuccessMessage alert alert-success alert-dismissible">
+        Course successfully deleted!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>`);
+        // Update courses shown
+        $("#courseTable tbody tr").remove();
+        retrieveCourses({ edit: true, delete: true });
+      }
     });
-    location.reload();
+  });
+
+  // Use AJAX to submit course form
+  $("#courseForm").submit(function (e) {
+    // Override the default
+    e.preventDefault();
+    // Get form info
+    var form = $(this);
+    var action = form.attr("action");
+    // Don't show modal anymore
+    $("#courseModal").css({ display: "none" });
+
+    // Submit form information
+    $.ajax({
+      type: "POST",
+      url: action,
+      data: form.serialize(),
+      success: function (data) {
+        if (data.isCourseAdded) {
+          // Show course added success message
+          $("div#courseMessages")
+            .append(`<div class="addingCourseSuccessMessage alert alert-success alert-dismissible">
+           Course successfully added!
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+         </div>`);
+        } else if (data.isCourseEdited) {
+          // Show course edited success message
+          $("div#courseMessages")
+            .append(`<div class="editingCourseSuccessMessage alert alert-success alert-dismissible">
+           Course successfully edited!
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+         </div>`);
+        }
+        // Get the course entries again
+        $("#courseTable tbody tr").remove();
+        retrieveCourses({ edit: true, delete: true });
+      },
+    });
   });
 
   // Function for editing selected course row

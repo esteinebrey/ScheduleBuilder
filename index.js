@@ -467,7 +467,7 @@ app.post("/addCourse", function (req, res) {
     req.body.desc,
   ];
   con.query(sql, args, function (err, result, fields) {
-    res.redirect("/courseMaintenance");
+    res.json({ isCourseAdded: true });
   });
 });
 
@@ -485,17 +485,25 @@ app.post("/editCourse", function (req, res) {
     req.body.id,
   ];
   con.query(sql, args, function (err, result, fields) {
-    res.redirect("/courseMaintenance");
+    res.json({ isCourseEdited: true });
   });
 });
 
 // POST method to delete course
 // Used on Course Maintenance page
 app.post("/deleteCourse", function (req, res) {
-  var sql = "DELETE FROM Courses WHERE CourseID = ?";
+  var checkCourseUsageSql = "SELECT * FROM CourseOfferings WHERE CourseID = ?";
   var args = [req.body.id];
-  con.query(sql, args, function (err, result, fields) {
-    res.sendStatus(200);
+  con.query(checkCourseUsageSql, args, function (err, result, fields) {
+    if (result.length != 0) {
+      res.json({ isCourseDeleted: false });
+    }
+    else {
+      var deleteCourseSql = "DELETE FROM Courses WHERE CourseID = ?";
+      con.query(deleteCourseSql, args, function (err, result, fields) {
+        res.json({ isCourseDeleted: true });
+      });
+    }
   });
 });
 
