@@ -5,14 +5,13 @@
 var isCourseTableShown = false;
 
 // When choose an option in the dropdown, show the corresponding table
-function showCorrectTable(dropdown) {
-  var semesterSelected = dropdown.options[dropdown.selectedIndex].value;
+function showCorrectTable(semesterSelected) {
   // If select to view courses and course table isn't shown, change the table visibility
-  if (semesterSelected == "courses" && !isCourseTableShown) {
+  if (semesterSelected == "allCourses" && !isCourseTableShown) {
     determineTableShown();
   }
   // If the course table is shown but want to show offerings, change the table visibility
-  else if (isCourseTableShown) {
+  else if (semesterSelected != "allCourses" && isCourseTableShown) {
     determineTableShown();
   }
 }
@@ -25,16 +24,6 @@ function determineTableShown() {
   var courseDisplay = isCourseTableShown ? "table" : "none";
   $("#offeringTable").css("display", offeringDisplay);
   $("#courseTable").css("display", courseDisplay);
-}
-
-// Set up the dropdown so that it has an option to show All Courses
-function setUpDropdown() {
-  var dropdown = $("#viewCoursesSemesterDropdown");
-  dropdown.append(
-    `<li class="semesterOption dropdownAlignment">
-    <a id="allCourses" class="dropdown-item" href="#">All Courses</a>
-    </li>`
-  );
 }
 
 // Get all the courses to display

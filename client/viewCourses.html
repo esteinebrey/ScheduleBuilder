@@ -74,6 +74,6 @@
   <script>
     window.addEventListener("load", retrieveSemesters, false);
     window.addEventListener("load", retrieveCourses, false);
-    window.addEventListener("load", setUpDropdown, false);
+    window.addEventListener("load", function() { addCoursesToDropdown("#viewCoursesSemesterDropdown"); }, false);
   </script>
 </html>

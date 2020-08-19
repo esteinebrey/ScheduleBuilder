@@ -1,30 +1,10 @@
 // File that contains functions to retrieve offerings and shows offerings in tables
 
 // Find the corresponding offerings to the option selected in the dropdown
-function onSelect(dropdown, offeringType, tables, editOptions) {
-  var semesterSelected = dropdown.options[dropdown.selectedIndex].value;
-  if (semesterSelected !== -1) {
+function onSelect(semesterSelected, offeringType, tables, editOptions) {
+  if (semesterSelected !== 'allCourses') {
     // Get rid of offerings displayed
     removeOfferingsAlreadyShown();
-    $("option#defaultOption").css("display", "none"); 
-    // Retrieve the offerings
-    // Get offerings that student is taking
-    if (offeringType.isUserOffering) {
-      retrieveOfferingsForSemesterAndUser(
-        semesterSelected,
-        tables,
-        editOptions.userOffering,
-        offeringType
-      );
-    }
-    if (offeringType.isNotUserOffering) {
-      retrieveOfferingsNotForUser(
-        semesterSelected,
-        tables,
-        editOptions.userOffering,
-        offeringType
-      );
-    }
     // Get the available offerings
     if (offeringType.isSemesterOffering) {
       retrieveOfferingsForSemester(
@@ -42,40 +22,9 @@ function removeOfferingsAlreadyShown() {
   $("#offeringTable tbody tr").remove();
 }
 
-// Get courses taken for specific student for specific semester using AJAX
-function retrieveOfferingsForSemesterAndUser(semesterId, tables, editOptions, offeringType) {
-  var xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      // Create offerings object
-      var offerings = JSON.parse(xhr.responseText);
-      // Add to offerings correct table
-      var tableId = tables.userOfferingTable;
-      addOfferingsToTable(offerings, tableId, editOptions, offeringType);
-    }
-  };
-  xhr.open("GET", "/getStudentCoursesBySemester/" + semesterId, true);
-  xhr.send();
-}
-
-// Get courses for a specific semester that a specific student has not taken
-function retrieveOfferingsNotForUser(semesterId, tables, editOptions, offeringType) {
-  var xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      // Create offerings object
-      var offerings = JSON.parse(xhr.responseText);
-      // Add to offerings correct table
-      var tableId = tables.availableOfferingTable;
-      addOfferingsToTable(offerings, tableId, editOptions, offeringType);
-    }
-  };
-  xhr.open("GET", "/getNonStudentCoursesBySemester/" + semesterId, true);
-  xhr.send();
-}
-
 // Get courses offered for a given semester from database using AJAX
-function retrieveOfferingsForSemester(semesterId, tables, editOptions, offeringType) {
+function retrieveOfferingsForSemester(semester, tables, editOptions, offeringType) {
+  semesterId = semester.replace("semester", "");
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -107,7 +56,7 @@ function addOfferingsToTable(offerings, tableId, editOptions, offeringType) {
 }
 
 // Function to create row in offerings table
-function createOfferingRow(offering, table, editOptions) {
+function createOfferingRow(offering, table, editOptions, offeringType) {
   // Determine the ID for the offering row
   var id =
     editOptions.type === "studentSchedule"

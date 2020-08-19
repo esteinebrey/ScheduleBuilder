@@ -25,6 +25,29 @@ $(document).ready(function () {
     $("#filterCourses").val("");
   });
 
+  // Logic for Course Maintenance page dropdown
+  $("#courseMaintenanceSemesterDropdown").on("click", ".dropdown-item", function (event) {
+    $("div.dropdown button").html(
+      $(this).text() + ' <span class="caret"></span>'
+    );
+    var offeringType = { isUserOffering: false, isSemesterOffering: true };
+    var tables = {
+      availableOfferingTable: "offeringTable",
+    };
+    var editOptions = {
+      semesterOffering: {
+        delete: true,
+        add: false,
+        edit: true,
+        type: "coursesOffered",
+      },
+    };
+    showCorrectTable($(this).attr("id")); 
+    onSelect($(this).attr("id"), offeringType, tables, editOptions);
+    $("#filterModifyCourseOptions").val("");
+    $("#filterModifySemesterOptions").val("");
+  });
+
   // Logic for Schedule page dropdown
   $("#viewScheduleSemesterDropdown").on("click", ".dropdown-item", function (event) {
     $("div.dropdown button").html(
@@ -46,9 +69,7 @@ $(document).ready(function () {
   });
 
   // Logic for Build Schedule page dropdown
-  $("#buildScheduleSemesterDropdown").on("click", ".dropdown-item", function (
-    event
-  ) {
+  $("#buildScheduleSemesterDropdown").on("click", ".dropdown-item", function (event) {
     var buildScheduleSelectedOption = $(this);
     $("div.dropdown button").html(
       buildScheduleSelectedOption.text() + ' <span class="caret"></span>'
@@ -82,6 +103,16 @@ $(document).ready(function () {
   });
 });
 
+// Add All Courses option to dropdown
+function addCoursesToDropdown(dropdownId) {
+  var dropdown = $(dropdownId);
+  dropdown.append(
+    `<li class="semesterOption dropdownAlignment">
+        <a id="allCourses" class="dropdown-item" href="#">All Courses</a>
+        </li>`
+  );
+}
+
 // Get all semesters to display in dropdown at the beginning
 function retrieveSemesters() {
   // Create XMLHttpRequest
@@ -107,7 +138,6 @@ function retrieveSemestersForUser() {
     if (this.readyState == 4 && this.status == 200) {
       // Create JSON object for semesters and process it
       var semesters = JSON.parse(xhr.responseText);
-      console.log("semesters");
       var dropdownIds = ["viewScheduleSemesterDropdown"];
       processSemesterInfo(semesters, dropdownIds);
     }
@@ -125,7 +155,7 @@ function retrieveRecentSemesters() {
     if (this.readyState == 4 && this.status == 200) {
       // Create semesters object and create dropdown from it
       var semesters = JSON.parse(xhr.responseText);
-      var dropdownIds = ["buildScheduleSemesterDropdown"];
+      var dropdownIds = ["buildScheduleSemesterDropdown", "courseMaintenanceSemesterDropdown"];
       processSemesterInfo(semesters, dropdownIds);
     }
   };

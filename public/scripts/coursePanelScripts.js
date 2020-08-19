@@ -1,15 +1,5 @@
 // Scripts for course panels
 
-// Add All Courses option to dropdown
-function setUpDropdown() {
-  var dropdown = $("#viewCoursesSemesterDropdown");
-  dropdown.append(
-    `<li class="semesterOption dropdownAlignment">
-        <a id="allCourses" class="dropdown-item" href="#">All Courses</a>
-        </li>`
-  );
-}
-
 // Get all the courses to display
 function retrieveCourses() {
   // Create XMLHttpRequest
