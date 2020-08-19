@@ -19,7 +19,7 @@ $(document).ready(function () {
       value = "true";
     }
     // Set hidden input for type of semester (recent or not) so can access on form submit
-    $("input#semesters").val(value);
+    $("input#recentType").val(value);
   });
 
   // Function for deleting semester and row in table
@@ -54,16 +54,18 @@ $(document).ready(function () {
     $("form#addEditSemesterForm input#semesterId").val(id);
     $("form#addEditSemesterForm input#season").val($(`#season${id}`).html());
     $("form#addEditSemesterForm input#year").val($(`#year${id}`).html());
+    // Set dropdown and hidden input for type of semester (recent or not) so it has original value for semester selected
     if ($(`#isRecent${id}`).html() == "true") {
-      $("form#addEditSemesterForm select#recentType option[value='true']").attr(
-        "selected",
-        true
+      $("#modalTypeDropdown button").html(
+       'Registration Changes Allowed <span class="caret"></span>'
       );
+      $("input#recentType").val("true");
     } else {
-      $(
-        "form#addEditSemesterForm select#recentType option[value='false']"
-      ).attr("selected", true);
-    }
+      $("#modalTypeDropdown button").html(
+        'Semester Set <span class="caret"></span>'
+       );
+       $("input#recentType").val("false");
+    }  
   };
 
   // Function for adding semester
