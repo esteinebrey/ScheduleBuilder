@@ -5,6 +5,17 @@ $(document).ready(function () {
   $("#courseModal").css("display", "none");
   $("#offeringModal").css("display", "none");
 
+  // When semester dropdown is changed in offering modal, update the display
+  $("#semesterModalTypeDropdown").on("click", ".dropdown-item", function () {
+    $("#semesterModalTypeDropdown button").html(
+      $(this).text() + ' <span class="caret"></span>'
+    );
+
+    // Set which semester is affected in hidden input box
+    semesterId = $(this).attr('id').replace("semester", "");
+    $("input#semesters").val(semesterId);
+  });
+
   // Function for deleting offering row selected
   $(document).on("click", ".deleteOffering", function () {
     var rowId = $(this).parentsUntil("tbody").last().attr("id");
@@ -45,7 +56,7 @@ $(document).ready(function () {
 
   // Show course selected in edit modal fields
   populateEditCourseModal = (id) => {
-    $("form#courseForm input#id").val(id);
+    $("form#courseForm input#courseFormId").val(id);
     $("form#courseForm input#name").val($(`#name${id}`).html());
     $("form#courseForm input#deptCode").val($(`#deptCode${id}`).html());
     $("form#courseForm input#number").val($(`#number${id}`).html());
@@ -73,7 +84,7 @@ $(document).ready(function () {
 
   // Selected offering info will be displayed in edit modal
   populateEditOfferingModal = (id) => {
-    $("form#offeringForm input#id").val(id);
+    $("form#offeringForm input#offeringFormId").val(id);
     $("form#offeringForm input#prof").val($(`#prof${id}`).html());
     $("form#offeringForm input#days").val($(`#days${id}`).html());
     $("form#offeringForm input#time").val($(`#time${id}`).html());
@@ -128,7 +139,7 @@ $(document).ready(function () {
 
   // Keep track of corresponding course ID for add offering modal and have no placeholder values
   populateAddOfferingModal = (id) => {
-    $("form#offeringForm input#id").val(id);
+    $("form#offeringForm input#offeringFormId").val(id);
     $("form#offeringForm input#prof").val("");
     $("form#offeringForm input#days").val("");
     $("form#offeringForm input#time").val("");

@@ -123,7 +123,12 @@
                       />
                     </div>
 
-                    <input id="recentType" name="recentType" value ="false" type="hidden" /> 
+                    <input
+                      id="recentType"
+                      name="recentType"
+                      value="false"
+                      type="hidden"
+                    />
 
                     <div class="form-group">
                       <div id="modalTypeDropdown" class="dropdown">
@@ -133,11 +138,13 @@
                           type="button"
                           data-toggle="dropdown"
                         >
-                        Semester Set <span class="caret"></span>
+                          Semester Set <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu dropdownCenter">
                           <li class="dropdownAlignment">
-                            <a class="dropdown-item" href="#">Registrations Changes Allowed</a>
+                            <a class="dropdown-item" href="#"
+                              >Registrations Changes Allowed</a
+                            >
                           </li>
                           <div class="dropdown-divider"></div>
                           <li class="dropdownAlignment">
@@ -146,10 +153,7 @@
                         </ul>
                       </div>
                     </div>
-                    <!--<select id="recentType" name="recentType">
-                      <option value="true">True</option>
-                      <option value="false">False</option> </select
-                    >-->
+
                     <input
                       id="addEditSemesterButton"
                       class="btn btn-primary"
@@ -190,7 +194,7 @@
             />
           </div>
           <br />
-          <div class="dropdown">
+          <div id="courseMaintenanceMainDropdown" class="dropdown">
             <button
               class="btn btn-default dropdown-toggle"
               type="button"
@@ -227,49 +231,64 @@
                     <input
                       class="form-control"
                       type="hidden"
-                      id="id"
+                      id="courseFormId"
                       name="id"
                     />
-                    <label for="name">Name:</label><br />
-                    <input
-                      class="form-control"
-                      type="text"
-                      id="name"
-                      name="name"
-                      required
-                    /><br />
-                    <label for="deptCode">Department Code:</label><br />
-                    <input
-                      class="form-control"
-                      type="text"
-                      id="deptCode"
-                      name="deptCode"
-                      required
-                    /><br />
-                    <label for="number">Number:</label><br />
-                    <input
-                      class="form-control"
-                      type="text"
-                      id="number"
-                      name="number"
-                      required
-                    /><br />
-                    <label for="credits">Credits:</label><br />
-                    <input
-                      class="form-control"
-                      type="text"
-                      id="credits"
-                      name="credits"
-                      required
-                    /><br />
-                    <label for="desc">Description:</label><br />
-                    <input
-                      class="form-control"
-                      type="text"
-                      id="desc"
-                      name="desc"
-                      required
-                    /><br />
+                    <div class="form-group">
+                      <label for="name">Name:</label><br />
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="name"
+                        name="name"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="deptCode">Department Code:</label><br />
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="deptCode"
+                        name="deptCode"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="number">Number:</label><br />
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="number"
+                        name="number"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="credits">Credits:</label><br />
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="credits"
+                        name="credits"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="desc">Description:</label><br />
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="desc"
+                        name="desc"
+                        required
+                      />
+                    </div>
+
                     <input
                       id="courseButton"
                       class="btn btn-primary"
@@ -301,61 +320,94 @@
                     <input
                       class="form-control"
                       type="hidden"
-                      id="id"
+                      id="offeringFormId"
                       name="id"
                     />
-                    <select name="semesters" id="semesterOfferingDropdown">
-                    </select>
-                    <br />
-                    <br />
-                    <label for="prof">Professor:</label><br />
-                    <input
-                      class="form-control"
-                      type="text"
-                      id="prof"
-                      name="prof"
-                      required
-                    /><br />
-                    <label for="days">Days:</label><br />
-                    <input
-                      class="form-control"
-                      type="text"
-                      id="days"
-                      name="days"
-                      required
-                    /><br />
-                    <label for="time">Time:</label><br />
-                    <input
-                      class="form-control"
-                      type="text"
-                      id="time"
-                      name="time"
-                      required
-                    /><br />
-                    <label for="building">Building:</label><br />
-                    <input
-                      class="form-control"
-                      type="text"
-                      id="building"
-                      name="building"
-                      required
-                    /><br />
-                    <label for="room">Room:</label><br />
-                    <input
-                      class="form-control"
-                      type="text"
-                      id="room"
-                      name="room"
-                      required
-                    /><br />
-                    <label for="capacity">Capacity:</label><br />
-                    <input
-                      class="form-control"
-                      type="text"
-                      id="capacity"
-                      name="capacity"
-                      required
-                    /><br />
+
+                    <input id="semesters" name="semesters" type="hidden" />
+
+                    <div class="form-group">
+                      <div id="semesterModalTypeDropdown" class="dropdown">
+                        <button
+                          class="btn btn-default dropdown-toggle"
+                          type="button"
+                          data-toggle="dropdown"
+                        >
+                          Pick a Semester<span class="caret"></span>
+                        </button>
+                        <ul
+                          id="semesterOfferingDropdown"
+                          class="dropdown-menu dropdownCenter"
+                        ></ul>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="prof">Professor:</label><br />
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="prof"
+                        name="prof"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="days">Days:</label><br />
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="days"
+                        name="days"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="time">Time:</label><br />
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="time"
+                        name="time"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="building">Building:</label><br />
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="building"
+                        name="building"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="room">Room:</label><br />
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="room"
+                        name="room"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="capacity">Capacity:</label><br />
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="capacity"
+                        name="capacity"
+                        required
+                      />
+                    </div>
+
                     <input
                       id="offeringButton"
                       class="btn btn-primary"

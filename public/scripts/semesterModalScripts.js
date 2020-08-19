@@ -19,10 +19,7 @@ $(document).ready(function () {
       value = "true";
     }
     // Set hidden input for type of semester (recent or not) so can access on form submit
-    $("input#recentType").val(value);
-
-    console.log("now");
-    console.log($("input#recentType").val());
+    $("input#semesters").val(value);
   });
 
   // Function for deleting semester and row in table

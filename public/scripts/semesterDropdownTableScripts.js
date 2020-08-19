@@ -27,7 +27,7 @@ $(document).ready(function () {
 
   // Logic for Course Maintenance page dropdown
   $("#courseMaintenanceSemesterDropdown").on("click", ".dropdown-item", function (event) {
-    $("div.dropdown button").html(
+    $("div#courseMaintenanceMainDropdown.dropdown button").html(
       $(this).text() + ' <span class="caret"></span>'
     );
     var offeringType = { isUserOffering: false, isSemesterOffering: true };
@@ -155,7 +155,7 @@ function retrieveRecentSemesters() {
     if (this.readyState == 4 && this.status == 200) {
       // Create semesters object and create dropdown from it
       var semesters = JSON.parse(xhr.responseText);
-      var dropdownIds = ["buildScheduleSemesterDropdown", "courseMaintenanceSemesterDropdown"];
+      var dropdownIds = ["buildScheduleSemesterDropdown", "courseMaintenanceSemesterDropdown", "semesterOfferingDropdown"];
       processSemesterInfo(semesters, dropdownIds);
     }
   };
