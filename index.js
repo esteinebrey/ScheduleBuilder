@@ -326,7 +326,7 @@ app.post("/addSemester", function (req, res) {
   var sql = "INSERT INTO Semesters (Season, Year, isRecent) VALUES (?, ?, ?)";
   var args = [req.body.season, req.body.year, isRecent];
   con.query(sql, args, function (err, result, fields) {
-    res.redirect("/courseMaintenance");
+    res.json({ isSemesterAdded: true });
   });
 });
 
@@ -340,17 +340,25 @@ app.post("/editSemester", function (req, res) {
   id = parseInt(req.body.semesterId);
   var args = [req.body.season, req.body.year, isRecent, id];
   con.query(sql, args, function (err, result, fields) {
-    res.redirect("/courseMaintenance");
+    res.json({ isSemesterEdited: true });
   });
 });
 
 // POST method to delete semester with specified ID
 // Used on Course Maintenance page
 app.post("/deleteSemester", function (req, res) {
-  var sql = "DELETE FROM Semesters WHERE SemesterID = ?";
+  var checkSemesterUsageSql = "SELECT * FROM CourseOfferings WHERE SemesterID = ?";
   var args = [req.body.id];
-  con.query(sql, args, function (err, result, fields) {
-    res.sendStatus(200);
+  con.query(checkSemesterUsageSql, args, function (err, result, fields) {
+    if (result.length != 0) {
+      res.json({ isSemesterDeleted: false });
+    }
+    else {
+      var deleteSemesterSql = "DELETE FROM Semesters WHERE SemesterID = ?";
+      con.query(deleteSemesterSql, args, function (err, result, fields) {
+        res.json({ isSemesterDeleted: true });
+      });
+    }
   });
 });
 
@@ -530,10 +538,17 @@ app.post("/addToSchedule", function (req, res) {
 // POST method to delete course offering
 // Used on Course Maintenance page
 app.post("/deleteOffering", function (req, res) {
-  var sql = "DELETE FROM CourseOfferings WHERE OfferingID = ?";
-  var args = [req.body.id];
-  con.query(sql, args, function (err, result, fields) {
-    res.sendStatus(200);
+  var checkRegistrationUsageSql = "SELECT * FROM Registrations WHERE OfferingID = ?";
+  con.query(checkRegistrationUsageSql, args, function (err, result, fields) {
+    if (result.length != 0) {
+      res.json({ isOfferingDeleted: false });
+    }
+    else {
+      var deleteOfferingSql = "DELETE FROM CourseOfferings WHERE OfferingID = ?";
+      con.query(deleteOfferingSql, args, function (err, result, fields) {
+        res.json({ isOfferingDeleted: true });
+      });
+    }
   });
 });
 
@@ -553,7 +568,7 @@ app.post("/editOffering", function (req, res) {
     req.body.id,
   ];
   con.query(sql, args, function (err, result, fields) {
-    res.redirect("/courseMaintenance");
+    res.json({ isOfferingEdited: true });
   });
 });
 
@@ -573,7 +588,7 @@ app.post("/addOffering", function (req, res) {
     req.body.capacity,
   ];
   con.query(sql, args, function (err, result, fields) {
-    res.redirect("/courseMaintenance");
+    res.json({ isOfferingAdded: true });
   });
 });
 

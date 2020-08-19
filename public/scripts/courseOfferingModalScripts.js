@@ -7,6 +7,34 @@ $(document).ready(function () {
   // Make error message invisible
   $("#deletingCourseErrorMessage").css({ display: "none" });
 
+  // Set up basic information for Course Maintenance page
+  var offeringType = { isUserOffering: false, isSemesterOffering: true };
+  var tables = {
+    availableOfferingTable: "offeringTable",
+  };
+  var editOptions = {
+    semesterOffering: {
+      delete: true,
+      add: false,
+      edit: true,
+      type: "coursesOffered",
+    },
+  };
+  var courseOptions = { edit: true, delete: true };
+
+  // Get the recent semesters when pick on Modify Courses tab
+  // This will fill out the main dropdown for this tab
+  // This way if a course is edited to be recent or not in other tab, it can immediately appear
+  $("#coursesTab").on("click", function () {
+    // Get rid of existing options
+    $("#courseMaintenanceSemesterDropdown li").empty();
+    retrieveRecentSemesters();
+    // Put All Courses option in dropdown
+    addCoursesToDropdown("#courseMaintenanceSemesterDropdown");
+    // ID should match All Courses option
+    $("div#courseMaintenanceMainDropdown button").attr("id", "allCourses");
+  });
+
   // When semester dropdown is changed in offering modal, update the display
   $("#semesterModalTypeDropdown").on("click", ".dropdown-item", function () {
     $("#semesterModalTypeDropdown button").html(
@@ -27,8 +55,39 @@ $(document).ready(function () {
       type: "POST",
       data: { id: offeringId },
       dataType: "json",
+    }).done(function (data) {
+      if (!data.isOfferingDeleted) {
+        // Show error message; cannot delete offering if student already registered for it
+        $("div#courseMessages")
+          .append(`<div class="deletingOfferingErrorMessage alert alert-danger alert-dismissible">
+        Error: Cannot delete course offering that student has already registered for
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>`);
+      } else {
+        // Show success message
+        $("div#courseMessages")
+          .append(`<div class="deletingOfferingSuccessMessage alert alert-success alert-dismissible">
+        Course Offering successfully deleted!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>`);
+        // Update courses shown
+        showCorrectTable(
+          $("div#courseMaintenanceMainDropdown button").attr("id")
+        );
+        onSelect(
+          $("div#courseMaintenanceMainDropdown button").attr("id"),
+          offeringType,
+          tables,
+          editOptions
+        );
+        // Get rid of any filters
+        $("#filterModifyCourseOptions, #filterModifySemesterOptions").val("");
+      }
     });
-    location.reload();
   });
 
   // Function for deleting selected course row
@@ -46,7 +105,7 @@ $(document).ready(function () {
         //Show error message
         $("div#courseMessages")
           .append(`<div class="deletingCourseErrorMessage alert alert-danger alert-dismissible">
-        Error: Course cannot be deleted; it already has offerings corresponding to it
+        Error: Cannot delete course that already has offerings corresponding to it
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -64,7 +123,9 @@ $(document).ready(function () {
       </div>`);
         // Update courses shown
         $("#courseTable tbody tr").remove();
-        retrieveCourses({ edit: true, delete: true });
+        retrieveCourses(courseOptions);
+        // Get rid of any filters done
+        $("#filterModifyCourseOptions, #filterModifySemesterOptions").val("");
       }
     });
   });
@@ -106,8 +167,61 @@ $(document).ready(function () {
         }
         // Get the course entries again
         $("#courseTable tbody tr").remove();
-        retrieveCourses({ edit: true, delete: true });
-      },
+        retrieveCourses(courseOptions);
+        // Get rid of any filtering
+        $("#filterModifyCourseOptions, #filterModifySemesterOptions").val("");
+      }
+    });
+  });
+
+  // Use AJAX to submit course offering form
+  $("#offeringForm").submit(function (e) {
+    // Override the default
+    e.preventDefault();
+    // Get form info
+    var form = $(this);
+    var action = form.attr("action");
+    // Don't show modal anymore
+    $("#offeringModal").css({ display: "none" });
+
+    // Submit form information
+    $.ajax({
+      type: "POST",
+      url: action,
+      data: form.serialize(),
+      success: function (data) {
+        if (data.isOfferingAdded) {
+          // Show course added success message
+          $("div#courseMessages")
+            .append(`<div class="addingOfferingSuccessMessage alert alert-success alert-dismissible">
+           Course offering successfully added!
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+         </div>`);
+        } else if (data.isOfferingEdited) {
+          // Show course edited success message
+          $("div#courseMessages")
+            .append(`<div class="editingOfferingSuccessMessage alert alert-success alert-dismissible">
+           Course offering successfully edited!
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+         </div>`);
+        }
+        // Get the updated entries
+        showCorrectTable(
+          $("div#courseMaintenanceMainDropdown button").attr("id")
+        );
+        onSelect(
+          $("div#courseMaintenanceMainDropdown button").attr("id"),
+          offeringType,
+          tables,
+          editOptions
+        );
+        // Get rid of any filtering
+        $("#filterModifyCourseOptions, #filterModifySemesterOptions").val("");
+      }
     });
   });
 

@@ -55,16 +55,17 @@
     <div class="container">
       <ul class="nav nav-tabs">
         <li>
-          <a data-toggle="tab" href="#modifySemesters">Modify Semesters</a>
+          <a id="semesterTab" data-toggle="tab" href="#modifySemesters">Modify Semesters</a>
         </li>
         <li class="active">
-          <a data-toggle="tab" href="#modifyCourses">Modify Courses</a>
+          <a id="coursesTab" data-toggle="tab" href="#modifyCourses">Modify Courses</a>
         </li>
       </ul>
 
       <div class="tab-content">
         <div id="modifySemesters" class="tab-pane fade">
           <h3>Semesters</h3>
+          <div id="semesterMessages"></div>
           <div class="input-group">
             <span class="input-group-addon"
               ><span class="glyphicon glyphicon-search"></span
@@ -133,7 +134,7 @@
                     <div class="form-group">
                       <div id="modalTypeDropdown" class="dropdown">
                         <button
-                          id="recentType"
+                          id="recentTypeButton"
                           class="btn btn-default dropdown-toggle"
                           type="button"
                           data-toggle="dropdown"
@@ -198,6 +199,7 @@
           <br />
           <div id="courseMaintenanceMainDropdown" class="dropdown">
             <button
+              id = "allCourses"
               class="btn btn-default dropdown-toggle"
               type="button"
               data-toggle="dropdown"

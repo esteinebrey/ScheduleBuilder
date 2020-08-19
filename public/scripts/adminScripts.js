@@ -5,8 +5,6 @@
 $(document).ready(function () {
   // Modal and error messages are originally invisible
   $("#addEditModal").css({ display: "none" });
-  $("#deletion-error-message").css({ display: "none" });
-  $("#username-error-message").css({ display: "none" });
 
   // Use AJAX to submit form in the modal
   $("#addEditForm").submit(function (e) {
@@ -25,14 +23,15 @@ $(document).ready(function () {
       data: form.serialize(),
       success: function (data) {
         if (data.isLoginTaken) {
-          // Username is already taken error should show
-          $("#deletion-error-message").css({ display: "none" });
-          $("#username-error-message").css({ display: "block" });
-        } else {
-          // It worked, so don't show error messages
-          $("#deletion-error-message").css({ display: "none" });
-          $("#username-error-message").css({ display: "none" });
-        }
+          // Show message that username is already taken
+          $("div#errorMessages")
+            .append(`<div id="usernameTakenErrorMessage" class="alert alert-danger alert-dismissible">
+            Error: Username must be unique
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>`);
+        } 
         // Get the entries again
         $("#adminTable tbody").empty();
         retrieveUsers();
@@ -60,17 +59,16 @@ $(document).ready(function () {
       data: { id: userId },
       dataType: "json",
     }).done(function (data) {
-      if (data.isDeleted) {
-        // Not deleting current user and deletion worked
-        // No error messages should show
-        $("#deletion-error-message").css({ display: "none" });
-        $("#username-error-message").css({ display: "none" });
-      } else {
-        // Deletion did not work so show deletion error message
-        // Do not show username error message
-        $("#deletion-error-message").css({ display: "block" });
-        $("#username-error-message").css({ display: "none" });
-      }
+      if (!data.isDeleted) {
+        // Show message that cannot delete current user
+        $("div#errorMessages")
+        .append(`<div id="deletingUserErrorMessage" class="alert alert-danger alert-dismissible">
+        Error: Cannot delete current user
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>`);
+      } 
       // Get the entries again
       $("#adminTable tbody").empty();
       retrieveUsers();

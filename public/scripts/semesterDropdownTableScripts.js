@@ -19,8 +19,9 @@ $(document).ready(function () {
         add: false,
         edit: false,
         type: "coursesOffered",
-      },
+      }
     };
+    
     showCourses($(this).attr("id"), offeringType, sections, editOptions);
     $("#filterCourses").val("");
   });
@@ -42,10 +43,11 @@ $(document).ready(function () {
         type: "coursesOffered",
       },
     };
+    
+    $("div#courseMaintenanceMainDropdown button").attr("id", $(this).attr("id"));
     showCorrectTable($(this).attr("id")); 
     onSelect($(this).attr("id"), offeringType, tables, editOptions);
-    $("#filterModifyCourseOptions").val("");
-    $("#filterModifySemesterOptions").val("");
+    $("#filterModifyCourseOptions, #filterModifySemesterOptions").val("");
   });
 
   // Logic for Schedule page dropdown

@@ -22,6 +22,49 @@ $(document).ready(function () {
     $("input#recentType").val(value);
   });
 
+  // Use AJAX to submit semester form
+  $("#addEditSemesterForm").submit(function (e) {
+    // Override the default
+    e.preventDefault();
+    // Get form info
+    var form = $(this);
+    var action = form.attr("action");
+    // Don't show modal anymore
+    $("#addEditSemesterModal").css({ display: "none" });
+
+    // Submit form information
+    $.ajax({
+      type: "POST",
+      url: action,
+      data: form.serialize(),
+      success: function (data) {
+        if (data.isSemesterAdded) {
+          // Show course added success message
+          $("div#semesterMessages")
+            .append(`<div class="addingSemesterSuccessMessage alert alert-success alert-dismissible">
+           Semester successfully added!
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+         </div>`);
+        } else if (data.isSemesterEdited) {
+          // Show course edited success message
+          $("div#semesterMessages")
+            .append(`<div class="editingSemesterSuccessMessage alert alert-success alert-dismissible">
+           Semester successfully edited!
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+         </div>`);
+        }
+        // Get the semester entries again
+        $("#semesterTable tbody tr").remove();
+        retrieveSemestersForTable();
+        $("#filterModifyCourseOptions, #filterModifySemesterOptions").val("");
+      },
+    });
+  });
+
   // Function for deleting semester and row in table
   $(document).on("click", ".deleteSemester", function () {
     var rowId = $(this).parentsUntil("tbody").last().attr("id");
@@ -31,8 +74,31 @@ $(document).ready(function () {
       type: "POST",
       data: { id: semesterId },
       dataType: "json",
+    }).done(function (data) {
+      if (!data.isSemesterDeleted) {
+        // Show error message; cannot delete semester if there is already corresponding offering
+        $("div#semesterMessages")
+          .append(`<div class="deletingSemesterErrorMessage alert alert-danger alert-dismissible">
+        Error: Cannot delete semester that already has corresponding course offering
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>`);
+      } else {
+        // Show success message
+        $("div#semesterMessages")
+          .append(`<div class="deletingSemesterSuccessMessage alert alert-success alert-dismissible">
+        Semester successfully deleted!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>`);
+        // Get the semester entries again
+        $("#semesterTable tbody tr").remove();
+        retrieveSemestersForTable();
+        $("#filterModifyCourseOptions, #filterModifySemesterOptions").val("");
+      }
     });
-    location.reload();
   });
 
   // Function for editing semester and corresponding row
