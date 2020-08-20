@@ -108,6 +108,69 @@ Schedule Builder is an application that students can use to create their schedul
 
 ## Scripts
 
+<table>
+    <tr>
+        <th>File</th>
+        <th>Pages Used</th>
+        <th>Purpose</th>
+    </tr>
+    <tr>
+        <td>adminScripts.js</td>
+        <td>Admin</td>
+        <td><ul><li>Getting and displaying user information</li> <li>Using modals to add, edit, and delete users</li></ul></td>
+    </tr>
+    <tr>
+        <td>buildScheduleScripts.js</td>
+        <td>Build Schedule</td>
+        <td>Admin, Course Maintenance, View Courses</td>
+    </tr>
+    <tr>
+        <td>courseOfferingModalScripts.js</td>
+        <td>Course Maintenance</td>
+        <td>Admin, Course Maintenance, View Courses</td>
+    </tr>
+    <tr>
+        <td>coursePanelScripts.js</td>
+        <td>View Courses</td>
+        <td>Admin, Course Maintenance, View Courses</td>
+    </tr>
+    <tr>
+        <td>courseTableScripts.js</td>
+        <td>Course Maintenance</td>
+        <td>Admin, Course Maintenance, View Courses</td>
+    </tr>
+    <tr>
+        <td>filterScripts.js</td>
+        <td>Admin, Build Schedule, Course Maintenance, View Courses</td>
+        <td>Admin, Course Maintenance, View Courses</td>
+    </tr>
+    <tr>
+        <td>navigationBarScripts.js</td>
+        <td>Admin, Build Schedule, Course Maintenance, Schedule, View Courses</td>
+        <td>Admin, Course Maintenance, View Courses</td>
+    </tr>
+    <tr>
+        <td>offeringPanelScripts.js</td>
+        <td>Build Schedule, Schedule, View Courses</td>
+        <td>Admin, Course Maintenance, View Courses</td>
+    </tr>
+    <tr>
+        <td>offeringTableScripts.js</td>
+        <td>Course Maintenance</td>
+        <td>Admin, Course Maintenance, View Courses</td>
+    </tr>
+    <tr>
+        <td>semesterDropdownTableScripts.js</td>
+        <td>Build Schedule, Course Maintenance, Schedule, View Courses</td>
+        <td>Admin, Course Maintenance, View Courses</td>
+    </tr>
+    <tr>
+        <td>semesterModalScripts.js</td>
+        <td>Course Maintenance</td>
+        <td>Admin, Course Maintenance, View Courses</td>
+    </tr>
+</table>
+
 ## Styles
 
 ## Database
