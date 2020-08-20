@@ -3,7 +3,7 @@ const express = require("express");
 const usersRouter = express.Router();
 
 var crypto = require("crypto");
-var db = require("./db.js")
+var db = require("./db.js");
 let dbConnection = db.dbConnection;
 
 // Login page routes 

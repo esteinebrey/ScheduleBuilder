@@ -1,4 +1,4 @@
-// Router for handling courses
+// Router for handling semesters
 const express = require("express");
 const semestersRouter = express.Router();
 
