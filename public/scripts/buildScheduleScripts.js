@@ -31,7 +31,7 @@ $(document).ready(function () {
       ""
     );
     $.ajax({
-      url: "/deleteFromSchedule",
+      url: "/registrations/deleteFromSchedule",
       type: "POST",
       data: { id: registrationId },
       dataType: "json",
@@ -65,7 +65,7 @@ $(document).ready(function () {
       ""
     );
     $.ajax({
-      url: "/addToSchedule",
+      url: "/registrations/addToSchedule",
       type: "POST",
       data: { id: offeringId },
       dataType: "json",
