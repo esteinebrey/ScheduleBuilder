@@ -83,7 +83,9 @@ Schedule Builder is an application that students can use to create their schedul
 
 <img src="pageDisplay/homePage.PNG" />
 
-This is the default page displayed to anyone when they try to access Schedule Builder.
+This is the default page displayed to anyone when they try to access Schedule Builder. 
+
+Normally pressing the button will go to the login page. However, if a user is logged in and goes to the Home page using the navigation bar, when they click the button, they will be routed to the Admin page or Schedule page if they are an admin user or student respectively.
 
 ### Login Page
 
@@ -95,7 +97,9 @@ Users log into Schedule Builder by entering their username and password. If the 
 
 <img src="pageDisplay/adminPage.PNG" />
 
-Admin users can add users by using a modal that comes up when the Add User button is clicked. They can edit a user using a modal that comes up when the pencil icon of their row is pressed. They can delete a user by pressing the trash can of their row. Also, they can filter out rows by using the input box above the button.
+Admin users can add users by using a modal that comes up when the Add User button is clicked. They can edit a user using a modal that comes up when the pencil icon of their row is pressed. They can delete a user by pressing the trash can of their row. Also, they can filter out rows by using the input box with the search icon above the button.
+
+An error message will be shown if an administrator tries to edit a user so that their username is the same as another user's username. Usernames must be unique. Also, an error message will be shown if an administrator tries to delete their own account.
 
 ### Course Maintenance Page
 
@@ -103,7 +107,11 @@ Admin users can add users by using a modal that comes up when the Add User butto
 
 <img src="pageDisplay/courseMaintenancePage_modifyCourses.PNG" />
 
-Similar to the Admin Page, admin users can add courses by filling out the modal that comes up from pressing the Add Course button. They can edit with a modal or delete a course by pressing the course's pencil or trash can icon. By pressing the plus button next to a course, a modal will come up and the admin user can create a course offering for the course.
+This is the default tab when Course Maintenance is pressed in the navigation bar.
+
+Similar to the Admin Page, admin users can add courses by filling out the modal that comes up from pressing the Add Course button. They can edit with a modal or delete a course by pressing the course's pencil or trash can icon. The edit modal will be pre-populated with the information of the row selected. 
+
+By pressing the plus button next to a course, a modal will come up and the admin user can create a course offering for the course.
 
 <img src="pageDisplay/courseMaintenancePage_modifyOfferings.PNG" />
 
@@ -127,7 +135,9 @@ An error message will be displayed if an admin user tries to delete a semester t
 
 <img src="pageDisplay/schedulePage.PNG" />
 
-Students can view their past and current schedules on this page by selecting a semester from the dropdown. The only semesters that show up in the dropdown are ones where the student took or is taking a course.
+Students can view their past and current schedules on this page by selecting a semester from the dropdown. The only semesters that show up in the dropdown are ones where the student took or is taking a course. 
+
+A message will display if the student has not registered for any courses yet.
 
 ### Build Schedule Page
 
@@ -135,13 +145,17 @@ Students can view their past and current schedules on this page by selecting a s
 
 <img src="pageDisplay/buildSchedulePage_dropClasses.PNG" />
 
-A student can choose a semester and view their current classes. They can delete a class from their schedule by clicking the trash can icon. A success message is displayed when a student successfully deletes a class.
+This is the default tab when Build Schedule is selected in the navigation bar.
+
+A student can choose a semester and view their corresponding classes. They can delete a class from their schedule by clicking the trash can icon. A success message is displayed when a student successfully deletes a class.
 
 #### Add Classes Tab
 
 <img src="pageDisplay/buildSchedulePage_addClasses.PNG" />
 
 A student can choose a semester and view courses they are not currently registered for. They can add one of these classes to their schedule by clicking the plus icon. A success message is displayed when a student successfully adds a class.
+
+A student cannot add a course to their schedule if all of its seats are filled. These classes that are already at capacity will be red. Classes nearing capacity will be yellow, and classes with many seats left will be green.
 
 ### View Courses Page
 
@@ -151,9 +165,9 @@ An admin user or a student can view all possible courses.
 
 <img src="pageDisplay/viewCoursesPage_OfferingView.PNG" />
 
-An admin user or a student can view all course offerings for any semester selected. 
+An admin user or a student can view all course offerings for any semester selected. Course offerings are green if there are plenty of seats left. They are yellow if there are a few seats left and red if there are no seats left.
 
-Courses or course offerings can be filtered using the input box with the search icon.
+Courses and course offerings can be filtered using the input box with the search icon.
 
 ## Scripts
 
@@ -285,6 +299,73 @@ Courses or course offerings can be filtered using the input box with the search 
         </td>
     </tr>
 </table>
+
+### Server Logic
+
+<table>
+    <tr>
+        <th>File</th>
+        <th>Purpose</th>
+    </tr>
+    <tr>
+        <td>index.js</td>
+        <td>
+            <ul>
+                <li>Main server file</li>
+                <li>Contains logic to get pages, logout, and send 404 for unacceptable routes</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>db.js</td>
+        <td>
+            <ul>
+                <li>Create MySQL connection by parsing XML file containing database info</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>courses.js</td>
+        <td>
+            <ul>
+                <li>Contains routes pertaining to courses</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>offerings.js</td>
+        <td>
+            <ul>
+                <li>Contains routes pertaining to offerings</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>registrations.js</td>
+        <td>
+            <ul>
+                <li>Contains routes pertaining to registrations</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>semesters.js</td>
+        <td>
+            <ul>
+                <li>Contains routes pertaining to semesters</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>users.js</td>
+        <td>
+            <ul>
+                <li>Contains routes pertaining to users and login</li>
+            </ul>
+        </td>
+    </tr>
+</table>
+
 
 ## Styles
 
