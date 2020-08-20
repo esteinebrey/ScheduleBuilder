@@ -4,6 +4,9 @@
 
 Schedule Builder is an application that students can use to create their schedule by viewing the courses offered, adding classes, dropping classes, and viewing past schedules. It is also used by administrators to modify, add, and delete courses and to change which users can log into Schedule Builder.
 
+## How It Works
+    - Images of ScheduleBuilder can be found in the /pageDisplay folder.
+
 ## Terminology
 
     - Semester: A time period where students can register for classes.
@@ -84,27 +87,67 @@ Schedule Builder is an application that students can use to create their schedul
 
 <img src="pageDisplay/loginPage.PNG" />
 
+Users log into Schedule Builder by entering their username and password. If the login info is not validated, an error message will be displayed. If the user logs in successfully, they will be redirected to a page based on the type of user they are; admin users will go to the Admin page, and student users will go to the Schedule page. 
+
 ### Admin Page
 
 <img src="pageDisplay/adminPage.PNG" />
 
+Admin users can add users by using a modal that comes up when the Add User button is clicked. They can edit a user using a modal that comes up when the pencil icon of their row is pressed. They can delete a user by pressing the trash can of their row. Also, they can filter out rows by using the input box above the button.
+
 ### Course Maintenance Page
 
+#### Modify Courses Tab
+
 <img src="pageDisplay/courseMaintenancePage_modifyCourses.PNG" />
+
+Similar to the Admin Page, admin users can add courses by filling out the modal that comes up from pressing the Add Course button. They can edit with a modal or delete a course by pressing the course's pencil or trash can icon. By pressing the plus button next to a course, a modal will come up and the admin user can create a course offering for the course.
+
+<img src="pageDisplay/courseMaintenancePage_modifyOfferings.PNG" />
+
+Admin users can edit and delete course offerings in the same way.
+
+Courses and course offerings can be filtered using the input box with the search icon.
+
+An error message will be displayed if an admin user tries to delete a course that already has a corresponding course offering. Also, an error message will be shown if an admin user tries to delete a course offering that a student has already registered for. A success message will be displayed if a course offering or course is successfully added, edited, or deleted.
+
+#### Modify Semesters Tab
+
 <img src="pageDisplay/courseMaintenancePage_modifySemesters.PNG" />
+
+Admin users can add, edit, and delete semesters in this tab, similarly to the Modify Courses Tab.
+
+Semesters can be filtered using the input box with the search icon.
+
+An error message will be displayed if an admin user tries to delete a semester that already has a corresponding course offering. A success message will be displayed if a semester is successfully added, edited, or deleted.
 
 ### Schedule Page
 
 <img src="pageDisplay/schedulePage.PNG" />
 
+Students can view their past and current schedules on this page by selecting a semester from the dropdown. The only semesters that show up in the dropdown are ones where the student took or is taking a course.
+
 ### Build Schedule Page
 
 <img src="pageDisplay/buildSchedulePage_dropClasses.PNG" />
+
+A student can choose a semester and view their current classes. They can delete a class from their schedule by clicking the trash can icon. A success message is displayed when a student successfully deletes a class.
+
 <img src="pageDisplay/buildSchedulePage_addClasses.PNG" />
+
+A student can choose a semester and view courses they are not currently registered for. They can add one of these classes to their schedule by clicking the plus icon. A success message is displayed when a student successfully adds a class.
 
 ### View Courses Page
 
 <img src="pageDisplay/viewCoursesPage.PNG" />
+
+An admin user or a student can view all possible courses.
+
+<img src="pageDisplay/viewCoursesPage_OfferingView.PNG" />
+
+An admin user or a student can view all course offerings for any semester selected. 
+
+Courses or course offerings can be filtered using the input box with the search icon.
 
 ## Scripts
 
@@ -227,6 +270,12 @@ Schedule Builder is an application that students can use to create their schedul
                 <li>Edit and add semesters with modal</li> 
                 <li>Delete semesters</li>
             </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>index.js</td>
+        <td>Server</td>
+        <td>
         </td>
     </tr>
 </table>
