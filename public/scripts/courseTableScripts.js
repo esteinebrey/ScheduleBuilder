@@ -1,5 +1,4 @@
-// File that has functions to display courses, switch between course and offering tables, and
-// allow for courses to be selected in dropdown
+// File that has functions to display courses and switch between course and offering tables
 
 // Initially, don't show course table
 var isCourseTableShown = false;

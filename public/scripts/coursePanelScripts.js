@@ -1,4 +1,4 @@
-// Scripts for course panels
+// Scripts for retrieving courses and creating course display
 
 // Get all the courses to display
 function retrieveCourses() {
