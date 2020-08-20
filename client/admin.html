@@ -12,6 +12,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="/scripts/navigationBarScript.js"></script>
     <script src="/scripts/adminScripts.js"></script>
+    <script src="/scripts/filterScripts.js"></script>
     <link rel="stylesheet" href="/css/scheduleBuilderStyle.css" />
   </head>
 
@@ -38,6 +39,18 @@
     <div class="container">
       <h1>Admin</h1>
       <div id="errorMessages"></div>
+
+      <div class="input-group">
+        <span class="input-group-addon"
+          ><span class="glyphicon glyphicon-search"></span
+        ></span>
+        <input
+          class="form-control"
+          type="text"
+          id="filterUsers"
+        />
+      </div>
+      <br />
       <button id="addButton" class="btn btn-primary addButton">
         <span class="glyphicon glyphicon-plus"></span>Add User
       </button>

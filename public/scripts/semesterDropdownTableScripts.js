@@ -168,6 +168,11 @@ function retrieveRecentSemesters() {
 // Process semester information retrieved for dropdowns corresponding to dropdownIds
 function processSemesterInfo(semesters, dropdownIds) {
   if (semesters.length > 0) {
+    // Student has registrations, so show dropdown
+    if (dropdownIds.includes("viewScheduleSemesterDropdown")) {
+      $("div.dropdown").css({"display": "block"});
+      $("#scheduleError").css({"display": "none"});
+    }
     // Go through each semester in semesters
     var i;
     var semester;
@@ -178,6 +183,11 @@ function processSemesterInfo(semesters, dropdownIds) {
         addToSemesterDropdown(semester, dropdownId);
       });
     }
+  }
+  // If user has not registered for any classes, do not show dropdown for Schedule Page
+  else if (dropdownIds.includes("viewScheduleSemesterDropdown")) {
+    $("div.dropdown").css({"display": "none"});
+    $("#scheduleError").css({"display": "block"});
   }
 }
 

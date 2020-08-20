@@ -4,6 +4,14 @@
 
 Schedule Builder is an application that students can use to create their schedule by viewing the courses offered, adding classes, dropping classes, and viewing past schedules. It is also used by administrators to modify, add, and delete courses and to change which users can log into Schedule Builder.
 
+## Terminology
+
+    - Semester: A time period where students can register for classes.
+
+    - Course: A class that has a name, department code, number, credit number, and description. A course does not pertain to any specific semester.
+
+    - Course Offering: A course that pertains to a specific semester that also has the location, professor, capacity, and time.
+
 ## Types of Users
 
 <table>
@@ -65,3 +73,15 @@ Schedule Builder is an application that students can use to create their schedul
         <td>View courses and course offerings</td>
     </tr>
 </table>
+
+## Pages
+
+### Admin Page
+
+<img src="pageDisplay/adminPage.PNG" />
+
+## Scripts
+
+## Styles
+
+## Database

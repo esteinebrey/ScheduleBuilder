@@ -21,4 +21,11 @@ $(document).ready(function() {
             $(this).toggle($(this).text().toLowerCase().indexOf(searchedText) > -1);
         });
     });
+
+    $("#filterUsers").on("keyup", function() {
+        var searchedText = $(this).val().toLowerCase();
+        $("table#adminTable tbody tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(searchedText) > -1);
+        });
+    });
 });

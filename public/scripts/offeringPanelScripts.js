@@ -127,8 +127,8 @@ function createOfferingPanel(offering, section, editOptions, offeringType) {
   var headingColor;
   // Determine offering color for Schedule page
   if (editOptions.type === "schedule") {
-    bodyColor = "bg-maroon";
-    headingColor = "panel-heading-gold";
+    bodyColor = "bg-primary";
+    headingColor = "panel-heading-dark-blue";
   } 
   // Determine offering colors for View Courses and Build Schedule pages
   else {
