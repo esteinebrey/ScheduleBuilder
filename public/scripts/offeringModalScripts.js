@@ -23,7 +23,7 @@ $(document).ready(function () {
       var rowId = $(this).parentsUntil("tbody").last().attr("id");
       var offeringId = rowId.replace("row", "");
       $.ajax({
-        url: "/deleteOffering",
+        url: "/offerings/deleteOffering",
         type: "POST",
         data: { id: offeringId },
         dataType: "json",
@@ -139,7 +139,7 @@ $(document).ready(function () {
     showEditOfferingModal = () => {
       $("h1#offeringTitle").html("Edit Course Offering");
       $("#offeringButton").val("Update Offering");
-      $("#offeringForm").attr("action", "/editOffering");
+      $("#offeringForm").attr("action", "/offerings/editOffering");
     };  
   
     // Function for adding offering
@@ -169,7 +169,7 @@ $(document).ready(function () {
     showAddOfferingModal = () => {
       $("h1#offeringTitle").html("Add Course Offering");
       $("#offeringButton").val("Add Offering");
-      $("#offeringForm").attr("action", "/addOffering");
+      $("#offeringForm").attr("action", "/offerings/addOffering");
     };
   
     // Cancelling offering modal makes it invisible

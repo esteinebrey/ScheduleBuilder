@@ -61,7 +61,7 @@ function retrieveOfferingsForSemester(semesterId, sections, editOptions, offerin
       addOfferingsToSection(offerings, sectionId, editOptions, offeringType);
     }
   };
-  xhr.open("GET", "/getCoursesBySemester/" + semesterId, true);
+  xhr.open("GET", `/courses/getCoursesBySemester/${semesterId}`, true);
   xhr.send();
 }
 
@@ -77,7 +77,7 @@ function retrieveOfferingsForSemesterAndUser(semesterId, sections, editOptions, 
         addOfferingsToSection(offerings, sectionId, editOptions, offeringType);
       }
     };
-    xhr.open("GET", "/getStudentCoursesBySemester/" + semesterId, true);
+    xhr.open("GET", `/courses/getStudentCoursesBySemester/${semesterId}`, true);
     xhr.send();
   }
   
@@ -93,7 +93,7 @@ function retrieveOfferingsForSemesterAndUser(semesterId, sections, editOptions, 
         addOfferingsToSection(offerings, sectionId, editOptions, offeringType);
       }
     };
-    xhr.open("GET", "/getNonStudentCoursesBySemester/" + semesterId, true);
+    xhr.open("GET", `/courses/getNonStudentCoursesBySemester/${semesterId}`, true);
     xhr.send();
   }
   

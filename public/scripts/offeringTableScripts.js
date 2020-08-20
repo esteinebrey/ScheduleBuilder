@@ -35,7 +35,7 @@ function retrieveOfferingsForSemester(semester, tables, editOptions, offeringTyp
       addOfferingsToTable(offerings, tableId, editOptions, offeringType);
     }
   };
-  xhr.open("GET", "/getCoursesBySemester/" + semesterId, true);
+  xhr.open("GET", `/courses/getCoursesBySemester/${semesterId}`, true);
   xhr.send();
 }
 
