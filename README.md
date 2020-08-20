@@ -117,57 +117,117 @@ Schedule Builder is an application that students can use to create their schedul
     <tr>
         <td>adminScripts.js</td>
         <td>Admin</td>
-        <td><ul><li>Getting and displaying user information</li> <li>Using modals to add, edit, and delete users</li></ul></td>
+        <td>
+            <ul>
+                <li>Getting and displaying user information</li> 
+                <li>Using modals to add, edit, and delete users</li>
+            </ul>
+        </td>
     </tr>
     <tr>
         <td>buildScheduleScripts.js</td>
         <td>Build Schedule</td>
-        <td>Admin, Course Maintenance, View Courses</td>
+        <td>
+            <ul>
+                <li>Deleting and adding classes</li> 
+            </ul>
+        </td>
     </tr>
     <tr>
-        <td>courseOfferingModalScripts.js</td>
-        <td>Course Maintenance</td>
-        <td>Admin, Course Maintenance, View Courses</td>
+        <td>courseModalScripts.js</td>
+        <td>Course Maintenance: Modify Courses Tab</td>
+        <td>
+            <ul>
+                <li>Edit and add courses with modal</li> 
+                <li>Delete courses</li>
+            </ul>
+        </td>
     </tr>
     <tr>
         <td>coursePanelScripts.js</td>
         <td>View Courses</td>
-        <td>Admin, Course Maintenance, View Courses</td>
+        <td>
+            <ul>
+                <li>Retrieve and display courses using Bootstrap panels</li> 
+            </ul>
+        </td>
     </tr>
     <tr>
         <td>courseTableScripts.js</td>
         <td>Course Maintenance</td>
-        <td>Admin, Course Maintenance, View Courses</td>
+        <td>
+            <ul>
+                <li>Retrieve and display courses in a table format</li> 
+                <li>Switch between showing offering table and course table</li>
+            </ul>
+        </td>
     </tr>
     <tr>
         <td>filterScripts.js</td>
         <td>Admin, Build Schedule, Course Maintenance, View Courses</td>
-        <td>Admin, Course Maintenance, View Courses</td>
+        <td>
+            <ul>
+                <li>Filter courses, offerings, semesters, or users based on what is searched for</li> 
+            </ul>
+        </td>
     </tr>
     <tr>
         <td>navigationBarScripts.js</td>
         <td>Admin, Build Schedule, Course Maintenance, Schedule, View Courses</td>
-        <td>Admin, Course Maintenance, View Courses</td>
+        <td>
+            <ul>
+                <li>Show the right options in navigation bar based on type of user</li> 
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>offeringModalScripts.js</td>
+        <td>Course Maintenance: Modify Courses Tab</td>
+        <td>
+            <ul>
+                <li>Edit and add course offerings with modal</li> 
+                <li>Delete course offerings</li>
+            </ul>
+        </td>
     </tr>
     <tr>
         <td>offeringPanelScripts.js</td>
         <td>Build Schedule, Schedule, View Courses</td>
-        <td>Admin, Course Maintenance, View Courses</td>
+        <td>
+            <ul>
+                <li>Retrieve and display offerings using Bootstrap panels</li> 
+            </ul>
+        </td>
     </tr>
     <tr>
         <td>offeringTableScripts.js</td>
         <td>Course Maintenance</td>
-        <td>Admin, Course Maintenance, View Courses</td>
+        <td>
+            <ul>
+                <li>Retrieve and display offerings in a table format</li> 
+            </ul>
+        </td>
     </tr>
     <tr>
         <td>semesterDropdownTableScripts.js</td>
         <td>Build Schedule, Course Maintenance, Schedule, View Courses</td>
-        <td>Admin, Course Maintenance, View Courses</td>
+        <td>
+            <ul>
+                <li>Retrieve and display semesters in a dropdown</li> 
+                <li>Update dropdown when an option is selected</li> 
+                <li>Retrieve and display semesters in a table format for Course Maintenance</li>
+            </ul>
+        </td>
     </tr>
     <tr>
         <td>semesterModalScripts.js</td>
-        <td>Course Maintenance</td>
-        <td>Admin, Course Maintenance, View Courses</td>
+        <td>Course Maintenance: Modify Semesters Tab</td>
+        <td>
+            <ul>
+                <li>Edit and add semesters with modal</li> 
+                <li>Delete semesters</li>
+            </ul>
+        </td>
     </tr>
 </table>
 
