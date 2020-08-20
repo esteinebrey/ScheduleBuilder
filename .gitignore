@@ -1,5 +1,5 @@
-# Ignore dbconfig.xml file
-dbconfig.xml
+# Ignore dbConfig.xml file
+dbConfig.xml
 
 # Ignore node_modules folder
 /node_modules

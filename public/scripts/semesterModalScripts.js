@@ -70,7 +70,7 @@ $(document).ready(function () {
     var rowId = $(this).parentsUntil("tbody").last().attr("id");
     semesterId = rowId.replace("row", "");
     $.ajax({
-      url: "/deleteSemester",
+      url: "/semesters/deleteSemester",
       type: "POST",
       data: { id: semesterId },
       dataType: "json",
@@ -112,7 +112,7 @@ $(document).ready(function () {
     // Change semester modal, so it is for edit and not add
     $("h1#addEditSemesterTitle").html("Edit Semester");
     $("#addEditSemesterButton").val("Update Semester");
-    $("#addEditSemesterForm").attr("action", "/editSemester");
+    $("#addEditSemesterForm").attr("action", "/semesters/editSemester");
   });
 
   // Have current values be placeholders for edit semester modal
@@ -144,7 +144,7 @@ $(document).ready(function () {
     // Change semester modal, so it is for add and not edit
     $("h1#addEditSemesterTitle").html("Add Semester");
     $("#addEditSemesterButton").val("Add Semester");
-    $("#addEditSemesterForm").attr("action", "/addSemester");
+    $("#addEditSemesterForm").attr("action", "/semesters/addSemester");
   });
 
   // Cancelling semester modal makes it invisible

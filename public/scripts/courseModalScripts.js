@@ -36,7 +36,7 @@ $(document).ready(function () {
     var rowId = $(this).parentsUntil("tbody").last().attr("id");
     var courseId = rowId.replace("row", "");
     var request = $.ajax({
-      url: "/deleteCourse",
+      url: "/courses/deleteCourse",
       type: "POST",
       data: { id: courseId },
       dataType: "json",
@@ -141,7 +141,7 @@ $(document).ready(function () {
   showEditCourseModal = () => {
     $("h1#courseTitle").html("Edit Course");
     $("#courseButton").val("Update Course");
-    $("#courseForm").attr("action", "/editCourse");
+    $("#courseForm").attr("action", "/courses/editCourse");
   };
 
   // Function for adding course
@@ -166,7 +166,7 @@ $(document).ready(function () {
   showAddCourseModal = () => {
     $("h1#courseTitle").html("Add Course");
     $("#courseButton").val("Add Course");
-    $("#courseForm").attr("action", "/addCourse");
+    $("#courseForm").attr("action", "/courses/addCourse");
   };
 
   // Cancelling course modal makes it invisible
