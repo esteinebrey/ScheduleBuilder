@@ -233,4 +233,174 @@ Schedule Builder is an application that students can use to create their schedul
 
 ## Styles
 
+Bootstrap is used to style most of the application. scheduleBuilderStyle.css is used for custom styles.
+
 ## Database
+
+### Users Table
+    - Keep track of users of Schedule Builder and their login info
+    - UserLogin is unique
+
+<table>
+    <tr>
+        <th>Column</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>UserID</td>
+        <td>Primary Key</td>
+    </tr>
+    <tr>
+        <td>UserName</td>
+        <td>Name of the user</td>
+    </tr>
+    <tr>
+        <td>UserLogin</td>
+        <td>Login for the user</td>
+    </tr>
+    <tr>
+        <td>UserPassword</td>
+        <td>Password for the user</td>
+    </tr>
+    <tr>
+        <td>isAdmin</td>
+        <td>1 for admin user and 0 for student user</td>
+    </tr>
+</table>
+
+### Courses Table
+    - Keep track of courses
+    - DeptCode and CourseNumber combination are unique
+
+<table>
+    <tr>
+        <th>Column</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>CourseID</td>
+        <td>Primary Key</td>
+    </tr>
+    <tr>
+        <td>DeptCode</td>
+        <td>Department code for course (like CSCI for computer science)</td>
+    </tr>
+    <tr>
+        <td>CourseNumber</td>
+        <td>Number for course (like 101)</td>
+    </tr>
+    <tr>
+        <td>CourseName</td>
+        <td>Name of the course</td>
+    </tr>
+    <tr>
+        <td>CreditNumber</td>
+        <td>Number of credits for course</td>
+    </tr>
+    <tr>
+        <td>CourseDescription</td>
+        <td>Brief description of the course</td>
+    </tr>
+</table>
+
+### Semesters Table
+    - Keep track of semesters that courses can be taken
+    - Season and Year combination is unique
+
+<table>
+    <tr>
+        <th>Column</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>SemesterID</td>
+        <td>Primary Key</td>
+    </tr>
+    <tr>
+        <td>Season</td>
+        <td>Description of time period (like fall, spring)</td>
+    </tr>
+    <tr>
+        <td>Year</td>
+        <td>Year when semester is taken</td>
+    </tr>
+    <tr>
+        <td>isRecent</td>
+        <td>
+            <ul>
+                <li>0 for semesters that are further in the past so registrations cannot change; semester is set</li>
+                 <li>1 for semesters that are more recent so registrations can change</li>
+            </ul>
+        </td>
+    </tr>
+</table>
+
+### CourseOfferings Table
+    - Keep track of offerings, which are courses for a specific semester
+
+<table>
+    <tr>
+        <th>Column</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>OfferingID</td>
+        <td>Primary Key</td>
+    </tr>
+    <tr>
+        <td>CourseID</td>
+        <td>Foreign Key to Courses table</td>
+    </tr>
+    <tr>
+        <td>SemesterID</td>
+        <td>Foreign Key to Semesters table</td>
+    </tr>
+    <tr>
+        <td>Professor</td>
+        <td>Instructor for the course offering</td>
+    </tr>
+    <tr>
+        <td>DaysOfWeek</td>
+        <td>Days where offering takes place (like MTWThF)</td>
+    </tr>
+    <tr>
+        <td>Time</td>
+        <td>Time for the offering (like 1:15PM-2PM)</td>
+    </tr>
+    <tr>
+        <td>Building</td>
+        <td>Building for course offering</td>
+    </tr>
+    <tr>
+        <td>Room</td>
+        <td>Room for course offering</td>
+    </tr>
+    <tr>
+        <td>Capacity</td>
+        <td>Maximum number of students who can sign up for offering</td>
+    </tr>
+</table>
+
+
+### Registrations Table
+    - Keep track of course offerings that a student is taking
+    - StudentID and OfferingID combination is unique
+
+<table>
+    <tr>
+        <th>Column</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>RegistrationID</td>
+        <td>Primary Key</td>
+    </tr>
+    <tr>
+        <td>StudentID</td>
+        <td>Foreign Key to Users table</td>
+    </tr>
+    <tr>
+        <td>OfferingID</td>
+        <td>Foreign Key to CourseOfferings table</td>
+    </tr>
+</table>
