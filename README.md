@@ -83,6 +83,8 @@ Schedule Builder is an application that students can use to create their schedul
 
 <img src="pageDisplay/homePage.PNG" />
 
+This is the default page displayed to anyone when they try to access Schedule Builder.
+
 ### Login Page
 
 <img src="pageDisplay/loginPage.PNG" />
@@ -129,9 +131,13 @@ Students can view their past and current schedules on this page by selecting a s
 
 ### Build Schedule Page
 
+#### Drop Classes Tab
+
 <img src="pageDisplay/buildSchedulePage_dropClasses.PNG" />
 
 A student can choose a semester and view their current classes. They can delete a class from their schedule by clicking the trash can icon. A success message is displayed when a student successfully deletes a class.
+
+#### Add Classes Tab
 
 <img src="pageDisplay/buildSchedulePage_addClasses.PNG" />
 
