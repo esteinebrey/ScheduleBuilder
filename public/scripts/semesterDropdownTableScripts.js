@@ -127,7 +127,7 @@ function retrieveSemesters() {
       processSemesterInfo(semesters, dropdownIds);
     }
   };
-  xhr.open("GET", "getSemesters", true);
+  xhr.open("GET", "/getSemesters", true);
   xhr.send();
 }
 
@@ -144,7 +144,7 @@ function retrieveSemestersForUser() {
       processSemesterInfo(semesters, dropdownIds);
     }
   };
-  xhr.open("GET", "getStudentSemesters", true);
+  xhr.open("GET", "/getStudentSemesters", true);
   xhr.send();
 }
 
@@ -161,7 +161,7 @@ function retrieveRecentSemesters() {
       processSemesterInfo(semesters, dropdownIds);
     }
   };
-  xhr.open("GET", "getRecentSemesters", true);
+  xhr.open("GET", "/getRecentSemesters", true);
   xhr.send();
 }
 
@@ -223,7 +223,7 @@ function retrieveSemestersForTable() {
       }
     }
   };
-  xhr.open("GET", "getSemesters", true);
+  xhr.open("GET", "/getSemesters", true);
   xhr.send();
 }
 

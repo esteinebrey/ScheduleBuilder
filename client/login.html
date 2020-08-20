@@ -21,7 +21,7 @@
         <div id="errorMessages"></div>
 
         <div class="loginFields">
-          <form class="form" action="/validateLogin" method="POST">
+          <form class="form" action="/users/validateLogin" method="POST">
             <div class="form-group has-feedback">
               <label for="username" class="control-label">Username:</label>
               <br />
@@ -92,7 +92,7 @@
           } 
         }
       };
-      xhr.open("GET", "getLoginStatus", true);
+      xhr.open("GET", "/users/loginStatus", true);
       xhr.send();
     }
 

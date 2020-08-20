@@ -21,7 +21,7 @@ function retrieveCourses() {
       }
     }
   };
-  xhr.open("GET", "getAllCourses", true);
+  xhr.open("GET", "/getAllCourses", true);
   xhr.send();
 }
 

@@ -18,7 +18,7 @@ function updateNavBarByUserType() {
       }
     }
   };
-  xhr.open("GET", "getIsAdmin", true);
+  xhr.open("GET", "/users/isAdmin", true);
   xhr.send();
 }
 

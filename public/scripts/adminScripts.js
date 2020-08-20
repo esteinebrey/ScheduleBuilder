@@ -54,7 +54,7 @@ $(document).ready(function () {
     var rowId = $(this).parentsUntil("tbody").last().attr("id");
     userId = rowId.replace("row", "");
     var request = $.ajax({
-      url: "/deleteUser",
+      url: "/users/deleteUser",
       type: "POST",
       data: { id: userId },
       dataType: "json",
@@ -112,7 +112,7 @@ $(document).ready(function () {
     $("h1#addEditFormTitle").html("Edit User");
     $("#addEditButton").val("Update User");
 
-    $("#addEditForm").attr("action", "/editUser");
+    $("#addEditForm").attr("action", "/users/editUser");
     $("form#addEditForm input#password").prop("required", false);
   };
 
@@ -134,7 +134,7 @@ $(document).ready(function () {
   showAddModal = () => {
     $("h1#addEditFormTitle").html("Add User");
     $("#addEditButton").val("Add User");
-    $("#addEditForm").attr("action", "/addUser");
+    $("#addEditForm").attr("action", "/users/addUser");
     $("form#addEditForm input#password").prop("required", true);
   };
 
@@ -157,7 +157,7 @@ function retrieveUsers() {
       processUserInfo(users);
     }
   };
-  xhr.open("GET", "getUsers", true);
+  xhr.open("GET", "/users", true);
   xhr.send();
 }
 
