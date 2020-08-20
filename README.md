@@ -76,9 +76,35 @@ Schedule Builder is an application that students can use to create their schedul
 
 ## Pages
 
+### Home Page
+
+<img src="pageDisplay/homePage.PNG" />
+
+### Login Page
+
+<img src="pageDisplay/loginPage.PNG" />
+
 ### Admin Page
 
 <img src="pageDisplay/adminPage.PNG" />
+
+### Course Maintenance Page
+
+<img src="pageDisplay/courseMaintenancePage_modifyCourses.PNG" />
+<img src="pageDisplay/courseMaintenancePage_modifySemesters.PNG" />
+
+### Schedule Page
+
+<img src="pageDisplay/schedulePage.PNG" />
+
+### Build Schedule Page
+
+<img src="pageDisplay/buildSchedulePage_dropClasses.PNG" />
+<img src="pageDisplay/buildSchedulePage_addClasses.PNG" />
+
+### View Courses Page
+
+<img src="pageDisplay/viewCoursesPage.PNG" />
 
 ## Scripts
 
