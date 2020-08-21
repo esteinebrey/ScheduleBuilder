@@ -133,6 +133,13 @@ $(document).ready(function () {
       $("form#offeringForm input#building").val($(`#building${id}`).html());
       $("form#offeringForm input#room").val($(`#room${id}`).html());
       $("form#offeringForm input#capacity").val($(`#capacity${id}`).html());
+      // Populate Edit Offering modal with the currently selected semester option
+      // Update display
+      $("#semesterDropdown button").html(
+        `${$('#courseMaintenanceMainDropdown button').html()}`
+       );
+       // Set hidden input value to match populated semester; set it to be ID of semester
+       $("input#semesters").val($('#courseMaintenanceMainDropdown button').attr('id').replace('semester', ''));
     };
   
     // Change title, button, and action so offering modal is for edit
@@ -163,6 +170,14 @@ $(document).ready(function () {
       $("form#offeringForm input#building").val("");
       $("form#offeringForm input#room").val("");
       $("form#offeringForm input#capacity").val("");
+      // Populate Add Offering modal with the first semester option
+      // Update display
+      console.log($('#semesterOfferingDropdown li:first-child a'));
+      $("#semesterDropdown button").html(
+        `${$('#semesterOfferingDropdown li:first-child a').html()} <span class="caret"></span>`
+       );
+       // Set hidden input value to match populated semester; set it to be ID of semester
+       $("input#semesters").val($('#semesterOfferingDropdown li:first-child a').attr('id').replace('semester', ''));
     };
   
     // Change title, button, and action so offering modal is for add

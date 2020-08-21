@@ -40,7 +40,7 @@ table, th, td {
   text-align: center;
 }
 
-#modalTypeDropdown {
+#userTypeDropdown, #recentDropdown, #semesterDropdown {
   font-weight: bold;
 }
 

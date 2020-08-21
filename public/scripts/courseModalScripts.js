@@ -11,8 +11,9 @@ $(document).ready(function () {
   // This will fill out the main dropdown for this tab
   // This way if a course is edited to be recent or not in other tab, it can immediately appear
   $("#coursesTab").on("click", function () {
-    // Get rid of existing options
-    $("#courseMaintenanceSemesterDropdown li").empty();
+    // Get rid of existing options in main semester dropdown and one in modal
+    $("#courseMaintenanceSemesterDropdown li").remove();
+    $("#semesterOfferingDropdown li").remove();
     retrieveRecentSemesters();
     // Put All Courses option in dropdown
     addCoursesToDropdown("#courseMaintenanceSemesterDropdown");
@@ -21,8 +22,8 @@ $(document).ready(function () {
   });
 
   // When semester dropdown is changed in offering modal, update the display
-  $("#semesterModalTypeDropdown").on("click", ".dropdown-item", function () {
-    $("#semesterModalTypeDropdown button").html(
+  $("#semesterDropdown").on("click", ".dropdown-item", function () {
+    $("#semesterDropdown button").html(
       $(this).text() + ' <span class="caret"></span>'
     );
 
