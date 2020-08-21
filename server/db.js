@@ -28,7 +28,7 @@ module.exports.initializeDatabase = function (callback) {
         if (err) throw err;
         console.log("Connected!");
         module.exports.dbConnection = connection;
-        callback (err);
+        callback(err);
       });
     });
   });

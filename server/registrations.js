@@ -24,3 +24,7 @@ registrationsRouter.post("/addToSchedule", function (req, res) {
     res.sendStatus(200);
   });
 });
+
+// Use in index.js
+
+module.exports = registrationsRouter;

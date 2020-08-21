@@ -137,3 +137,7 @@ coursesRouter.post("/deleteCourse", function (req, res) {
     }
   });
 });
+
+// Use in index.js
+
+module.exports = coursesRouter;

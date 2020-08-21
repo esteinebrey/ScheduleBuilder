@@ -97,3 +97,7 @@ semestersRouter.get("/studentSemesters", function (req, res) {
     res.redirect("/login");
   }
 });
+
+// Use in index.js
+
+module.exports = semestersRouter;

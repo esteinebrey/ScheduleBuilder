@@ -70,3 +70,7 @@ offeringsRouter.post("/addOffering", function (req, res) {
     res.json({ isOfferingAdded: true });
   });
 });
+
+// Use in index.js
+
+module.exports = offeringsRouter;
