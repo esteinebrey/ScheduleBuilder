@@ -22,6 +22,7 @@
   </head>
 
   <body>
+    <!-- Navigation Bar -->
     <div id="navBarContainer">
       <ul id="navigationBar">
         <li class="mainNavBarItem"><a id="nav-home" href="/">Home</a></li>
@@ -52,6 +53,7 @@
     <h1>Course Maintenance</h1>
 
     <div class="container">
+      <!-- Tabs -->
       <ul class="nav nav-tabs">
         <li>
           <a id="semesterTab" data-toggle="tab" href="#modifySemesters">Modify Semesters</a>
@@ -62,9 +64,11 @@
       </ul>
 
       <div class="tab-content">
+        <!-- Semesters Tab -->
         <div id="modifySemesters" class="tab-pane fade">
           <h3>Semesters</h3>
           <div id="semesterMessages"></div>
+          <!-- Filter Input Box -->
           <div class="input-group">
             <span class="input-group-addon"
               ><span class="glyphicon glyphicon-search"></span
@@ -79,6 +83,7 @@
           <button id="addSemesterButton" class="btn btn-primary addButton">
             <span class="glyphicon glyphicon-plus"></span>Add Semester
           </button>
+          <!-- Add/Edit Semester Modal -->
           <div class="w3-container">
             <div id="addEditSemesterModal" class="w3-modal">
               <div class="w3-modal-content">
@@ -166,6 +171,7 @@
             </div>
           </div>
 
+          <!-- Semesters Table -->
           <table class="table table-hover table-condensed" id="semesterTable">
             <thead>
               <tr>
@@ -181,6 +187,7 @@
           </table>
         </div>
 
+        <!-- Courses Tab -->
         <div id="modifyCourses" class="tab-pane fade in active">
           <h3>Courses</h3>
           
@@ -196,6 +203,7 @@
             />
           </div>
           <br />
+          <!-- Semester Dropdown for Courses Tab -->
           <div id="courseMaintenanceMainDropdown" class="dropdown">
             <button
               id = "allCourses"
@@ -215,6 +223,7 @@
           <button id="addCourseButton" class="btn btn-primary addButton">
             <span class="glyphicon glyphicon-plus"></span>Add Course
           </button>
+          <!-- Add/Edit Course Modal -->
           <div class="w3-container">
             <div id="courseModal" class="w3-modal">
               <div class="w3-modal-content">
@@ -304,6 +313,7 @@
             </div>
           </div>
 
+          <!-- Add/Edit Offering Modal -->
           <div class="w3-container">
             <div id="offeringModal" class="w3-modal">
               <div class="w3-modal-content">
@@ -423,6 +433,7 @@
             </div>
           </div>
 
+          <!-- Courses Table -->
           <table class="table table-hover table-condensed" id="courseTable">
             <thead>
               <tr>
@@ -437,6 +448,7 @@
             <tbody></tbody>
           </table>
 
+          <!-- Offerings Table -->
           <table class="table table-hover table-condensed" id="offeringTable">
             <thead>
               <tr>

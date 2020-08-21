@@ -17,18 +17,27 @@
   </head>
 
   <body>
+    <!-- Navigation Bar -->
     <div id="navBarContainer">
       <ul id="navigationBar">
         <li class="mainNavBarItem"><a id="nav-home" href="/">Home</a></li>
-        <li class="mainNavBarItem"><a id="nav-schedule" href="/schedule"> Schedule</a></li>
+        <li class="mainNavBarItem">
+          <a id="nav-schedule" href="/schedule"> Schedule</a>
+        </li>
         <li class="mainNavBarItem">
           <a id="nav-build-schedule" href="/buildSchedule">Build Schedule</a>
         </li>
-        <li class="mainNavBarItem"><a id="nav-admin" href="/admin">Admin</a></li>
         <li class="mainNavBarItem">
-          <a id="nav-change-courses" href="/courseMaintenance">Course Maintenance</a>
+          <a id="nav-admin" href="/admin">Admin</a>
         </li>
-        <li class="mainNavBarItem"><a id="nav-course-view" href="/viewCourses">View Courses</a></li>
+        <li class="mainNavBarItem">
+          <a id="nav-change-courses" href="/courseMaintenance"
+            >Course Maintenance</a
+          >
+        </li>
+        <li class="mainNavBarItem">
+          <a id="nav-course-view" href="/viewCourses">View Courses</a>
+        </li>
         <li class="mainNavBarItem">
           <a href="/logout">
             <span class="glyphicon glyphicon-log-out"></span
@@ -40,20 +49,19 @@
       <h1>Admin</h1>
       <div id="messages"></div>
 
+      <!-- Filter input box -->
       <div class="input-group">
         <span class="input-group-addon"
           ><span class="glyphicon glyphicon-search"></span
         ></span>
-        <input
-          class="form-control"
-          type="text"
-          id="filterUsers"
-        />
+        <input class="form-control" type="text" id="filterUsers" />
       </div>
       <br />
       <button id="addButton" class="btn btn-primary addButton">
         <span class="glyphicon glyphicon-plus"></span>Add User
       </button>
+
+      <!-- Add/Edit User Modal -->
       <div class="w3-container">
         <div id="addEditModal" class="w3-modal">
           <div class="w3-modal-content">
@@ -143,6 +151,7 @@
           </div>
         </div>
       </div>
+      <!-- Table of Users -->
       <table class="table table-hover table-condensed" id="adminTable">
         <thead>
           <tr>
