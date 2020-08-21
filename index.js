@@ -41,6 +41,9 @@ db.initializeDatabase(function (error) {
   let registrationsRouter = require("./server/registrations.js");
   app.use("/registrations", registrationsRouter);
 
+  let semestersRouter = require("./server/semesters.js");
+  app.use("/semesters", semestersRouter);
+
   // server listens on port 9306 for incoming connections
   app.listen(9306, () => console.log("Listening on port 9306!"));
 

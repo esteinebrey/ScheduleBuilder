@@ -99,7 +99,9 @@ Users log into Schedule Builder by entering their username and password. If the 
 
 Admin users can add users by using a modal that comes up when the Add User button is clicked. They can edit a user using a modal that comes up when the pencil icon of their row is pressed. They can delete a user by pressing the trash can of their row. Also, they can filter out rows by using the input box with the search icon above the button.
 
-An error message will be shown if an administrator tries to edit a user so that their username is the same as another user's username. Usernames must be unique. Also, an error message will be shown if an administrator tries to delete their own account.
+An error message will be shown if an administrator tries to edit a user so that their username is the same as another user's username. Usernames must be unique. Also, an error message will be shown if an administrator tries to delete their own account, and an error message will be shown if an administrator tries to delete a user who has already registered for classes.
+
+A success message is shown when a user is added, edited, or deleted successfully.
 
 ### Course Maintenance Page
 
@@ -290,12 +292,6 @@ Courses and course offerings can be filtered using the input box with the search
                 <li>Edit and add semesters with modal</li> 
                 <li>Delete semesters</li>
             </ul>
-        </td>
-    </tr>
-    <tr>
-        <td>index.js</td>
-        <td>Server</td>
-        <td>
         </td>
     </tr>
 </table>

@@ -22,16 +22,35 @@ $(document).ready(function () {
       url: action,
       data: form.serialize(),
       success: function (data) {
-        if (data.isLoginTaken) {
+        if (data.isUserAdded) {
+          // Show successful insertion message
+          $("div#messages")
+            .append(`<div class="addingUserSuccessMessage alert alert-success alert-dismissible">
+              User successfully added!
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+             </div>`);
+        } else if (data.isUserEdited) {
+          // Show successful update message
+          $("div#messages")
+            .append(`<div class="editingUserSuccessMessage alert alert-success alert-dismissible">
+              User successfully edited!
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+             </div>`);
+        } else {
+          // There is an error
           // Show message that username is already taken
-          $("div#errorMessages")
+          $("div#messages")
             .append(`<div id="usernameTakenErrorMessage" class="alert alert-danger alert-dismissible">
             Error: Username must be unique
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>`);
-        } 
+        }
         // Get the entries again
         $("#adminTable tbody").empty();
         retrieveUsers();
@@ -59,19 +78,38 @@ $(document).ready(function () {
       data: { id: userId },
       dataType: "json",
     }).done(function (data) {
-      if (!data.isDeleted) {
+      if (data.deletionError == "currentUser") {
         // Show message that cannot delete current user
-        $("div#errorMessages")
-        .append(`<div id="deletingUserErrorMessage" class="alert alert-danger alert-dismissible">
+        $("div#messages")
+          .append(`<div id="deletingCurrentUserErrorMessage" class="alert alert-danger alert-dismissible">
         Error: Cannot delete current user
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>`);
-      } 
-      // Get the entries again
-      $("#adminTable tbody").empty();
-      retrieveUsers();
+      } else if (data.deletionError == "registeredUser") {
+        // Show message that cannot delete a user who has already registered for classes
+        $("div#messages")
+          .append(`<div id="deletingRegisteredUserErrorMessage" class="alert alert-danger alert-dismissible">
+        Error: Cannot delete a user that has already registered for classes
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>`);
+      } else {
+        // Show successful deletion message
+        $("div#messages")
+          .append(`<div id="deletingUserSuccessMessage" class="alert alert-success alert-dismissible">
+            User deleted successfully!
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>`);
+        // Get the entries again
+        // There is no error
+        $("#adminTable tbody").empty();
+        retrieveUsers();
+      }
     });
   });
 
