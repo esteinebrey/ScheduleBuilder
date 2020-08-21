@@ -59,8 +59,8 @@ $(document).ready(function () {
   });
 
   // Show the dropdown option clicked for type of user in modal
-  $("#modalTypeDropdown .dropdown-item").on("click", function () {
-    $("#modalTypeDropdown button").html(
+  $("#userTypeDropdown .dropdown-item").on("click", function () {
+    $("#userTypeDropdown button").html(
       $(this).text() + ' <span class="caret"></span>'
     );
     // Set hidden input for user type so can access on form submit
@@ -133,11 +133,11 @@ $(document).ready(function () {
     $("form#addEditForm input#password").val("");
     // Take 'true' or 'false' to indicate if user is admin and form dropdown on modal
     if ($(`#isAdmin${id}`).html() == "true") {
-      $("#modalTypeDropdown button").html('Admin <span class="caret"></span>');
+      $("#userTypeDropdown button").html('Admin <span class="caret"></span>');
       // Set hidden input for user type so can access on form submit
       $("input#userType").val("admin");
     } else {
-      $("#modalTypeDropdown button").html(
+      $("#userTypeDropdown button").html(
         'Student <span class="caret"></span>'
       );
       // Set hidden input for user type so can access on form submit
@@ -163,7 +163,7 @@ $(document).ready(function () {
     $("form#addEditForm input#login").val("");
     $("form#addEditForm input#password").val("");
     // Set up dropdown pre-selected option as student
-    $("#modalTypeDropdown button").html('Student <span class="caret"></span>');
+    $("#userTypeDropdown button").html('Student <span class="caret"></span>');
     $("input#userType").val("student");
     // Update the add/edit modal so it is for add
     showAddModal();

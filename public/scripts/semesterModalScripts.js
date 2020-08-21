@@ -5,8 +5,8 @@ $(document).ready(function () {
   $("#addEditSemesterModal").css("display", "none");
 
   // When semester type dropdown is changed in modal, update the display
-  $("#modalTypeDropdown .dropdown-item").on("click", function () {
-    $("#modalTypeDropdown button").html(
+  $("#recentDropdown .dropdown-item").on("click", function () {
+    $("#recentDropdown button").html(
       $(this).text() + ' <span class="caret"></span>'
     );
 
@@ -122,12 +122,12 @@ $(document).ready(function () {
     $("form#addEditSemesterForm input#year").val($(`#year${id}`).html());
     // Set dropdown and hidden input for type of semester (recent or not) so it has original value for semester selected
     if ($(`#isRecent${id}`).html() == "true") {
-      $("#modalTypeDropdown button").html(
+      $("#recentDropdown button").html(
        'Registration Changes Allowed <span class="caret"></span>'
       );
       $("input#recentType").val("true");
     } else {
-      $("#modalTypeDropdown button").html(
+      $("#recentDropdown button").html(
         'Semester Set <span class="caret"></span>'
        );
        $("input#recentType").val("false");

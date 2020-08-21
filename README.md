@@ -4,7 +4,7 @@
 
 Schedule Builder is an application that students can use to create their schedule by viewing the courses offered, adding classes, dropping classes, and viewing past schedules. It is also used by administrators to modify, add, and delete courses and to change which users can log into Schedule Builder.
 
-## How It Works
+## Functionality Examples
     - Images of ScheduleBuilder can be found in the /pageDisplay folder.
 
 ## Terminology
