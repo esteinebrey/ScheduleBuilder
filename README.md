@@ -237,6 +237,15 @@ Courses and course offerings can be filtered using the input box with the search
         </td>
     </tr>
     <tr>
+        <td>loginScripts.js</td>
+        <td>Login</td>
+        <td>
+            <ul>
+                <li>Validate if login was successful or not and display error message if appropriate</li> 
+            </ul>
+        </td>
+    </tr>
+    <tr>
         <td>navigationBarScripts.js</td>
         <td>Admin, Build Schedule, Course Maintenance, Schedule, View Courses</td>
         <td>
