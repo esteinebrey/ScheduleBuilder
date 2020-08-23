@@ -115,7 +115,7 @@ function addOfferingsToSection(offerings, sectionId, editOptions, offeringType) 
 
 // Function to create an offering panel and show it
 function createOfferingPanel(offering, section, editOptions, offeringType) {
-  // Determine the ID for the offering row
+  // Determine the ID for the offering panel
   var id =
     (editOptions.type === "studentSchedule" || editOptions.type === "schedule")
       ? offering.registrationId

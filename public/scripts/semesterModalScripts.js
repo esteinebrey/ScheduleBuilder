@@ -41,21 +41,11 @@ $(document).ready(function () {
         if (data.isSemesterAdded) {
           // Show course added success message
           $("div#semesterMessages")
-            .append(`<div class="addingSemesterSuccessMessage alert alert-success alert-dismissible">
-           Semester successfully added!
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-          </button>
-         </div>`);
+            .append(createSuccessMessage("addingSemesterSuccessMessage", "Semester successfully added!"));
         } else if (data.isSemesterEdited) {
           // Show course edited success message
           $("div#semesterMessages")
-            .append(`<div class="editingSemesterSuccessMessage alert alert-success alert-dismissible">
-           Semester successfully edited!
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-          </button>
-         </div>`);
+            .append(createSuccessMessage("editingSemesterSuccessMessage", "Semester successfully edited!"));
         }
         // Get the semester entries again
         $("#semesterTable tbody tr").remove();
@@ -78,21 +68,11 @@ $(document).ready(function () {
       if (!data.isSemesterDeleted) {
         // Show error message; cannot delete semester if there is already corresponding offering
         $("div#semesterMessages")
-          .append(`<div class="deletingSemesterErrorMessage alert alert-danger alert-dismissible">
-        Error: Cannot delete semester that already has corresponding course offering
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>`);
+          .append(createErrorMessage("deletingSemesterErrorMessage", "Error: Cannot delete semester that already has corresponding course offering"));
       } else {
         // Show success message
         $("div#semesterMessages")
-          .append(`<div class="deletingSemesterSuccessMessage alert alert-success alert-dismissible">
-        Semester successfully deleted!
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>`);
+          .append(createSuccessMessage("deletingSemesterSuccessMessage", "Semester successfully deleted!"));
         // Get the semester entries again
         $("#semesterTable tbody tr").remove();
         retrieveSemestersForTable();

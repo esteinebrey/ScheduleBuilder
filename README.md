@@ -5,6 +5,7 @@
 Schedule Builder is an application that students can use to create their schedule by viewing the courses offered, adding classes, dropping classes, and viewing past schedules. It is also used by administrators to modify, add, and delete courses and to change which users can log into Schedule Builder.
 
 ## Functionality Examples
+
     - Images of ScheduleBuilder can be found in the /pageDisplay folder.
 
 ## Terminology
@@ -83,7 +84,7 @@ Schedule Builder is an application that students can use to create their schedul
 
 <img src="pageDisplay/homePage.PNG" />
 
-This is the default page displayed to anyone when they try to access Schedule Builder. 
+This is the default page displayed to anyone when they try to access Schedule Builder.
 
 Normally pressing the button will go to the login page. However, if a user is logged in and goes to the Home page using the navigation bar, when they click the button, they will be routed to the Admin page or Schedule page if they are an admin user or student respectively.
 
@@ -91,7 +92,7 @@ Normally pressing the button will go to the login page. However, if a user is lo
 
 <img src="pageDisplay/loginPage.PNG" />
 
-Users log into Schedule Builder by entering their username and password. If the login info is not validated, an error message will be displayed. If the user logs in successfully, they will be redirected to a page based on the type of user they are; admin users will go to the Admin page, and student users will go to the Schedule page. 
+Users log into Schedule Builder by entering their username and password. If the login info is not validated, an error message will be displayed. If the user logs in successfully, they will be redirected to a page based on the type of user they are; admin users will go to the Admin page, and student users will go to the Schedule page.
 
 ### Admin Page
 
@@ -111,7 +112,7 @@ A success message is shown when a user is added, edited, or deleted successfully
 
 This is the default tab when Course Maintenance is pressed in the navigation bar.
 
-Similar to the Admin Page, admin users can add courses by filling out the modal that comes up from pressing the Add Course button. They can edit with a modal or delete a course by pressing the course's pencil or trash can icon. The edit modal will be pre-populated with the information of the row selected. 
+Similar to the Admin Page, admin users can add courses by filling out the modal that comes up from pressing the Add Course button. They can edit with a modal or delete a course by pressing the course's pencil or trash can icon. The edit modal will be pre-populated with the information of the row selected.
 
 By pressing the plus button next to a course, a modal will come up and the admin user can create a course offering for the course.
 
@@ -137,7 +138,7 @@ An error message will be displayed if an admin user tries to delete a semester t
 
 <img src="pageDisplay/schedulePage.PNG" />
 
-Students can view their past and current schedules on this page by selecting a semester from the dropdown. The only semesters that show up in the dropdown are ones where the student took or is taking a course. 
+Students can view their past and current schedules on this page by selecting a semester from the dropdown. The only semesters that show up in the dropdown are ones where the student took or is taking a course.
 
 A message will display if the student has not registered for any courses yet.
 
@@ -237,20 +238,21 @@ Courses and course offerings can be filtered using the input box with the search
         </td>
     </tr>
     <tr>
+        <td>generalScripts.js</td>
+        <td>Admin, Build Schedule, Course Maintenance, Schedule, View Courses</td>
+        <td>
+            <ul>
+                <li>Show the right options in navigation bar based on type of user</li> 
+                <li>Create error and success messages</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
         <td>loginScripts.js</td>
         <td>Login</td>
         <td>
             <ul>
                 <li>Validate if login was successful or not and display error message if appropriate</li> 
-            </ul>
-        </td>
-    </tr>
-    <tr>
-        <td>navigationBarScripts.js</td>
-        <td>Admin, Build Schedule, Course Maintenance, Schedule, View Courses</td>
-        <td>
-            <ul>
-                <li>Show the right options in navigation bar based on type of user</li> 
             </ul>
         </td>
     </tr>
@@ -371,7 +373,6 @@ Courses and course offerings can be filtered using the input box with the search
     </tr>
 </table>
 
-
 ## Styles
 
 Bootstrap is used to style most of the application. scheduleBuilderStyle.css is used for custom styles.
@@ -379,6 +380,7 @@ Bootstrap is used to style most of the application. scheduleBuilderStyle.css is 
 ## Database
 
 ### Users Table
+
     - Keep track of users of Schedule Builder and their login info
     - UserLogin is unique
 
@@ -410,6 +412,7 @@ Bootstrap is used to style most of the application. scheduleBuilderStyle.css is 
 </table>
 
 ### Courses Table
+
     - Keep track of courses
     - DeptCode and CourseNumber combination are unique
 
@@ -445,6 +448,7 @@ Bootstrap is used to style most of the application. scheduleBuilderStyle.css is 
 </table>
 
 ### Semesters Table
+
     - Keep track of semesters that courses can be taken
     - Season and Year combination is unique
 
@@ -477,6 +481,7 @@ Bootstrap is used to style most of the application. scheduleBuilderStyle.css is 
 </table>
 
 ### CourseOfferings Table
+
     - Keep track of offerings, which are courses for a specific semester
 
 <table>
@@ -522,8 +527,8 @@ Bootstrap is used to style most of the application. scheduleBuilderStyle.css is 
     </tr>
 </table>
 
-
 ### Registrations Table
+
     - Keep track of course offerings that a student is taking
     - StudentID and OfferingID combination is unique
 

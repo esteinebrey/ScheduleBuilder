@@ -44,25 +44,15 @@ $(document).ready(function () {
     }).done(function (data) {
       if (!data.isCourseDeleted) {
         // Not able to delete course
-        //Show error message
-        $("div#courseMessages")
-          .append(`<div class="deletingCourseErrorMessage alert alert-danger alert-dismissible">
-        Error: Cannot delete course that already has offerings corresponding to it
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>`);
+        // Show error message
+        $("div#courseMessages") 
+          .append(createErrorMessage("deletingCourseErrorMessage", "Error: Cannot delete course that already has offerings corresponding to it"));
       }
       // Deletion successful
       else {
         // Show success message
         $("div#courseMessages")
-          .append(`<div class="deletingCourseSuccessMessage alert alert-success alert-dismissible">
-        Course successfully deleted!
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>`);
+          .append(createSuccessMessage("deletingCourseSuccessMessage", "Course successfully deleted!"));
         // Update courses shown
         $("#courseTable tbody tr").remove();
         retrieveCourses(courseOptions);
@@ -91,21 +81,11 @@ $(document).ready(function () {
         if (data.isCourseAdded) {
           // Show course added success message
           $("div#courseMessages")
-            .append(`<div class="addingCourseSuccessMessage alert alert-success alert-dismissible">
-           Course successfully added!
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-          </button>
-         </div>`);
+            .append(createSuccessMessage("addingCourseSuccessMessage", "Course successfully added!"));
         } else if (data.isCourseEdited) {
           // Show course edited success message
           $("div#courseMessages")
-            .append(`<div class="editingCourseSuccessMessage alert alert-success alert-dismissible">
-           Course successfully edited!
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-          </button>
-         </div>`);
+            .append(createSuccessMessage("editingCourseSuccessMessage", "Course successfully edited!"));
         }
         // Get the course entries again
         $("#courseTable tbody tr").remove();
@@ -174,5 +154,4 @@ $(document).ready(function () {
   $(".courseCancel").click(function () {
     $("#courseModal").css("display", "none");
   });
-
 });

@@ -39,12 +39,7 @@ $(document).ready(function () {
     // Show success message and reload courses
     $(
       "div#successMessages"
-    ).append(`<div class="deleteCourseSuccessMessage alert alert-success alert-dismissible">
-    Course successfully deleted!
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-    </div>`);
+    ).append(createSuccessMessage("deleteCourseSuccessMessage", "Course successfully deleted!"));
     showCourses(
       $("#buildScheduleSemesterDropdown").val(),
       offeringType,
@@ -73,12 +68,7 @@ $(document).ready(function () {
     // Show success message and reload courses
     $(
       "div#successMessages"
-    ).append(`<div class="addCourseSuccessMessage alert alert-success alert-dismissible">
-    Course successfully added!
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-    </div>`);
+    ).append(createSuccessMessage("addCourseSuccessMessage", "Course successfully added!"));
     showCourses(
       $("#buildScheduleSemesterDropdown").val(),
       offeringType,

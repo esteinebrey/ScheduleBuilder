@@ -9,7 +9,7 @@ function retrieveCourses() {
       // Create JSON object for the courses
       var courses = JSON.parse(xhr.responseText);
       if (courses.length > 0) {
-        // Access the table
+        // Access the section
         var section = $("#courses");
         var i;
         var course;
@@ -32,6 +32,6 @@ function createCoursePanel(course, section) {
   courseOutput += `<div class="panel-body bg-info"><p>${course.credits} credits</p><p>${course.description}</p></div>`;
   courseOutput += "</div>";
 
-  // Add the row to the table
+  // Add the panel to the section
   section.append(courseOutput);
 }

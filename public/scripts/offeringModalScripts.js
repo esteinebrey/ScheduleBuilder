@@ -31,21 +31,11 @@ $(document).ready(function () {
         if (!data.isOfferingDeleted) {
           // Show error message; cannot delete offering if student already registered for it
           $("div#courseMessages")
-            .append(`<div class="deletingOfferingErrorMessage alert alert-danger alert-dismissible">
-          Error: Cannot delete course offering that student has already registered for
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>`);
+            .append(createErrorMessage("deletingOfferingErrorMessage", "Error: Cannot delete course offering that student has already registered for"));
         } else {
           // Show success message
           $("div#courseMessages")
-            .append(`<div class="deletingOfferingSuccessMessage alert alert-success alert-dismissible">
-          Course Offering successfully deleted!
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>`);
+            .append(createSuccessMessage("deletingOfferingSuccessMessage", "Course Offering successfully deleted!"));
           // Update courses shown
           showCorrectTable(
             $("div#courseMaintenanceMainDropdown button").attr("id")
@@ -81,21 +71,11 @@ $(document).ready(function () {
           if (data.isOfferingAdded) {
             // Show course added success message
             $("div#courseMessages")
-              .append(`<div class="addingOfferingSuccessMessage alert alert-success alert-dismissible">
-             Course offering successfully added!
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-           </div>`);
+              .append(createSuccessMessage("addingOfferingSuccessMessage", "Course offering successfully added!"));
           } else if (data.isOfferingEdited) {
             // Show course edited success message
             $("div#courseMessages")
-              .append(`<div class="editingOfferingSuccessMessage alert alert-success alert-dismissible">
-             Course offering successfully edited!
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-           </div>`);
+              .append(createSuccessMessage("editingOfferingSuccessMessage", "Course offering successfully edited!"));
           }
           // Get the updated entries
           showCorrectTable(

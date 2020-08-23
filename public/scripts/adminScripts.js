@@ -1,5 +1,5 @@
 // File containing the scripts for the Admin Page
-// Contains the functions for getting user information and using the modals
+// Contains the functions for getting user information and using the Admin page modals
 
 // Admin Modal Scripts
 $(document).ready(function () {
@@ -54,7 +54,7 @@ $(document).ready(function () {
         // Get the entries again
         $("#adminTable tbody").empty();
         retrieveUsers();
-      },
+      }
     });
   });
 
@@ -72,6 +72,7 @@ $(document).ready(function () {
     // Get the ID of the user to delete; row will be removed from screen
     var rowId = $(this).parentsUntil("tbody").last().attr("id");
     userId = rowId.replace("row", "");
+    // Delete the user using AJAX
     var request = $.ajax({
       url: "/users/deleteUser",
       type: "POST",
@@ -81,30 +82,15 @@ $(document).ready(function () {
       if (data.deletionError == "currentUser") {
         // Show message that cannot delete current user
         $("div#messages")
-          .append(`<div id="deletingCurrentUserErrorMessage" class="alert alert-danger alert-dismissible">
-        Error: Cannot delete current user
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>`);
+          .append(createErrorMessage("deletingCurrentUserErrorMessage", "Error: Cannot delete current user"));
       } else if (data.deletionError == "registeredUser") {
         // Show message that cannot delete a user who has already registered for classes
         $("div#messages")
-          .append(`<div id="deletingRegisteredUserErrorMessage" class="alert alert-danger alert-dismissible">
-        Error: Cannot delete a user that has already registered for classes
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>`);
+          .append(createErrorMessage("deletingRegisteredUserErrorMessage", "Error: Cannot delete a user that has already registered for classes"));
       } else {
         // Show successful deletion message
         $("div#messages")
-          .append(`<div id="deletingUserSuccessMessage" class="alert alert-success alert-dismissible">
-            User deleted successfully!
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>`);
+          .append(createSuccessMessage("deletingUserSuccessMessage", "User deleted successfully!"));
         // Get the entries again
         // There is no error
         $("#adminTable tbody").empty();
@@ -165,10 +151,10 @@ $(document).ready(function () {
     // Set up dropdown pre-selected option as student
     $("#userTypeDropdown button").html('Student <span class="caret"></span>');
     $("input#userType").val("student");
-    // Update the add/edit modal so it is for add
     showAddModal();
   });
 
+  // Update the add/edit modal so it is for add
   showAddModal = () => {
     $("h1#addEditFormTitle").html("Add User");
     $("#addEditButton").val("Add User");

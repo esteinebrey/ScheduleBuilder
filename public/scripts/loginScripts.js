@@ -1,6 +1,7 @@
 // File that checks if login was successful or not for Login page
 // Shows error message if login did not work
 
+// Check login status
 function checkStatus() {
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
@@ -11,17 +12,7 @@ function checkStatus() {
       if (flag == 0) {
         // Show login error message
         $("div#errorMessages")
-          .append(`<div id="loginErrorMessage" class="alert alert-danger alert-dismissible">
-            Invalid credentials. Please try again!
-            <button
-             type="button"
-             class="close"
-             data-dismiss="alert"
-             aria-label="Close"
-            >
-             <span aria-hidden="true">&times;</span>
-            </button>
-         </div>`);
+          .append(createErrorMessage("loginErrorMessage", "Invalid credentials. Please try again!"));
       }
     }
   };
