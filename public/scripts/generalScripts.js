@@ -3,7 +3,7 @@
 
 // Return the HTML for a success message with the specified category and message
 function createSuccessMessage(category, message) {
-  return `<div class="${category}" class="alert alert-success alert-dismissible">
+  return `<div class="${category} alert alert-success alert-dismissible">
     ${message}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
@@ -13,7 +13,7 @@ function createSuccessMessage(category, message) {
 
 // Return the HTML for an error message with the specified category and message
 function createErrorMessage(category, message) {
-  return `<div class="${category}" class="alert alert-danger alert-dismissible">
+  return `<div class="${category} alert alert-danger alert-dismissible">
   ${message}
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>

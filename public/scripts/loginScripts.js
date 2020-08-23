@@ -11,6 +11,7 @@ function checkStatus() {
       // Check if there is a problem with username and password so error message should be displayed
       if (flag == 0) {
         // Show login error message
+        console.log(createErrorMessage("loginErrorMessage", "Invalid credentials. Please try again!"));
         $("div#errorMessages")
           .append(createErrorMessage("loginErrorMessage", "Invalid credentials. Please try again!"));
       }

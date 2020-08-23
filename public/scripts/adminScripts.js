@@ -25,31 +25,16 @@ $(document).ready(function () {
         if (data.isUserAdded) {
           // Show successful insertion message
           $("div#messages")
-            .append(`<div class="addingUserSuccessMessage alert alert-success alert-dismissible">
-              User successfully added!
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-             </div>`);
+            .append(createSuccessMessage("addingUserSuccessMessage", "User successfully added!"));
         } else if (data.isUserEdited) {
           // Show successful update message
           $("div#messages")
-            .append(`<div class="editingUserSuccessMessage alert alert-success alert-dismissible">
-              User successfully edited!
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-             </div>`);
+            .append(createSuccessMessage("editingUserSuccessMessage", "User successfully edited!"));
         } else {
           // There is an error
           // Show message that username is already taken
           $("div#messages")
-            .append(`<div id="usernameTakenErrorMessage" class="alert alert-danger alert-dismissible">
-            Error: Username must be unique
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>`);
+            .append(createErrorMessage("usernameTakenErrorMessage", "Error: Username must be unique"));
         }
         // Get the entries again
         $("#adminTable tbody").empty();
